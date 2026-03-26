@@ -1,39 +1,43 @@
 import {
-  isRouteErrorResponse,
+  Button,
+  ColorSchemeScript,
+  Container,
+  Paper,
+  Stack,
+  Text,
+  Title,
+  mantineHtmlProps,
+} from "@mantine/core";
+import "@fontsource-variable/roboto/wght.css";
+import "@mantine/core/styles.css";
+import type { ReactNode } from "react";
+import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
 } from "react-router";
-
 import type { Route } from "./+types/root";
 import "./app.css";
+import { MantineAppProvider } from "./providers";
+import { QueryProvider } from "./query-client";
 
-export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
-
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <ColorSchemeScript defaultColorScheme="light" />
         <Meta />
         <Links />
       </head>
       <body>
-        {children}
+        <MantineAppProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </MantineAppProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -62,14 +66,29 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <Container size="sm" py="xl">
+      <Paper radius="xl" p="xl" shadow="sm" withBorder>
+        <Stack gap="md">
+          <Title order={1}>{message}</Title>
+          <Text c="dimmed">{details}</Text>
+          {stack && (
+            <Paper
+              component="pre"
+              p="md"
+              radius="lg"
+              bg="gray.0"
+              style={{ overflowX: "auto", margin: 0, whiteSpace: "pre-wrap" }}
+            >
+              <Text component="code" size="sm" ff="monospace">
+                {stack}
+              </Text>
+            </Paper>
+          )}
+          <Button component="a" href="/" variant="light">
+            Return home
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 }

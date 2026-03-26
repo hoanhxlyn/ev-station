@@ -1,0 +1,3 @@
+- For Roboto, use @fontsource-variable/roboto/wght.css in app/root.tsx.
+- Set Mantine font families to "Roboto Variable", sans-serif in app/theme/mantine-theme.ts.
+- The build emits Roboto font assets locally, confirming self-hosted font loading.

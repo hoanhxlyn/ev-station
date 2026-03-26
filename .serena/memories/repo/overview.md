@@ -1,0 +1,5 @@
+- Project: React Router v7 app for ev-station.
+- Stack: TypeScript, React 19, React Router 7, Vite, Tailwind CSS 4, pnpm.
+- Structure: app/root.tsx for HTML shell/layout, app/routes.ts for route config, app/routes/home.tsx for the index route, app/welcome/ for starter UI assets.
+- Entry scripts: pnpm run dev, pnpm run build, pnpm run start, pnpm run typecheck.
+- Package manager: pnpm (pnpm-lock.yaml present).

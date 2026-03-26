@@ -1,0 +1,5 @@
+- TypeScript uses `strict: true`, `noEmit: true`, `moduleResolution: bundler`, `jsx: react-jsx`, and path alias `~/*` for `app/*` imports.
+- React Router app code lives under `app/`; route modules commonly import generated types from `./+types/...`.
+- Existing code favors concise functional components, named exports for route helpers, and standard React Router patterns.
+- UI styles currently use Tailwind utility classes alongside `app/app.css`.
+- Keep edits minimal and preserve the existing template structure unless the task asks for a redesign.
