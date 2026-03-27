@@ -1,7 +1,7 @@
 .pageShell {
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   background: linear-gradient(
     135deg,
     rgba(239, 246, 255, 1) 0%,
@@ -40,29 +40,93 @@
 }
 
 .leftPanel {
+  flex: 1 1 0;
+  min-width: 0;
   position: relative;
   min-height: 780px;
-  padding: 32px;
+  overflow: hidden;
   color: white;
-  background: radial-gradient(
-    circle at top,
-    rgba(6, 95, 70, 0.92) 0%,
-    rgba(13, 148, 136, 0.94) 48%,
-    rgba(8, 145, 178, 0.96) 100%
+}
+
+.leftPanelMedia {
+  position: absolute;
+  inset: 0;
+}
+
+.leftPanelCarousel,
+.leftPanelCarouselViewport,
+.leftPanelCarouselContainer,
+.leftPanelCarouselSlide {
+  height: 100%;
+}
+
+.leftPanelCarousel {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.leftPanelCarouselSlide {
+  position: relative;
+}
+
+.leftPanelImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    opacity 220ms ease,
+    transform 300ms ease;
+}
+
+.leftPanelOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 8, 12, 0.82) 0%,
+    rgba(6, 8, 12, 0.54) 45%,
+    rgba(6, 8, 12, 0.72) 100%
   );
 }
 
-.leftPanelInset {
+.leftPanelContent {
   position: absolute;
-  inset: 24px;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  inset: 0;
+  z-index: 2;
+  padding: 32px;
+  justify-content: flex-start;
 }
 
-.leftPanelContent {
-  position: relative;
-  z-index: 1;
-  height: 100%;
+.carouselIndicators {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  z-index: 2;
+}
+
+.carouselIndicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.35);
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease;
+}
+
+.carouselIndicator:hover {
+  transform: scale(1.08);
+}
+
+.carouselIndicator[data-active] {
+  width: 24px;
+  background: white;
+  border-color: rgba(255, 255, 255, 0.92);
 }
 
 .heroCard {
@@ -79,14 +143,22 @@
 }
 
 .rightPanel {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
-  padding: clamp(24px, 4vw, 56px);
   display: flex;
   align-items: center;
+}
+
+.rightPanelContent {
+  padding: clamp(24px, 4vw, 56px);
 }
 
 .badgeRow {
   border-radius: 999px;
   background: var(--mantine-color-teal-light);
+}
+
+.mobileBrand {
+  padding-bottom: var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
 }

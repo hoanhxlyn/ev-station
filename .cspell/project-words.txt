@@ -1,0 +1,17 @@
+dockerignore
+fontsource
+gitignore
+isbot
+lefthook
+mantine
+oxfmt
+oxlint
+oxlintrc
+pnpm
+roboto
+tabler
+typecheck
+tsconfig
+vite
+wght
+embla
