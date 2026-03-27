@@ -2,4 +2,5 @@
 - React Router app code lives under `app/`; route modules commonly import generated types from `./+types/...`.
 - Existing code favors concise functional components, named exports for route helpers, and standard React Router patterns.
 - UI styles currently use Tailwind utility classes alongside `app/app.css`.
+- For Mantine components, prefer CSS Modules via `className`/`classNames` for static styling; use Mantine style props for simple layout/spacing; reserve inline `style` only for truly dynamic values.
 - Keep edits minimal and preserve the existing template structure unless the task asks for a redesign.

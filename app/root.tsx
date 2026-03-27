@@ -22,7 +22,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { MantineAppProvider } from "./providers";
-import { QueryProvider } from "./query-client";
+import styles from "./root.module.css";
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -35,9 +35,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
-        <MantineAppProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </MantineAppProvider>
+        <MantineAppProvider>{children}</MantineAppProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -72,13 +70,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <Title order={1}>{message}</Title>
           <Text c="dimmed">{details}</Text>
           {stack && (
-            <Paper
-              component="pre"
-              p="md"
-              radius="lg"
-              bg="gray.0"
-              style={{ overflowX: "auto", margin: 0, whiteSpace: "pre-wrap" }}
-            >
+            <Paper component="pre" p="md" radius="lg" bg="gray.0" className={styles.errorStack}>
               <Text component="code" size="sm" ff="monospace">
                 {stack}
               </Text>
