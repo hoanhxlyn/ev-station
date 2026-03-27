@@ -1,6 +1,10 @@
 .pageShell {
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 40px);
   overflow-x: hidden;
   background: linear-gradient(
     135deg,

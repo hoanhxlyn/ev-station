@@ -3,6 +3,8 @@ import styles from './page.module.css'
 import { LoginLeftPanel } from './left-panel'
 import { LoginRightPanel } from './right-panel'
 
+export { loginAction as action } from './actions'
+
 export function meta() {
   return [
     { title: 'EV Station | Login' },
@@ -24,6 +26,7 @@ export default function Login() {
         size="xl"
         py={{ base: 'lg', sm: '3xl', lg: '4xl' }}
         pos="relative"
+        w={'100%'}
       >
         <Paper
           radius="32px"
