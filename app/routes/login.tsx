@@ -1,8 +1,8 @@
+import { Carousel } from '@mantine/carousel'
 import {
   Anchor,
   Box,
   Button,
-  Badge,
   Checkbox,
   Container,
   Divider,
@@ -15,36 +15,93 @@ import {
   TextInput,
   ThemeIcon,
   Title,
-} from "@mantine/core";
-import { IconBrandGithub, IconBrandGoogle, IconBolt, IconLock, IconUser } from "@tabler/icons-react";
-import { Link } from "react-router";
-import styles from "./login.module.css";
+} from '@mantine/core'
+import {
+  IconBolt,
+  IconBrandGithub,
+  IconBrandGoogle,
+  IconLock,
+  IconUser,
+} from '@tabler/icons-react'
+import Autoplay from 'embla-carousel-autoplay'
+import { useRef } from 'react'
+import { Link } from 'react-router'
+import styles from './login.module.css'
+
+const LEFT_PANEL_IMAGES = [
+  'https://images.unsplash.com/photo-1704475336842-0ab3798abf0e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1768907038230-e66e6a66583f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEVWJTIwc3RhdGlvbnxlbnwwfHwwfHx8MA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1661659690276-ac675b18aa63?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+]
 
 export function meta() {
   return [
-    { title: "EV Station | Login" },
+    { title: 'EV Station | Login' },
     {
-      name: "description",
-      content: "Login screen for EV Station with account, password, remember me, and social sign-in options.",
+      name: 'description',
+      content:
+        'Login screen for EV Station with account, password, remember me, and social sign-in options.',
     },
-  ];
+  ]
 }
 
 export default function Login() {
+  const autoplay = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }))
+
   return (
-    <Box h="100vh" pos="relative" className={styles.pageShell}>
+    <Box mih="100vh" pos="relative" className={styles.pageShell}>
       <Box aria-hidden className={styles.bgBlobTopLeft} />
       <Box aria-hidden className={styles.bgBlobTopRight} />
 
-      <Container size="xl" py={{ base: 20, sm: 32, lg: 48 }} pos="relative">
-        <Paper radius="32px" shadow="xl" withBorder className={styles.cardShell}>
-          <Group grow align="stretch" gap={0} wrap="nowrap">
+      <Container
+        size="xl"
+        py={{ base: 'lg', sm: '3xl', lg: '4xl' }}
+        pos="relative"
+      >
+        <Paper
+          radius="32px"
+          shadow="xl"
+          withBorder
+          className={styles.cardShell}
+        >
+          <Group align="stretch" gap={0} wrap="nowrap">
             <Box visibleFrom="lg" className={styles.leftPanel}>
-              <Box aria-hidden className={styles.leftPanelInset} />
-              <Stack gap="lg" className={styles.leftPanelContent} justify="space-between">
-                <Stack gap="md">
+              <Box className={styles.leftPanelMedia}>
+                <Carousel
+                  withControls={false}
+                  withIndicators
+                  height="100%"
+                  classNames={{
+                    root: styles.leftPanelCarousel,
+                    viewport: styles.leftPanelCarouselViewport,
+                    container: styles.leftPanelCarouselContainer,
+                    slide: styles.leftPanelCarouselSlide,
+                    indicators: styles.carouselIndicators,
+                    indicator: styles.carouselIndicator,
+                  }}
+                  plugins={[autoplay.current]}
+                  emblaOptions={{ loop: true, watchDrag: false }}
+                >
+                  {LEFT_PANEL_IMAGES.map((image) => (
+                    <Carousel.Slide key={`${image}`}>
+                      <Image
+                        src={image}
+                        alt="Electric car charging illustration"
+                        className={styles.leftPanelImage}
+                      />
+                      <Box aria-hidden className={styles.leftPanelOverlay} />
+                    </Carousel.Slide>
+                  ))}
+                </Carousel>
+
+                <Stack gap="lg" className={styles.leftPanelContent}>
                   <Group gap="sm">
-                    <ThemeIcon size={44} radius="xl" variant="light" color="teal">
+                    <ThemeIcon
+                      size={44}
+                      radius="xl"
+                      variant="light"
+                      color="teal"
+                    >
                       <IconBolt size={22} />
                     </ThemeIcon>
                     <Stack gap={0}>
@@ -57,57 +114,72 @@ export default function Login() {
                     </Stack>
                   </Group>
 
-                  <Stack gap={6} maw={420} pt="md">
-                    <Text fw={700} tt="uppercase" size="xs" c="rgba(255,255,255,0.72)">
+                  <Stack gap={6} maw="28ch" pt="md">
+                    <Text
+                      fw={700}
+                      tt="uppercase"
+                      size="xs"
+                      c="rgba(255,255,255,0.72)"
+                    >
                       Electric fleet access
                     </Text>
                     <Title order={1} fw={900} fz={48} lh={0.95}>
                       Drive into the control room with one secure sign-in.
                     </Title>
                     <Text c="rgba(255,255,255,0.82)" lh={1.7} size="lg">
-                      Keep charging operations, station health, and fleet visibility under one calm interface.
+                      Keep charging operations, station health, and fleet
+                      visibility under one calm interface.
                     </Text>
                   </Stack>
                 </Stack>
-
-                <Box className={styles.heroCard}>
-                  <Image
-                    src="https://images.unsplash.com/photo-1704475336842-0ab3798abf0e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="Electric car charging illustration"
-                    radius="24px"
-                    fit="contain"
-                    className={styles.heroImage}
-                  />
-                  <Group justify="space-between" mt="md" align="center">
-                    <Stack gap={0}>
-                      <Text size="sm" fw={700} c="white">
-                        Fast charge ready
-                      </Text>
-                      <Text size="xs" c="rgba(255,255,255,0.74)">
-                        Clean handoff for drivers and operators
-                      </Text>
-                    </Stack>
-                    <ThemeIcon size={44} radius="xl" variant="light" color="cyan">
-                      <IconBolt size={20} />
-                    </ThemeIcon>
-                  </Group>
-                </Box>
-              </Stack>
+              </Box>
             </Box>
 
             <Box className={styles.rightPanel}>
-              <Stack gap="xl" w="100%" maw={520} mx="auto">
+              <Stack
+                gap="xl"
+                w="100%"
+                flex={1}
+                miw={0}
+                className={styles.rightPanelContent}
+              >
                 <Stack gap={8}>
+                  <Group
+                    hiddenFrom="lg"
+                    gap="sm"
+                    className={styles.mobileBrand}
+                  >
+                    <ThemeIcon
+                      size={40}
+                      radius="xl"
+                      variant="light"
+                      color="teal"
+                    >
+                      <IconBolt size={20} />
+                    </ThemeIcon>
+                    <Stack gap={0}>
+                      <Text fw={800} size="lg" lh={1.1}>
+                        EV Station
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Operator access portal
+                      </Text>
+                    </Stack>
+                  </Group>
                   <BadgeRow />
                   <Title order={2} fw={900} fz={{ base: 32, sm: 40 }} lh={1.05}>
                     Sign in to your EV Station account
                   </Title>
                   <Text c="dimmed" lh={1.7}>
-                    Use your operator account to manage stations, vehicles, and charging activity.
+                    Use your operator account to manage stations, vehicles, and
+                    charging activity.
                   </Text>
                 </Stack>
 
-                <Box component="form" onSubmit={(event) => event.preventDefault()}>
+                <Box
+                  component="form"
+                  onSubmit={(event) => event.preventDefault()}
+                >
                   <Stack gap="md">
                     <TextInput
                       label="Account name"
@@ -140,15 +212,21 @@ export default function Login() {
                   </Stack>
                 </Box>
 
-                <Divider label="Or connect with social links" labelPosition="center" />
+                <Divider
+                  label="Or connect with social links"
+                  labelPosition="center"
+                />
 
                 <SimpleSocialLinks />
 
-                <Text c="dimmed" size="sm" ta="center">
-                  Need access? <Anchor href="#">Contact your administrator</Anchor>.
-                </Text>
-
-                <Button component={Link} to="/" variant="subtle" radius="lg" size="sm" mx="auto">
+                <Button
+                  component={Link}
+                  to="/"
+                  variant="subtle"
+                  radius="lg"
+                  size="sm"
+                  mx="auto"
+                >
                   Back to home
                 </Button>
               </Stack>
@@ -157,7 +235,7 @@ export default function Login() {
         </Paper>
       </Container>
     </Box>
-  );
+  )
 }
 
 function BadgeRow() {
@@ -170,7 +248,7 @@ function BadgeRow() {
         Secure operator login
       </Text>
     </Group>
-  );
+  )
 }
 
 function SimpleSocialLinks() {
@@ -195,5 +273,5 @@ function SimpleSocialLinks() {
         GitHub
       </Button>
     </Group>
-  );
+  )
 }

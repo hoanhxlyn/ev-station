@@ -1,0 +1,18 @@
+# Lefthook configuration
+# https://lefthook.dev/configuration/
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: oxfmt
+      glob: '*.{js,jsx,ts,tsx,cjs,mjs,css,json,yml,yaml}'
+      run: pnpm oxfmt {staged_files}
+      stage_fixed: true
+
+    - name: oxlint
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm oxlint {staged_files}
+
+    - name: cspell
+      glob: '*.{js,jsx,ts,tsx,md,json}'
+      run: pnpm cspell lint --no-progress {staged_files}

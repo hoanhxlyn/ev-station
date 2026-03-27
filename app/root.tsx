@@ -7,10 +7,11 @@ import {
   Text,
   Title,
   mantineHtmlProps,
-} from "@mantine/core";
-import "@fontsource-variable/roboto/wght.css";
-import "@mantine/core/styles.css";
-import type { ReactNode } from "react";
+} from '@mantine/core'
+import '@fontsource-variable/roboto/wght.css'
+import '@mantine/core/styles.css'
+import '@mantine/carousel/styles.css'
+import type { ReactNode } from 'react'
 import {
   Links,
   Meta,
@@ -18,11 +19,11 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
-} from "react-router";
-import type { Route } from "./+types/root";
-import "./app.css";
-import { MantineAppProvider } from "./providers";
-import styles from "./root.module.css";
+} from 'react-router'
+import type { Route } from './+types/root'
+import './app.css'
+import { MantineAppProvider } from './providers'
+import styles from './root.module.css'
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -40,27 +41,27 @@ export function Layout({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }
 
 export default function App() {
-  return <Outlet />;
+  return <Outlet />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: string | undefined;
+  let message = 'Oops!'
+  let details = 'An unexpected error occurred.'
+  let stack: string | undefined
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
+    message = error.status === 404 ? '404' : 'Error'
     details =
       error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+        ? 'The requested page could not be found.'
+        : error.statusText || details
   } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
+    details = error.message
+    stack = error.stack
   }
 
   return (
@@ -70,7 +71,13 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <Title order={1}>{message}</Title>
           <Text c="dimmed">{details}</Text>
           {stack && (
-            <Paper component="pre" p="md" radius="lg" bg="gray.0" className={styles.errorStack}>
+            <Paper
+              component="pre"
+              p="md"
+              radius="lg"
+              bg="gray.0"
+              className={styles.errorStack}
+            >
               <Text component="code" size="sm" ff="monospace">
                 {stack}
               </Text>
@@ -82,5 +89,5 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         </Stack>
       </Paper>
     </Container>
-  );
+  )
 }
