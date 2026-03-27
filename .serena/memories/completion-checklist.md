@@ -1,4 +1,5 @@
-- Run `npm run typecheck` after code changes to catch TypeScript and generated route type issues.
-- Run `npm run build` if the change could affect runtime bundling or route loading.
+- This is a **pnpm** project (check for `pnpm-lock.yaml`), use `pnpm <command>` instead of `npm`.
+- Run `pnpm typecheck` after code changes to catch TypeScript and generated route type issues.
+- Run `pnpm build` if the change could affect runtime bundling or route loading.
 - For config-only changes, verify the target error is gone with the editor diagnostics or `tsc`.
 - Do not use `ignoreDeprecations` or `@ts-ignore` to silence migration warnings when a config fix is available.

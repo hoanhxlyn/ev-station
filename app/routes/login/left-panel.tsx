@@ -12,7 +12,7 @@ const LEFT_PANEL_IMAGES = [
 ]
 
 export function LoginLeftPanel() {
-  const autoplay = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }))
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }))
 
   return (
     <Box visibleFrom="lg" className={styles.leftPanel}>

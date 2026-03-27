@@ -19,10 +19,14 @@ import {
   IconLock,
   IconUser,
 } from '@tabler/icons-react'
-import { Link } from 'react-router'
+import { useFetcher, Link } from 'react-router'
+import type { loginAction } from './actions'
 import styles from './page.module.css'
 
 export function LoginRightPanel() {
+  const fetcher = useFetcher<typeof loginAction>()
+  const errors = fetcher.data?.errors
+
   return (
     <Box className={styles.rightPanel}>
       <Stack
@@ -56,7 +60,13 @@ export function LoginRightPanel() {
           </Text>
         </Stack>
 
-        <Box component="form" onSubmit={(event) => event.preventDefault()}>
+        {fetcher.data?.success && (
+          <Text c="teal" fw={600}>
+            {fetcher.data.message}
+          </Text>
+        )}
+
+        <fetcher.Form method="post">
           <Stack gap="md">
             <TextInput
               label="Account name"
@@ -65,7 +75,8 @@ export function LoginRightPanel() {
               leftSectionPointerEvents="none"
               radius="lg"
               size="md"
-              required
+              name="accountName"
+              error={errors?.accountName?.[0]}
             />
             <PasswordInput
               label="Password"
@@ -74,20 +85,27 @@ export function LoginRightPanel() {
               leftSectionPointerEvents="none"
               radius="lg"
               size="md"
-              required
+              name="password"
+              error={errors?.password?.[0]}
             />
             <Group justify="space-between" align="center">
-              <Checkbox label="Remember me" radius="md" />
+              <Checkbox label="Remember me" radius="md" name="remember" />
               <Anchor href="#" size="sm">
                 Forgot password?
               </Anchor>
             </Group>
 
-            <Button size="md" radius="lg" type="submit" fullWidth>
+            <Button
+              size="md"
+              radius="lg"
+              type="submit"
+              fullWidth
+              loading={fetcher.state === 'submitting'}
+            >
               Sign in
             </Button>
           </Stack>
-        </Box>
+        </fetcher.Form>
 
         <Divider label="Or connect with social links" labelPosition="center" />
 

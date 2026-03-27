@@ -11,6 +11,7 @@ import {
 import '@fontsource-variable/roboto/wght.css'
 import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
+import '@mantine/notifications/styles.css'
 import type { ReactNode } from 'react'
 import {
   Links,
