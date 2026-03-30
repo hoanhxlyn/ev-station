@@ -1,3 +1,4 @@
+import { dataWithError, dataWithSuccess } from 'remix-toast'
 import { loginSchema } from '~/schemas/auth'
 import { LOGIN_MESSAGES } from '~/constants/messages'
 import type { Route } from './+types/page'
@@ -22,13 +23,16 @@ export async function loginAction({ request }: Route.ActionArgs) {
     result.data.accountName === 'admin' &&
     result.data.password === '12081998'
   ) {
-    return { success: true, message: LOGIN_MESSAGES.SUCCESS }
+    return dataWithSuccess({ success: true }, LOGIN_MESSAGES.SUCCESS)
   }
 
-  return {
-    errors: {
-      accountName: [LOGIN_MESSAGES.INVALID_CREDENTIALS],
-      password: [LOGIN_MESSAGES.CHECK_CREDENTIALS],
+  return dataWithError(
+    {
+      errors: {
+        accountName: [LOGIN_MESSAGES.INVALID_CREDENTIALS],
+        password: [LOGIN_MESSAGES.CHECK_CREDENTIALS],
+      },
     },
-  }
+    LOGIN_MESSAGES.INVALID_CREDENTIALS,
+  )
 }

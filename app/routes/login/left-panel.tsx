@@ -53,20 +53,20 @@ export function LoginLeftPanel() {
               <Text fw={800} size="lg" lh={1.1}>
                 EV Station
               </Text>
-              <Text size="sm" c="rgba(255,255,255,0.72)">
+              <Text size="sm" c="white.7">
                 Operator access portal
               </Text>
             </Stack>
           </Group>
 
-          <Stack gap={6} maw="28ch" pt="md">
-            <Text fw={700} tt="uppercase" size="xs" c="rgba(255,255,255,0.72)">
+          <Stack gap={6} pt="md" mx="auto">
+            <Text fw={700} tt="uppercase" size="xs" c="white.7">
               Electric fleet access
             </Text>
             <Title order={1} fw={900} fz={48} lh={0.95}>
               Drive into the control room with one secure sign-in.
             </Title>
-            <Text c="rgba(255,255,255,0.82)" lh={1.7} size="lg">
+            <Text c="white.8" lh={1.7} size="lg">
               Keep charging operations, station health, and fleet visibility
               under one calm interface.
             </Text>
