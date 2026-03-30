@@ -12,7 +12,9 @@ import '@fontsource-variable/roboto/wght.css'
 import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
 import '@mantine/notifications/styles.css'
+import { notifications } from '@mantine/notifications'
 import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 import {
   Links,
   Meta,
@@ -20,11 +22,18 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
+  useLoaderData,
 } from 'react-router'
+import { getToast } from 'remix-toast'
 import type { Route } from './+types/root'
 import './app.css'
 import { MantineAppProvider } from './providers'
 import styles from './root.module.css'
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const { toast, headers } = await getToast(request)
+  return Response.json({ toast }, { headers })
+}
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -45,7 +54,24 @@ export function Layout({ children }: { children: ReactNode }) {
   )
 }
 
+interface ToastData {
+  type: 'success' | 'error' | 'info' | 'warning'
+  message: string
+}
+
 export default function App() {
+  const { toast } = useLoaderData<{ toast: ToastData | null }>()
+
+  useEffect(() => {
+    if (toast) {
+      notifications.show({
+        title: toast.type === 'success' ? 'Success' : 'Error',
+        message: toast.message,
+        color: toast.type === 'success' ? 'green' : 'red',
+      })
+    }
+  }, [toast])
+
   return <Outlet />
 }
 

@@ -101,7 +101,6 @@
   inset: 0;
   z-index: 2;
   padding: 32px;
-  justify-content: flex-start;
 }
 
 .carouselIndicators {
