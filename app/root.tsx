@@ -75,7 +75,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
             <Paper
               component="pre"
               p="md"
-              radius="lg"
               bg="gray.0"
               className={styles.errorStack}
             >

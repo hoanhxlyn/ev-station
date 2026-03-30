@@ -73,8 +73,6 @@ export function LoginRightPanel() {
               placeholder="Enter your account name"
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
-              radius="lg"
-              size="md"
               name="accountName"
               error={errors?.accountName?.[0]}
             />
@@ -83,21 +81,17 @@ export function LoginRightPanel() {
               placeholder="Enter your password"
               leftSection={<IconLock size={16} />}
               leftSectionPointerEvents="none"
-              radius="lg"
-              size="md"
               name="password"
               error={errors?.password?.[0]}
             />
             <Group justify="space-between" align="center">
-              <Checkbox label="Remember me" radius="md" name="remember" />
+              <Checkbox label="Remember me" name="remember" />
               <Anchor href="#" size="sm">
                 Forgot password?
               </Anchor>
             </Group>
 
             <Button
-              size="md"
-              radius="lg"
               type="submit"
               fullWidth
               loading={fetcher.state === 'submitting'}
@@ -111,14 +105,7 @@ export function LoginRightPanel() {
 
         <SimpleSocialLinks />
 
-        <Button
-          component={Link}
-          to="/"
-          variant="subtle"
-          radius="lg"
-          size="sm"
-          mx="auto"
-        >
+        <Button component={Link} to="/" variant="subtle" size="sm" mx="auto">
           Back to home
         </Button>
       </Stack>
@@ -146,7 +133,6 @@ function SimpleSocialLinks() {
         component="a"
         href="#"
         variant="default"
-        radius="lg"
         leftSection={<IconBrandGoogle size={18} />}
       >
         Google
@@ -155,7 +141,6 @@ function SimpleSocialLinks() {
         component="a"
         href="#"
         variant="default"
-        radius="lg"
         leftSection={<IconBrandGithub size={18} />}
       >
         GitHub
