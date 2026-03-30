@@ -1,12 +1,10 @@
 import { loginSchema } from '~/schemas/auth'
+import { LOGIN_MESSAGES } from '~/constants/messages'
+import type { Route } from './+types/page'
 
-type LoginActionResponse =
-  | { errors: Record<string, string[]>; success?: never }
-  | { success: true; message: string; errors?: never }
+export async function loginAction({ request }: Route.ActionArgs) {
+  const formData = await request.formData()
 
-export async function loginAction(
-  formData: FormData,
-): Promise<LoginActionResponse> {
   const values = {
     accountName: formData.get('accountName')?.toString() ?? '',
     password: formData.get('password')?.toString() ?? '',
@@ -24,13 +22,13 @@ export async function loginAction(
     result.data.accountName === 'admin' &&
     result.data.password === '12081998'
   ) {
-    return { success: true, message: 'Login Successful' }
+    return { success: true, message: LOGIN_MESSAGES.SUCCESS }
   }
 
   return {
     errors: {
-      accountName: ['Invalid credentials'],
-      password: ['Check your account name and password'],
+      accountName: [LOGIN_MESSAGES.INVALID_CREDENTIALS],
+      password: [LOGIN_MESSAGES.CHECK_CREDENTIALS],
     },
   }
 }

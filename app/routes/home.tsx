@@ -155,14 +155,13 @@ export default function Home() {
                 <Button
                   component={Link}
                   to="/login"
-                  size="md"
                   color="dark"
                   variant="filled"
                   rightSection={<IconArrowRight size={16} />}
                 >
                   Open dashboard
                 </Button>
-                <Button size="md" variant="white" color="teal">
+                <Button variant="white" color="teal">
                   Explore stations
                 </Button>
               </Group>
@@ -171,7 +170,6 @@ export default function Home() {
                 {metrics.map((metric) => (
                   <Paper
                     key={metric.label}
-                    radius="lg"
                     p="md"
                     className={styles.metricPaper}
                   >
