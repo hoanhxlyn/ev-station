@@ -17,11 +17,11 @@ import { zodResolver } from 'mantine-form-zod-resolver'
 import {
   IconBolt,
   IconBrandGithub,
-  IconBrandGoogle,
   IconLock,
   IconUser,
 } from '@tabler/icons-react'
 import { Link, useFetcher } from 'react-router'
+import { authClient } from '~/lib/auth-client'
 import { loginSchema, type LoginValues } from '~/schemas/auth'
 import type { loginAction } from './actions'
 import styles from './page.module.css'
@@ -144,24 +144,21 @@ function BadgeRow() {
 }
 
 function SimpleSocialLinks() {
+  const handleGitHubSignIn = async () => {
+    await authClient.signIn.social({
+      provider: 'github',
+      callbackURL: '/',
+    })
+  }
+
   return (
-    <Group grow>
-      <Button
-        component="a"
-        href="#"
-        variant="default"
-        leftSection={<IconBrandGoogle size={18} />}
-      >
-        Google
-      </Button>
-      <Button
-        component="a"
-        href="#"
-        variant="default"
-        leftSection={<IconBrandGithub size={18} />}
-      >
-        GitHub
-      </Button>
-    </Group>
+    <Button
+      variant="default"
+      leftSection={<IconBrandGithub size={18} />}
+      onClick={handleGitHubSignIn}
+      fullWidth
+    >
+      Sign in with GitHub
+    </Button>
   )
 }

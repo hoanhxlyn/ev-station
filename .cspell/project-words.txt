@@ -9,9 +9,11 @@ oxlint
 oxlintrc
 pnpm
 roboto
+subsecond
 tabler
 typecheck
 tsconfig
+unixepoch
 vite
 wght
 embla
