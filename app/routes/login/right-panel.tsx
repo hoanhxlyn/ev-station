@@ -122,6 +122,15 @@ export function LoginRightPanel() {
 
         <SimpleSocialLinks />
 
+        <Group justify="center" gap={4}>
+          <Text size="sm" c="dimmed">
+            Don&apos;t have an account?
+          </Text>
+          <Anchor component={Link} to="/signup" size="sm">
+            Sign up
+          </Anchor>
+        </Group>
+
         <Button component={Link} to="/" variant="subtle" size="sm" mx="auto">
           Back to home
         </Button>
