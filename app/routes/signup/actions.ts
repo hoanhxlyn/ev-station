@@ -2,7 +2,11 @@ import { eq } from 'drizzle-orm'
 import { redirect } from 'react-router'
 import { success, fail } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
-import { redirectFail, redirectSuccess } from '~/lib/action-utils'
+import {
+  redirectFail,
+  redirectSuccess,
+  extractErrorMessage,
+} from '~/lib/action-utils'
 import { auth } from '~/lib/auth.server'
 import { db } from '~/lib/db'
 import { user } from '~/lib/db/schema'
@@ -74,19 +78,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
     })
 
     if (!response.ok) {
-      let message: string = fail('Account creation')
-
-      try {
-        const payload = (await response.clone().json()) as {
-          message?: string
-          error?: {
-            message?: string
-          }
-        }
-        message = payload.error?.message ?? payload.message ?? message
-      } catch {
-        // Fallback to default signup error message when response body isn't JSON.
-      }
+      const message = await extractErrorMessage(
+        response,
+        fail('Account creation'),
+      )
 
       return redirectFail(ROUTES.SIGNUP, message)
     }

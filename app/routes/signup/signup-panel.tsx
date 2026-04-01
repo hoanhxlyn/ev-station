@@ -13,8 +13,8 @@ import {
 import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import {
-  IconBolt,
   IconAt,
+  IconBolt,
   IconCalendar,
   IconLock,
   IconUser,
@@ -52,7 +52,6 @@ export function SignupPanel() {
     validate: zodResolver(
       isOAuthCompletion ? signupSchema : signupWithPasswordSchema,
     ),
-    validateInputOnBlur: true,
   })
 
   const isLoading = fetcher.state !== 'idle'
@@ -145,9 +144,20 @@ export function SignupPanel() {
               leftSectionPointerEvents="none"
               name="dateOfBirth"
               key={form.key('dateOfBirth')}
-              {...form.getInputProps('dateOfBirth')}
-              valueFormat="L"
-              dateParser={(input) => dayjs(input, 'L').toDate()}
+              {...form.getInputProps('dateOfBirth', { type: 'input' })}
+              value={
+                form.getValues().dateOfBirth
+                  ? dayjs(form.getValues().dateOfBirth).toDate()
+                  : null
+              }
+              onChange={(date) =>
+                form.setFieldValue(
+                  'dateOfBirth',
+                  date ? dayjs(date).format('YYYY-MM-DD') : '',
+                )
+              }
+              valueFormat="DD/MM/YYYY"
+              dateParser={(input) => dayjs(input, 'DD/MM/YYYY').toDate()}
               clearable
               maxDate={dayjs().toDate()}
             />

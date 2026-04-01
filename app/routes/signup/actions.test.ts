@@ -31,18 +31,34 @@ vi.mock('~/lib/auth.server', () => ({
   },
 }))
 
-vi.mock('~/lib/action-utils', () => ({
-  redirectFail: (url: string, msg: string) =>
-    new Response(null, {
-      status: 302,
-      headers: { Location: url, 'X-Error': msg },
-    }),
-  redirectSuccess: (url: string, msg: string) =>
-    new Response(null, {
-      status: 302,
-      headers: { Location: url, 'X-Success': msg },
-    }),
-}))
+vi.mock('~/lib/action-utils', () => {
+  const { z } = require('zod')
+  const schema = z.object({
+    message: z.string().optional(),
+    error: z.object({ message: z.string().optional() }).optional(),
+  })
+  return {
+    extractErrorMessage: async (response: Response, fallback: string) => {
+      try {
+        const result = schema.safeParse(await response.clone().json())
+        if (!result.success) return fallback
+        return result.data.error?.message ?? result.data.message ?? fallback
+      } catch {
+        return fallback
+      }
+    },
+    redirectFail: (url: string, msg: string) =>
+      new Response(null, {
+        status: 302,
+        headers: { Location: url, 'X-Error': msg },
+      }),
+    redirectSuccess: (url: string, msg: string) =>
+      new Response(null, {
+        status: 302,
+        headers: { Location: url, 'X-Success': msg },
+      }),
+  }
+})
 
 function buildFormData(entries: Record<string, string>): FormData {
   const fd = new FormData()

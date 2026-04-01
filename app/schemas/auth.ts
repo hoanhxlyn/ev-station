@@ -4,10 +4,15 @@ import {
   VALIDATION_MESSAGES,
 } from '~/constants/validation'
 
+export const authErrorSchema = z.object({
+  message: z.string().optional(),
+  error: z.object({ message: z.string().optional() }).optional(),
+})
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const usernameRegex = /^[a-zA-Z0-9_]+$/
 
-const looksLikeEmail = (val: string) =>
+export const looksLikeEmail = (val: string) =>
   val.includes('@') && val.indexOf('@') === val.lastIndexOf('@')
 
 const accountNameSchema = z
