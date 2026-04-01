@@ -1,4 +1,0 @@
-- Run pnpm run typecheck after code changes.
-- If dependencies changed, verify pnpm-lock.yaml was updated.
-- For React Router route changes, make sure root/layout updates still render through app/root.tsx.
-- Keep dev-only tooling out of production rendering paths when possible.

@@ -1,5 +1,0 @@
-- TypeScript-first codebase with React Router route modules.
-- Keep edits minimal and aligned with the existing template style unless the task requires broader changes.
-- Root layout changes belong in app/root.tsx.
-- Prefer direct imports over barrel files.
-- Preserve existing formatting and naming; the project currently uses functional components and simple module-level helpers.
