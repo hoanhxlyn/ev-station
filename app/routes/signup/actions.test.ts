@@ -73,6 +73,7 @@ describe('signupAction', () => {
       const request = buildRequest({
         signupMode: 'password',
         email: '',
+        username: '',
         password: '',
         name: '',
         dateOfBirth: '',
@@ -91,6 +92,7 @@ describe('signupAction', () => {
       const request = buildRequest({
         signupMode: 'password',
         email: 'test@example.com',
+        username: 'testuser',
         password: 'secure123',
         name: 'Test User',
         dateOfBirth: '2000-01-15',
@@ -112,6 +114,7 @@ describe('signupAction', () => {
       const request = buildRequest({
         signupMode: 'password',
         email: 'test@example.com',
+        username: 'testuser',
         password: 'secure123',
         name: 'Test User',
         dateOfBirth: '2000-01-15',
@@ -136,6 +139,7 @@ describe('signupAction', () => {
       const request = buildRequest({
         signupMode: 'password',
         email: 'dup@example.com',
+        username: 'dupuser',
         password: 'secure123',
         name: 'Test User',
         dateOfBirth: '2000-01-15',
@@ -157,6 +161,7 @@ describe('signupAction', () => {
       const request = buildRequest({
         signupMode: 'oauth',
         email: 'oauth@example.com',
+        username: 'oauthuser',
         password: '',
         name: 'OAuth User',
         dateOfBirth: '1995-06-20',
@@ -176,6 +181,7 @@ describe('signupAction', () => {
       const request = buildRequest({
         signupMode: 'oauth',
         email: 'oauth@example.com',
+        username: 'oauthuser',
         password: '',
         name: 'OAuth User',
         dateOfBirth: '1995-06-20',

@@ -88,6 +88,7 @@ export function LoginRightPanel() {
               placeholder="Enter your account name"
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
+              withAsterisk
               name="accountName"
               key={form.key('accountName')}
               {...form.getInputProps('accountName')}
@@ -97,6 +98,7 @@ export function LoginRightPanel() {
               placeholder="Enter your password"
               leftSection={<IconLock size={16} />}
               leftSectionPointerEvents="none"
+              withAsterisk
               name="password"
               key={form.key('password')}
               {...form.getInputProps('password')}

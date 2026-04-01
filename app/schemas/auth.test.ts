@@ -203,6 +203,7 @@ describe('signupSchema', () => {
     it('accepts valid email', () => {
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: 'password123',
         name: 'Test User',
         dateOfBirth: '1990-01-01',
@@ -213,6 +214,7 @@ describe('signupSchema', () => {
     it('rejects email without @', () => {
       const result = signupSchema.safeParse({
         email: 'testexample.com',
+        username: 'testuser',
         password: 'password123',
         name: 'Test User',
         dateOfBirth: '1990-01-01',
@@ -223,6 +225,64 @@ describe('signupSchema', () => {
     it('rejects empty email', () => {
       const result = signupSchema.safeParse({
         email: '',
+        username: 'testuser',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+  })
+
+  describe('username validation', () => {
+    it('accepts valid username', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        username: 'test_user1',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(true)
+    })
+
+    it('rejects username shorter than 3 characters', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        username: 'ab',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+
+    it('rejects username with special characters', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        username: 'test-user!',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+
+    it('rejects empty username', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        username: '',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+
+    it('rejects username exceeding max length', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        username: 'a'.repeat(31),
         password: 'password123',
         name: 'Test User',
         dateOfBirth: '1990-01-01',
@@ -235,6 +295,7 @@ describe('signupSchema', () => {
     it('accepts valid name', () => {
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: 'password123',
         name: 'Test User',
         dateOfBirth: '1990-01-01',
@@ -245,6 +306,7 @@ describe('signupSchema', () => {
     it('rejects empty name', () => {
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: 'password123',
         name: '',
         dateOfBirth: '1990-01-01',
@@ -257,6 +319,7 @@ describe('signupSchema', () => {
     it('accepts valid date of birth', () => {
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: 'password123',
         name: 'Test User',
         dateOfBirth: '1990-01-01',
@@ -264,14 +327,18 @@ describe('signupSchema', () => {
       expect(result.success).toBe(true)
     })
 
-    it('rejects empty date of birth', () => {
+    it('defaults empty date of birth to 1987-01-01', () => {
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: 'password123',
         name: 'Test User',
         dateOfBirth: '',
       })
-      expect(result.success).toBe(false)
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.dateOfBirth).toBe('1987-01-01')
+      }
     })
 
     it('rejects age under 13', () => {
@@ -279,6 +346,7 @@ describe('signupSchema', () => {
       const underageYear = currentYear - 10
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: 'password123',
         name: 'Test User',
         dateOfBirth: `${underageYear}-01-01`,
@@ -291,6 +359,7 @@ describe('signupSchema', () => {
     it('rejects empty password', () => {
       const result = signupSchema.safeParse({
         email: 'test@example.com',
+        username: 'testuser',
         password: '',
         name: 'Test User',
         dateOfBirth: '1990-01-01',

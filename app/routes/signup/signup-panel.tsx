@@ -12,7 +12,13 @@ import {
 } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
-import { IconBolt, IconCalendar, IconLock, IconUser } from '@tabler/icons-react'
+import {
+  IconBolt,
+  IconAt,
+  IconCalendar,
+  IconLock,
+  IconUser,
+} from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { Link, useFetcher, useSearchParams } from 'react-router'
@@ -38,6 +44,7 @@ export function SignupPanel() {
     mode: 'uncontrolled',
     initialValues: {
       email,
+      username: '',
       password: '',
       name,
       dateOfBirth: '',
@@ -90,18 +97,30 @@ export function SignupPanel() {
             <TextInput
               label="Email"
               placeholder="Your email address"
-              leftSection={<IconUser size={16} />}
+              leftSection={<IconAt size={16} />}
               leftSectionPointerEvents="none"
+              withAsterisk
               name="email"
               key={form.key('email')}
               {...form.getInputProps('email')}
               readOnly={!!email}
             />
             <TextInput
+              label="Username"
+              placeholder="Choose a username"
+              leftSection={<IconUser size={16} />}
+              leftSectionPointerEvents="none"
+              withAsterisk
+              name="username"
+              key={form.key('username')}
+              {...form.getInputProps('username')}
+            />
+            <TextInput
               label="Full name"
               placeholder="Enter your full name"
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
+              withAsterisk
               name="name"
               key={form.key('name')}
               {...form.getInputProps('name')}
@@ -113,6 +132,7 @@ export function SignupPanel() {
                 placeholder="Create your password"
                 leftSection={<IconLock size={16} />}
                 leftSectionPointerEvents="none"
+                withAsterisk
                 name="password"
                 key={form.key('password')}
                 {...form.getInputProps('password')}

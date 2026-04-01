@@ -1,4 +1,5 @@
 import { betterAuth } from 'better-auth'
+import { username } from 'better-auth/plugins'
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { eq } from 'drizzle-orm'
 import { db } from '~/lib/db'
@@ -11,6 +12,7 @@ export const auth = betterAuth({
     provider: 'sqlite',
     schema,
   }),
+  plugins: [username()],
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

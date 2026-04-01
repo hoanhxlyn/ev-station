@@ -16,6 +16,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
 
   const values = {
     email: formData.get('email')?.toString() ?? '',
+    username: formData.get('username')?.toString() ?? '',
     password: formData.get('password')?.toString() || undefined,
     name: formData.get('name')?.toString() ?? '',
     dateOfBirth: formData.get('dateOfBirth')?.toString() ?? '',
@@ -45,6 +46,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
         .update(user)
         .set({
           dateOfBirth: result.data.dateOfBirth,
+          username: result.data.username,
           isNew: false,
         })
         .where(eq(user.id, session.user.id))
@@ -64,6 +66,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
         email: result.data.email,
         password: result.data.password,
         name: result.data.name,
+        username: result.data.username,
         callbackURL: ROUTES.LOGIN,
       },
       asResponse: true,
