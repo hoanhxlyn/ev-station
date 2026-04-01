@@ -11,28 +11,49 @@ import {
 import '@fontsource-variable/roboto/wght.css'
 import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
+import '@mantine/dates/styles.css'
 import '@mantine/notifications/styles.css'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import 'dayjs/locale/en-gb'
 import { notifications } from '@mantine/notifications'
 import type { ReactNode } from 'react'
-import { useEffect } from 'react'
 import {
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
-  useLoaderData,
 } from 'react-router'
 import { getToast } from 'remix-toast'
 import type { Route } from './+types/root'
 import './app.css'
+import { ROUTES } from './constants/routes'
 import { MantineAppProvider } from './providers'
 import styles from './root.module.css'
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const { toast, headers } = await getToast(request)
-  return Response.json({ toast }, { headers })
+dayjs.extend(customParseFormat)
+dayjs.extend(localizedFormat)
+dayjs.locale('en-gb')
+
+interface RootLoaderData {
+  toast:
+    | {
+        type: 'success' | 'error' | 'info' | 'warning'
+        message: string
+      }
+    | null
+    | undefined
+}
+
+export async function loader({
+  request,
+}: Route.LoaderArgs): Promise<RootLoaderData> {
+  const { toast } = await getToast(request)
+  return { toast }
 }
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -54,23 +75,16 @@ export function Layout({ children }: { children: ReactNode }) {
   )
 }
 
-interface ToastData {
-  type: 'success' | 'error' | 'info' | 'warning'
-  message: string
-}
+export default function App({ loaderData }: Route.ComponentProps) {
+  const { toast } = loaderData
 
-export default function App() {
-  const { toast } = useLoaderData<{ toast: ToastData | null }>()
-
-  useEffect(() => {
-    if (toast) {
-      notifications.show({
-        title: toast.type === 'success' ? 'Success' : 'Error',
-        message: toast.message,
-        color: toast.type === 'success' ? 'green' : 'red',
-      })
-    }
-  }, [toast])
+  if (toast) {
+    notifications.show({
+      title: toast.type === 'success' ? 'Success' : 'Error',
+      message: toast.message,
+      color: toast.type === 'success' ? 'green' : 'red',
+    })
+  }
 
   return <Outlet />
 }
@@ -109,7 +123,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
               </Text>
             </Paper>
           )}
-          <Button component="a" href="/" variant="light">
+          <Button component={Link} to={ROUTES.HOME} variant="light">
             Return home
           </Button>
         </Stack>
