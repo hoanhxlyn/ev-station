@@ -23,6 +23,7 @@ import {
   IconShieldCheck,
 } from '@tabler/icons-react'
 import { Link } from 'react-router'
+import { ROUTES } from '~/constants/routes'
 import styles from './home.module.css'
 
 export function meta() {
@@ -154,7 +155,7 @@ export default function Home() {
               <Group gap="sm">
                 <Button
                   component={Link}
-                  to="/login"
+                  to={ROUTES.LOGIN}
                   color="dark"
                   variant="filled"
                   rightSection={<IconArrowRight size={16} />}

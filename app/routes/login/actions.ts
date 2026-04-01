@@ -1,6 +1,6 @@
-import { dataWithError, dataWithSuccess } from 'remix-toast'
 import { loginSchema } from '~/schemas/auth'
-import { LOGIN_MESSAGES } from '~/constants/messages'
+import { LOGIN_MESSAGES, success } from '~/constants/messages'
+import { respondSuccess, respondFail } from '~/lib/action-utils'
 import type { Route } from './+types/page'
 
 export async function loginAction({ request }: Route.ActionArgs) {
@@ -23,10 +23,10 @@ export async function loginAction({ request }: Route.ActionArgs) {
     result.data.accountName === 'admin' &&
     result.data.password === '12081998'
   ) {
-    return dataWithSuccess({ success: true }, LOGIN_MESSAGES.SUCCESS)
+    return respondSuccess({ success: true }, success('Login'))
   }
 
-  return dataWithError(
+  return respondFail(
     {
       errors: {
         accountName: [LOGIN_MESSAGES.INVALID_CREDENTIALS],

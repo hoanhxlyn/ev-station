@@ -58,3 +58,8 @@
   border-radius: 999px;
   background: var(--mantine-color-teal-light);
 }
+
+.mobileBrand {
+  padding-bottom: var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}

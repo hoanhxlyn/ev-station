@@ -21,6 +21,7 @@ import {
   IconUser,
 } from '@tabler/icons-react'
 import { Link, useFetcher } from 'react-router'
+import { ROUTES } from '~/constants/routes'
 import { authClient } from '~/lib/auth-client'
 import { loginSchema, type LoginValues } from '~/schemas/auth'
 import type { loginAction } from './actions'
@@ -126,12 +127,18 @@ export function LoginRightPanel() {
           <Text size="sm" c="dimmed">
             Don&apos;t have an account?
           </Text>
-          <Anchor component={Link} to="/signup" size="sm">
+          <Anchor component={Link} to={ROUTES.SIGNUP} size="sm">
             Sign up
           </Anchor>
         </Group>
 
-        <Button component={Link} to="/" variant="subtle" size="sm" mx="auto">
+        <Button
+          component={Link}
+          to={ROUTES.HOME}
+          variant="subtle"
+          size="sm"
+          mx="auto"
+        >
           Back to home
         </Button>
       </Stack>
@@ -156,7 +163,7 @@ function SimpleSocialLinks() {
   const handleGitHubSignIn = async () => {
     await authClient.signIn.social({
       provider: 'github',
-      callbackURL: '/',
+      callbackURL: ROUTES.HOME,
     })
   }
 

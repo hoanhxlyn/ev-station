@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { loginSchema } from '../schemas/auth'
+import { loginSchema, signupSchema } from '../schemas/auth'
 
 describe('loginSchema', () => {
   describe('accountName validation', () => {
@@ -194,6 +194,108 @@ describe('loginSchema', () => {
         password: 'password123',
       })
       expect(result.success).toBe(true)
+    })
+  })
+})
+
+describe('signupSchema', () => {
+  describe('email validation', () => {
+    it('accepts valid email', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(true)
+    })
+
+    it('rejects email without @', () => {
+      const result = signupSchema.safeParse({
+        email: 'testexample.com',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+
+    it('rejects empty email', () => {
+      const result = signupSchema.safeParse({
+        email: '',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+  })
+
+  describe('name validation', () => {
+    it('accepts valid name', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(true)
+    })
+
+    it('rejects empty name', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: 'password123',
+        name: '',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
+    })
+  })
+
+  describe('dateOfBirth validation', () => {
+    it('accepts valid date of birth', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(true)
+    })
+
+    it('rejects empty date of birth', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: '',
+      })
+      expect(result.success).toBe(false)
+    })
+
+    it('rejects age under 13', () => {
+      const currentYear = new Date().getFullYear()
+      const underageYear = currentYear - 10
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
+        dateOfBirth: `${underageYear}-01-01`,
+      })
+      expect(result.success).toBe(false)
+    })
+  })
+
+  describe('password validation', () => {
+    it('rejects empty password', () => {
+      const result = signupSchema.safeParse({
+        email: 'test@example.com',
+        password: '',
+        name: 'Test User',
+        dateOfBirth: '1990-01-01',
+      })
+      expect(result.success).toBe(false)
     })
   })
 })
