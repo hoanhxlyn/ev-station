@@ -177,6 +177,7 @@ const form = useForm({
 7. **Avoid magic strings** - use constants from `app/constants/messages.ts`
 8. **Configure component defaults globally** in Mantine theme to avoid repetition
 9. **Never use `@ts-ignore` or `ignoreDeprecations`** - fix the root cause instead
+10. **Always prefer Serena tools over CLI commands** for code exploration, reading, editing, and searching. Use Serena's symbolic tools (`find_symbol`, `get_symbols_overview`, `replace_symbol_body`, `insert_after_symbol`, `search_for_pattern`, `list_dir`, `find_file`) instead of terminal commands like `grep`, `find`, `rg`, `cat`, `sed`, etc. Only use CLI for package management (`pnpm`), build/test/lint commands, and git operations.
 
 ---
 

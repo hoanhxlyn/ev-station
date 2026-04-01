@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm'
+import { redirect } from 'react-router'
 import { success, fail } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
 import { redirectFail, redirectSuccess } from '~/lib/action-utils'
@@ -15,7 +16,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
 
   const values = {
     email: formData.get('email')?.toString() ?? '',
-    password: formData.get('password')?.toString() ?? '',
+    password: formData.get('password')?.toString() || undefined,
     name: formData.get('name')?.toString() ?? '',
     dateOfBirth: formData.get('dateOfBirth')?.toString() ?? '',
   }
@@ -91,11 +92,12 @@ export async function signupAction({ request }: Route.ActionArgs) {
       .update(user)
       .set({
         dateOfBirth: result.data.dateOfBirth,
-        isNew: false,
       })
       .where(eq(user.email, result.data.email))
 
-    return redirectSuccess(ROUTES.LOGIN, success('Account created'))
+    return redirect(
+      `${ROUTES.SIGNUP_CHECK_EMAIL}?email=${encodeURIComponent(result.data.email)}`,
+    )
   } catch (error) {
     const message =
       error instanceof Error && error.message

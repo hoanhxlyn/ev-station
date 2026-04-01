@@ -1,6 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
+import { eq } from 'drizzle-orm'
 import { db } from '~/lib/db'
+import { logger } from '~/lib/logger.server'
 import * as schema from '~/lib/db/schema'
 
 export const auth = betterAuth({
@@ -11,6 +13,19 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }) => {
+      logger.info(`[VERIFICATION EMAIL] To: ${user.email} Verify: ${url}`)
+    },
+    sendOnSignIn: true,
+    async afterEmailVerification(user) {
+      await db
+        .update(schema.user)
+        .set({ isNew: false })
+        .where(eq(schema.user.id, user.id))
+    },
   },
   socialProviders: {
     github: {

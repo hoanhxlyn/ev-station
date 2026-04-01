@@ -4,5 +4,6 @@ export default [
   index('routes/home.tsx'),
   route('login', 'routes/login/page.tsx'),
   route('signup', 'routes/signup/page.tsx'),
+  route('signup/check-email', 'routes/signup/check-email.tsx'),
   route('api/auth/*', 'routes/api.auth.ts'),
 ] satisfies RouteConfig
