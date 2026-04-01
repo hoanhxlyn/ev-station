@@ -123,6 +123,11 @@ const form = useForm({
 })
 ```
 
+### Provider Architecture
+- `app/providers/mantine-provider.tsx` — `MantineAppProvider` wrapping children; also mounts `DatesProvider`
+- `app/theme/mantine-theme.ts` — global theme config: teal primary color, `lg` default radius, `"Roboto Variable", sans-serif` typography
+- `app/root.tsx` — document shell only: `mantineHtmlProps`, `ColorSchemeScript`, font import (`@fontsource-variable/roboto/wght.css`), dayjs plugin init
+
 ### Styling Approach
 - **CSS Modules** via `className`/`classNames` for static styles
 - **Mantine style props** (e.g., `p="md"`, `gap="lg"`) for layout/spacing
@@ -165,11 +170,13 @@ const form = useForm({
 
 1. **Run typecheck and lint before finishing any task**
 2. **Run tests when modifying validation logic or business rules**
-3. **Keep edits minimal** - preserve existing template structure unless redesign requested
-4. **Use functional components** with simple module-level helpers
-5. **Export route helpers as named exports** (e.g., `export { loginAction as action }`)
-6. **Avoid magic strings** - use constants from `app/constants/messages.ts`
-7. **Configure component defaults globally** in Mantine theme to avoid repetition
+3. **Run `pnpm build` when changes could affect runtime bundling or route loading**
+4. **Keep edits minimal** - preserve existing template structure unless redesign requested
+5. **Use functional components** with simple module-level helpers
+6. **Export route helpers as named exports** (e.g., `export { loginAction as action }`)
+7. **Avoid magic strings** - use constants from `app/constants/messages.ts`
+8. **Configure component defaults globally** in Mantine theme to avoid repetition
+9. **Never use `@ts-ignore` or `ignoreDeprecations`** - fix the root cause instead
 
 ---
 

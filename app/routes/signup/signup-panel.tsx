@@ -127,7 +127,7 @@ export function SignupPanel() {
               key={form.key('dateOfBirth')}
               {...form.getInputProps('dateOfBirth')}
               valueFormat="L"
-              dateParser={(input) => dayjs(input, 'L', 'en-gb').toDate()}
+              dateParser={(input) => dayjs(input, 'L').toDate()}
               clearable
               maxDate={dayjs().toDate()}
             />
