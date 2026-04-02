@@ -33,7 +33,7 @@ export async function loginAction({ request }: Route.ActionArgs) {
       return redirectFail(ROUTES.LOGIN, message)
     }
 
-    return redirect(ROUTES.HOME, { headers: response.headers })
+    return redirect(ROUTES.APP, { headers: response.headers })
   } catch (error) {
     const message =
       error instanceof Error && error.message ? error.message : fail('Login')
