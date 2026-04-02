@@ -2,7 +2,7 @@
 
 ## Overview
 
-EV Station is a React Router 7 application with Mantine v8 UI components. The project uses TypeScript with strict mode, Zod for validation, and follows a route-based file organization pattern.
+EV Station is a React Router 7 (SSR) application with Mantine v9 UI, Better Auth for authentication, Drizzle ORM over SQLite, and TypeScript strict mode. Zod validates all forms; route modules follow a `page.tsx` + `actions.ts` + `loader.ts` split.
 
 ---
 
@@ -12,14 +12,14 @@ EV Station is a React Router 7 application with Mantine v8 UI components. The pr
 # Development
 pnpm dev              # Start development server
 pnpm build            # Build for production
-pnpm start            # Start production server
+pnpm start            # Start production server (react-router-serve)
 
 # Testing
 pnpm test             # Run tests once
 pnpm test:watch       # Run tests in watch mode
 
 # Type checking
-pnpm typecheck        # Run TypeScript typegen + tsc
+pnpm typecheck        # Run React Router typegen + tsc
 
 # Code quality
 pnpm format           # Format code with oxfmt
@@ -27,6 +27,14 @@ pnpm format:check     # Check formatting without modifying
 pnpm lint             # Run oxlint linter
 pnpm lint:fix         # Fix linting issues automatically
 pnpm spell            # Run cspell for spell checking
+
+# Database (Drizzle)
+pnpm db:generate      # Generate SQL migration files → /drizzle/
+pnpm db:push          # Apply schema changes to dev database directly
+pnpm db:studio        # Open Drizzle Studio (browser DB viewer)
+
+# Release
+pnpm release          # Semantic release (conventional commits → CHANGELOG + tag)
 
 # Pre-commit hooks (runs automatically via lefthook)
 pnpm prepare          # Install lefthook hooks
@@ -39,22 +47,52 @@ pnpm prepare          # Install lefthook hooks
 ```
 app/
 ├── routes/
-│   ├── home.tsx              # Home route
+│   ├── api.auth.ts           # Better Auth handler (/api/auth/*)
+│   ├── home.tsx              # Home route (/)
 │   ├── login/
 │   │   ├── page.tsx          # Login route (exports meta, action)
 │   │   ├── actions.ts        # Server-side actions
 │   │   ├── left-panel.tsx    # Login left panel component
 │   │   ├── right-panel.tsx   # Login right panel component
 │   │   └── page.module.css   # Route-specific styles
+│   ├── signup/
+│   │   ├── page.tsx          # Signup route (exports meta, action)
+│   │   ├── actions.ts        # Server-side actions
+│   │   ├── signup-panel.tsx  # Signup form component
+│   │   ├── check-email.tsx   # Email verification confirmation (/signup/check-email)
+│   │   └── page.module.css
+│   └── dashboard/
+│       ├── page.tsx          # Protected dashboard (/app)
+│       ├── loader.ts         # Auth check → redirects to /login if unauthenticated
+│       └── page.module.css
+├── lib/
+│   ├── db/
+│   │   ├── index.ts          # Drizzle ORM instance (better-sqlite3)
+│   │   └── schema/
+│   │       ├── index.ts      # Barrel export
+│   │       ├── user.ts       # user table
+│   │       ├── account.ts    # account table (OAuth tokens, password)
+│   │       ├── session.ts    # session table
+│   │       ├── verification.ts # email verification tokens
+│   │       └── relations.ts  # Drizzle relations (no circular deps)
+│   ├── auth.server.ts        # Better Auth server config (email, GitHub OAuth, username plugin)
+│   ├── auth-client.ts        # Better Auth client config
+│   ├── logger.server.ts      # Consola logger
+│   └── action-utils.ts       # Toast/redirect helpers (remix-toast)
 ├── schemas/
 │   └── auth.ts               # Zod validation schemas
 ├── constants/
-│   └── messages.ts           # Centralized messages/strings
+│   ├── messages.ts           # Centralized user-facing strings
+│   ├── validation.ts         # Validation rules & error messages
+│   ├── routes.ts             # Route path constants (ROUTES object)
+│   └── dashboard.ts          # Dashboard mock data & messages
 ├── providers/
-│   └── mantine-provider.tsx  # Mantine provider setup
+│   └── mantine-provider.tsx  # MantineProvider + DatesProvider + Notifications
 ├── theme/
 │   └── mantine-theme.ts      # Global Mantine theme config
-├── root.tsx                  # Root layout + ErrorBoundary
+├── test/
+│   └── setup.ts              # Vitest setup (jest-dom, ResizeObserver, matchMedia mocks)
+├── root.tsx                  # Root layout + ErrorBoundary + toast handler
 ├── routes.ts                 # Route configuration
 └── app.css                   # Global styles
 ```
@@ -79,7 +117,23 @@ Always run `pnpm typecheck` before finishing any task.
 Each route directory contains:
 - `page.tsx` - Default export is the page component, exports `meta()` and `action`
 - `actions.ts` - Server-side actions (optional)
+- `loader.ts` - Server-side data loading / auth guards (optional)
 - Components are named exports (e.g., `LoginLeftPanel`)
+
+### Loader Types
+Use `Route.LoaderArgs` for loaders; auth guard pattern used in dashboard:
+
+```typescript
+import type { Route } from './+types/page'
+import { auth } from '~/lib/auth.server'
+import { redirect } from 'react-router'
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session) throw redirect('/login')
+  return { user: session.user }
+}
+```
 
 ### Action Types
 Use `Route.ActionArgs` from the auto-generated types:
@@ -163,6 +217,42 @@ const form = useForm({
 - Use React Router's built-in `ErrorBoundary` in `root.tsx`
 - Return structured errors from actions: `{ errors: { field: [...] } }`
 - Use `isRouteErrorResponse` for route-specific errors
+
+---
+
+## Database & Drizzle
+
+- **ORM**: Drizzle over `better-sqlite3`; schema lives in `app/lib/db/schema/`
+- **Schema path** in `drizzle.config.ts`: `./app/lib/db/schema/index.ts`
+- **Migrations folder**: `/drizzle/` — run `pnpm db:generate` to create it
+- Use `pnpm db:push` for quick dev changes (no migration file); use `pnpm db:generate` for tracked migrations
+- Import tables directly from sub-files or the barrel: `import { user } from '~/lib/db/schema'`
+- **Relations** are isolated in `relations.ts` to prevent circular import issues
+
+---
+
+## Authentication (Better Auth)
+
+- **Library**: `better-auth` with `drizzleAdapter` and `username()` plugin
+- **Server config**: `app/lib/auth.server.ts` — email/password + GitHub OAuth; requires email verification
+- **Client config**: `app/lib/auth-client.ts` — use in client components for auth state
+- **Auth API route**: `app/routes/api.auth.ts` handles all `/api/auth/*` requests
+- **Env vars required** (see `.env.example`):
+  - `BETTER_AUTH_SECRET` — at least 32 chars (generate: `openssl rand -base64 32`)
+  - `BETTER_AUTH_URL` — callback URL (default: `http://localhost:5173`)
+  - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` — GitHub OAuth
+  - `DATABASE_URL` — SQLite path (default: `./dev.db`)
+- **Email verification**: Currently logs to console only — production needs an email provider
+
+---
+
+## Gotchas & Pitfalls
+
+- **`/drizzle/` folder doesn't exist** until you run `pnpm db:generate` for the first time
+- **Email verification emails are console-logged** in dev — check terminal output, not inbox
+- **Tailwind CSS is installed** (`tailwindcss@^4`) but not actively used — use Mantine style props instead
+- **`app/routes/home/`** folder exists but is empty — reserved, don't add files without a route entry in `routes.ts`
+- **`isNew` user flag** is set to `false` on first email verification (handled in `auth.server.ts` `sendVerificationEmail` callback) — don't reset it manually
 
 ---
 
