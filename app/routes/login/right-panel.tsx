@@ -165,7 +165,7 @@ function SimpleSocialLinks() {
   const handleGitHubSignIn = async () => {
     await authClient.signIn.social({
       provider: 'github',
-      callbackURL: ROUTES.HOME,
+      callbackURL: ROUTES.APP,
     })
   }
 
