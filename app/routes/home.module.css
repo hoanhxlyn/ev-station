@@ -2,12 +2,7 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    rgba(241, 250, 248, 0.96) 0%,
-    rgba(232, 245, 255, 0.9) 45%,
-    rgba(248, 250, 252, 1) 100%
-  );
+  background: $page-gradient-light;
 }
 
 .bgBlobTopLeft {
@@ -15,8 +10,8 @@
   inset: -10% auto auto -6%;
   width: 360px;
   height: 360px;
-  border-radius: 999px;
-  background: rgba(20, 184, 166, 0.18);
+  border-radius: $blob-radius;
+  background: $teal-glow;
   filter: blur(18px);
   pointer-events: none;
 }
@@ -27,19 +22,14 @@
   top: 140px;
   width: 420px;
   height: 420px;
-  border-radius: 999px;
-  background: rgba(56, 189, 248, 0.15);
+  border-radius: $blob-radius;
+  background: $cyan-glow;
   filter: blur(24px);
   pointer-events: none;
 }
 
 .heroPaper {
-  background: linear-gradient(
-    135deg,
-    rgba(6, 95, 70, 0.96) 0%,
-    rgba(13, 148, 136, 0.94) 45%,
-    rgba(8, 145, 178, 0.92) 100%
-  );
+  background: $hero-gradient;
   color: white;
   position: relative;
   overflow: hidden;
@@ -50,18 +40,18 @@
   inset: auto -120px -120px auto;
   width: 280px;
   height: 280px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  border-radius: $blob-radius;
+  background: $overlay-white-dim;
   filter: blur(12px);
 }
 
 .metricPaper {
-  background: rgba(255, 255, 255, 0.14);
+  background: $overlay-white-subtle;
 }
 
 .stationCard {
-  background: rgba(8, 15, 24, 0.3);
-  backdrop-filter: blur(18px);
+  background: $overlay-dark-glass;
+  backdrop-filter: $glass-blur;
 }
 
 .capacityCard {
