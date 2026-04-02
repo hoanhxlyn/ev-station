@@ -185,7 +185,7 @@ describe('signupAction', () => {
 
       const result = (await signupAction({ request } as never)) as Response
       expect(result).toBeInstanceOf(Response)
-      expect(result.headers.get('Location')).toBe(ROUTES.HOME)
+      expect(result.headers.get('Location')).toBe(ROUTES.APP)
 
       const setArg = mockDb.set.mock.calls[0][0]
       expect(setArg).toHaveProperty('isNew', false)

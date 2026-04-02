@@ -55,7 +55,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
         })
         .where(eq(user.id, session.user.id))
 
-      return redirectSuccess(ROUTES.HOME, success('Account created'))
+      return redirectSuccess(ROUTES.APP, success('Account created'))
     }
 
     const result = signupWithPasswordSchema.safeParse(values)
