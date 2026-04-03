@@ -29,7 +29,7 @@ import Autoplay from 'embla-carousel-autoplay'
 import { useRef } from 'react'
 import { Link } from 'react-router'
 import { ROUTES } from '~/constants/routes'
-import styles from './home.module.css'
+import styles from './page.module.css'
 
 export function meta() {
   return [
