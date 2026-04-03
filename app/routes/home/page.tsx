@@ -26,7 +26,7 @@ import {
   IconBoltFilled as IconZap,
 } from '@tabler/icons-react'
 import Autoplay from 'embla-carousel-autoplay'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { ROUTES } from '~/constants/routes'
 import styles from './page.module.css'
@@ -42,11 +42,95 @@ export function meta() {
   ]
 }
 
-const stats = [
-  { value: '2,400+', label: 'Charging stations' },
-  { value: '98.6%', label: 'Network uptime' },
-  { value: '150K+', label: 'Sessions completed' },
+const stats: Array<{
+  end: number
+  decimals: number
+  suffix: string
+  format: 'comma' | 'decimal' | 'plain'
+  label: string
+}> = [
+  {
+    end: 2400,
+    decimals: 0,
+    suffix: '+',
+    format: 'comma',
+    label: 'Charging stations',
+  },
+  {
+    end: 98.6,
+    decimals: 1,
+    suffix: '%',
+    format: 'decimal',
+    label: 'Network uptime',
+  },
+  {
+    end: 150,
+    decimals: 0,
+    suffix: 'K+',
+    format: 'plain',
+    label: 'Sessions completed',
+  },
 ]
+
+function CountUpNumber({
+  end,
+  decimals,
+  suffix,
+  format,
+}: {
+  end: number
+  decimals: number
+  suffix: string
+  format: 'comma' | 'decimal' | 'plain'
+}) {
+  const [value, setValue] = useState(0)
+  const ref = useRef<HTMLSpanElement>(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || started.current) return
+        started.current = true
+
+        const duration = 1800
+        const startTime = performance.now()
+
+        const tick = (now: number) => {
+          const elapsed = Math.min((now - startTime) / duration, 1)
+          const eased = 1 - Math.pow(1 - elapsed, 3)
+          setValue(eased * end)
+          if (elapsed < 1) requestAnimationFrame(tick)
+          else setValue(end)
+        }
+
+        requestAnimationFrame(tick)
+        observer.disconnect()
+      },
+      { threshold: 0.5 },
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [end])
+
+  const display =
+    format === 'comma'
+      ? Math.round(value).toLocaleString()
+      : format === 'decimal'
+        ? value.toFixed(decimals)
+        : Math.round(value).toString()
+
+  return (
+    <span ref={ref}>
+      {display}
+      {suffix}
+    </span>
+  )
+}
 
 const summaryFeatures = [
   {
@@ -147,7 +231,6 @@ export default function Home() {
           <Stack align="center" gap="xl" ta="center" className={styles.fadeIn}>
             <Badge
               variant="light"
-              color="cyan"
               radius="xl"
               size="lg"
               className={styles.slideDown}
@@ -171,7 +254,7 @@ export default function Home() {
             </Title>
 
             <Text
-              c="rgba(255,255,255,0.78)"
+              c="white.8"
               fz={{ base: 'md', md: 'xl' }}
               maw={640}
               lh={1.7}
@@ -211,9 +294,14 @@ export default function Home() {
               {stats.map((stat) => (
                 <Paper key={stat.label} p="lg" className={styles.statCard}>
                   <Text fw={900} fz={28} c="white" lh={1}>
-                    {stat.value}
+                    <CountUpNumber
+                      end={stat.end}
+                      decimals={stat.decimals}
+                      suffix={stat.suffix}
+                      format={stat.format}
+                    />
                   </Text>
-                  <Text c="rgba(255,255,255,0.65)" size="sm" mt={4}>
+                  <Text c="white.6" size="sm" mt={4}>
                     {stat.label}
                   </Text>
                 </Paper>
