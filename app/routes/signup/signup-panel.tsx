@@ -21,7 +21,7 @@ import {
 } from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import { zodResolver } from 'mantine-form-zod-resolver'
-import { Link, useFetcher, useSearchParams } from 'react-router'
+import { Link, useFetcher, useLoaderData, useSearchParams } from 'react-router'
 import { SIGNUP_MESSAGES } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
 import {
@@ -32,13 +32,21 @@ import {
 import type { signupAction } from './actions'
 import styles from './page.module.css'
 
+type LoaderData = { email: string; name: string } | null
+
 export function SignupPanel() {
   const [searchParams] = useSearchParams()
+  const loaderData = useLoaderData<LoaderData>()
   const fetcher = useFetcher<typeof signupAction>()
 
-  const email = searchParams.get('email') ?? ''
-  const name = searchParams.get('name') ?? ''
-  const isOAuthCompletion = Boolean(email && name)
+  const oauthEmail = loaderData?.email ?? ''
+  const oauthName = loaderData?.name ?? ''
+  const email = searchParams.get('email') ?? oauthEmail
+  const name = searchParams.get('name') ?? oauthName
+  const isOAuthCompletion =
+    Boolean(oauthEmail && oauthName) &&
+    email === oauthEmail &&
+    name === oauthName
 
   const form = useForm<SignupValues>({
     mode: 'uncontrolled',
