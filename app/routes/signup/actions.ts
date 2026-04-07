@@ -35,6 +35,19 @@ export async function signupAction({ request }: Route.ActionArgs) {
         }
       }
 
+      const existingUser = await db.query.user.findFirst({
+        where: eq(user.email, result.data.email),
+      })
+
+      if (existingUser) {
+        if (existingUser.signupMethod === 'manual') {
+          return redirectFail(
+            ROUTES.SIGNUP,
+            'An account with this email already exists. Please sign in with your password.',
+          )
+        }
+      }
+
       const session = await auth.api.getSession({
         headers: request.headers,
       })
@@ -51,6 +64,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
         .set({
           dateOfBirth: result.data.dateOfBirth,
           username: result.data.username,
+          signupMethod: 'oauth',
           isNew: false,
         })
         .where(eq(user.id, session.user.id))
@@ -63,6 +77,23 @@ export async function signupAction({ request }: Route.ActionArgs) {
       return {
         errors: result.error.flatten().fieldErrors,
       }
+    }
+
+    const existingUser = await db.query.user.findFirst({
+      where: eq(user.email, result.data.email),
+    })
+
+    if (existingUser) {
+      if (existingUser.signupMethod === 'oauth') {
+        return redirectFail(
+          ROUTES.SIGNUP,
+          'An account with this email already exists via OAuth. Please sign in with GitHub.',
+        )
+      }
+      return redirectFail(
+        ROUTES.SIGNUP,
+        'An account with this email already exists.',
+      )
     }
 
     const response = await auth.api.signUpEmail({
@@ -90,6 +121,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
       .update(user)
       .set({
         dateOfBirth: result.data.dateOfBirth,
+        signupMethod: 'manual',
       })
       .where(eq(user.email, result.data.email))
 
