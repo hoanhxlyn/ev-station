@@ -7,12 +7,15 @@ const mockDb = {
   update: vi.fn().mockReturnThis(),
   set: vi.fn().mockReturnThis(),
   where: vi.fn().mockResolvedValue(undefined),
+  query: {
+    user: {
+      findFirst: vi.fn(),
+    },
+  },
 }
 
 vi.mock('~/lib/db', () => ({
-  db: {
-    update: (...args: unknown[]) => mockDb.update(...args),
-  },
+  db: mockDb,
 }))
 
 vi.mock('~/lib/db/schema', () => ({
@@ -82,6 +85,7 @@ describe('signupAction', () => {
     mockDb.update.mockReturnThis()
     mockDb.set.mockReturnThis()
     mockDb.where.mockResolvedValue(undefined)
+    mockDb.query.user.findFirst.mockResolvedValue(null)
   })
 
   describe('password mode', () => {
@@ -121,7 +125,7 @@ describe('signupAction', () => {
       expect(location).toContain('test%40example.com')
     })
 
-    it('does NOT set isNew to false on password signup', async () => {
+    it('sets signupMethod to manual on password signup', async () => {
       mockSignUpEmail.mockResolvedValue({
         ok: true,
         clone: () => ({ json: () => Promise.resolve({}) }),
@@ -139,8 +143,29 @@ describe('signupAction', () => {
       await signupAction({ request } as never)
 
       const setArg = mockDb.set.mock.calls[0][0]
-      expect(setArg).not.toHaveProperty('isNew')
-      expect(setArg).toHaveProperty('dateOfBirth', '2000-01-15')
+      expect(setArg).toHaveProperty('signupMethod', 'manual')
+    })
+
+    it('redirects to signup with error when email already exists via OAuth', async () => {
+      mockDb.query.user.findFirst.mockResolvedValue({
+        email: 'oauth@example.com',
+        signupMethod: 'oauth',
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'oauth@example.com',
+        username: 'testuser',
+        password: 'secure123',
+        name: 'Test User',
+        dateOfBirth: '2000-01-15',
+      })
+
+      const result = (await signupAction({ request } as never)) as Response
+      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
+      expect(result.headers.get('X-Error')).toContain(
+        'account with this email already exists via OAuth',
+      )
     })
 
     it('redirects to signup with error on failed signUpEmail', async () => {
@@ -169,7 +194,7 @@ describe('signupAction', () => {
   })
 
   describe('oauth mode', () => {
-    it('sets isNew to false for oauth completion', async () => {
+    it('sets isNew to false and signupMethod to oauth for oauth completion', async () => {
       mockGetSession.mockResolvedValue({
         user: { id: 'user-123' },
       })
@@ -189,6 +214,7 @@ describe('signupAction', () => {
 
       const setArg = mockDb.set.mock.calls[0][0]
       expect(setArg).toHaveProperty('isNew', false)
+      expect(setArg).toHaveProperty('signupMethod', 'oauth')
     })
 
     it('redirects to login when no session exists', async () => {
@@ -206,6 +232,29 @@ describe('signupAction', () => {
       const result = (await signupAction({ request } as never)) as Response
       expect(result).toBeInstanceOf(Response)
       expect(result.headers.get('Location')).toBe(ROUTES.LOGIN)
+    })
+
+    it('redirects to signup with error when email exists via manual signup', async () => {
+      mockDb.query.user.findFirst.mockResolvedValue({
+        email: 'manual@example.com',
+        signupMethod: 'manual',
+      })
+
+      const request = buildRequest({
+        signupMode: 'oauth',
+        email: 'manual@example.com',
+        username: 'oauthuser',
+        password: '',
+        name: 'OAuth User',
+        dateOfBirth: '1995-06-20',
+      })
+
+      const result = (await signupAction({ request } as never)) as Response
+      expect(result).toBeInstanceOf(Response)
+      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
+      expect(result.headers.get('X-Error')).toContain(
+        'account with this email already exists',
+      )
     })
   })
 })

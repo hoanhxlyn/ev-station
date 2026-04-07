@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth'
 import { username } from 'better-auth/plugins'
+import { magicLink } from 'better-auth/plugins'
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { eq } from 'drizzle-orm'
 import { db } from '~/lib/db'
@@ -12,7 +13,15 @@ export const auth = betterAuth({
     provider: 'sqlite',
     schema,
   }),
-  plugins: [username()],
+  plugins: [
+    username(),
+    magicLink({
+      expiresIn: 600,
+      sendMagicLink: async ({ email, url }) => {
+        logger.info(`[MAGIC LINK EMAIL] To: ${email} Link: ${url}`)
+      },
+    }),
+  ],
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

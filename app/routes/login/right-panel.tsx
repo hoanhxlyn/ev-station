@@ -166,6 +166,7 @@ function SimpleSocialLinks() {
     await authClient.signIn.social({
       provider: 'github',
       callbackURL: ROUTES.APP,
+      newUserCallbackURL: ROUTES.SIGNUP,
     })
   }
 

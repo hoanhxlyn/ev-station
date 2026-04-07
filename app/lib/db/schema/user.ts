@@ -13,6 +13,9 @@ export const user = sqliteTable('user', {
   image: text('image'),
   dateOfBirth: text('date_of_birth'),
   isNew: integer('is_new', { mode: 'boolean' }).default(true).notNull(),
+  signupMethod: text('signup_method', { enum: ['oauth', 'manual'] })
+    .default('manual')
+    .notNull(),
   createdAt: integer('created_at', { mode: 'timestamp_ms' })
     .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
     .notNull(),
