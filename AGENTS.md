@@ -1,4 +1,4 @@
-# AGENTS.md - EV Station Project Guidelines
+﻿# AGENTS.md - EV Station Project Guidelines
 
 ## Overview
 
@@ -114,13 +114,16 @@ Always run `pnpm typecheck` before finishing any task.
 ## React Router Patterns
 
 ### Route Modules
+
 Each route directory contains:
+
 - `page.tsx` - Default export is the page component, exports `meta()` and `action`
 - `actions.ts` - Server-side actions (optional)
 - `loader.ts` - Server-side data loading / auth guards (optional)
 - Components are named exports (e.g., `LoginLeftPanel`)
 
 ### Loader Types
+
 Use `Route.LoaderArgs` for loaders; auth guard pattern used in dashboard:
 
 ```typescript
@@ -136,6 +139,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 ```
 
 ### Action Types
+
 Use `Route.ActionArgs` from the auto-generated types:
 
 ```typescript
@@ -148,6 +152,7 @@ export async function loginAction({ request }: Route.ActionArgs) {
 ```
 
 ### Using Actions in Components
+
 Use `fetcher.Form` for forms that don't navigate:
 
 ```typescript
@@ -162,6 +167,7 @@ const fetcher = useFetcher()
 ## Mantine UI Guidelines
 
 ### Form Handling
+
 - Use `useForm` with `mode: 'uncontrolled'` for performance
 - Use `zodResolver` from `@mantine/form` to connect Zod schemas
 
@@ -178,17 +184,20 @@ const form = useForm({
 ```
 
 ### Provider Architecture
+
 - `app/providers/mantine-provider.tsx` — `MantineAppProvider` wrapping children; also mounts `DatesProvider`
 - `app/theme/mantine-theme.ts` — global theme config: teal primary color, `lg` default radius, `"Roboto Variable", sans-serif` typography
 - `app/root.tsx` — document shell only: `mantineHtmlProps`, `ColorSchemeScript`, font import (`@fontsource-variable/roboto/wght.css`), dayjs plugin init
 
 ### Styling Approach
+
 - **CSS Modules** via `className`/`classNames` for static styles
 - **Mantine style props** (e.g., `p="md"`, `gap="lg"`) for layout/spacing
 - **Inline `style`** only for truly dynamic values
 - **Mantine theme** for component defaults (avoid repeating `size`, `radius`)
 
 ### Color Usage
+
 - Use Mantine's built-in color system with opacity variants: `c="white.7"`, `c="dimmed"`
 - Avoid hardcoded rgba values - they don't adapt to dark mode
 - Configure global defaults in `app/theme/mantine-theme.ts`
@@ -198,22 +207,26 @@ const form = useForm({
 ## Code Style
 
 ### Imports
+
 - Prefer direct imports over barrel files
 - Use path alias `~/*` for app imports: `import { loginSchema } from '~/schemas/auth'`
 - Order imports: React → external libs → app imports → styles
 
 ### Naming Conventions
+
 - **Components**: PascalCase (e.g., `LoginLeftPanel`)
 - **Functions**: camelCase (e.g., `loginAction`)
 - **Constants**: UPPER_SNAKE_CASE for config objects (e.g., `LOGIN_MESSAGES`)
 - **Files**: kebab-case (e.g., `left-panel.tsx`)
 
 ### Validation & Messages
+
 - Centralize validation schemas in `app/schemas/`
 - Centralize user-facing messages in `app/constants/messages.ts`
 - Use Zod for all form validation
 
 ### Error Handling
+
 - Use React Router's built-in `ErrorBoundary` in `root.tsx`
 - Return structured errors from actions: `{ errors: { field: [...] } }`
 - Use `isRouteErrorResponse` for route-specific errors
@@ -279,6 +292,7 @@ const form = useForm({
 - **Run tests**: `pnpm test` or `pnpm test:watch`
 
 ### Test File Naming
+
 - Place test files next to the source file: `auth.ts` → `auth.test.ts`
 - Use `describe` blocks to organize test suites
 - Test edge cases and validation logic thoroughly
