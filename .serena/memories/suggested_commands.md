@@ -1,7 +1,0 @@
-- Install deps: `npm install` (or `pnpm install` if using pnpm lockfile)
-- Dev server: `npm run dev`
-- Production build: `npm run build`
-- Typecheck: `npm run typecheck` runs `react-router typegen && tsc`
-- Stack: React 19, React Router 7, Vite 7, TypeScript, Tailwind CSS
-- Repo layout: `app/` for source, `public/` for static assets, `.react-router/types/` for generated types
-- Windows shell: use PowerShell commands in the terminal; `Get-ChildItem`, `Set-Location`, `Get-Content`, `Select-String`, and `git` are available

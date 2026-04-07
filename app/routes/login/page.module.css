@@ -6,12 +6,7 @@
   justify-content: center;
   padding: clamp(16px, 3vw, 40px);
   overflow-x: hidden;
-  background: linear-gradient(
-    135deg,
-    rgba(239, 246, 255, 1) 0%,
-    rgba(236, 253, 245, 0.98) 46%,
-    rgba(248, 250, 252, 1) 100%
-  );
+  background: $auth-gradient-light;
 }
 
 .bgBlobTopLeft {
@@ -19,8 +14,8 @@
   inset: -10% auto auto -8%;
   width: 340px;
   height: 340px;
-  border-radius: 999px;
-  background: rgba(20, 184, 166, 0.18);
+  border-radius: $blob-radius;
+  background: $teal-glow;
   filter: blur(16px);
   pointer-events: none;
 }
@@ -31,7 +26,7 @@
   top: 120px;
   width: 420px;
   height: 420px;
-  border-radius: 999px;
+  border-radius: $blob-radius;
   background: rgba(56, 189, 248, 0.16);
   filter: blur(26px);
   pointer-events: none;
@@ -39,8 +34,8 @@
 
 .cardShell {
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(18px);
+  background: $overlay-white-glass;
+  backdrop-filter: $glass-blur;
 }
 
 .leftPanel {
@@ -114,16 +109,16 @@
 .carouselIndicator {
   width: 10px;
   height: 10px;
-  border-radius: 999px;
+  border-radius: $blob-radius;
   border: 1px solid rgba(255, 255, 255, 0.42);
   background: rgba(255, 255, 255, 0.35);
   transition:
     transform 140ms ease,
     background-color 140ms ease;
-}
 
-.carouselIndicator:hover {
-  transform: scale(1.08);
+  @mixin hover {
+    transform: scale(1.08);
+  }
 }
 
 .carouselIndicator[data-active] {
@@ -136,7 +131,7 @@
   position: relative;
   border-radius: 28px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.12);
+  background: $overlay-white-dim;
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 28px 60px rgba(4, 10, 24, 0.22);
 }
@@ -157,7 +152,7 @@
 }
 
 .badgeRow {
-  border-radius: 999px;
+  border-radius: $blob-radius;
   background: var(--mantine-color-teal-light);
 }
 

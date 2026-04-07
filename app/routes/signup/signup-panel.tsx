@@ -12,10 +12,16 @@ import {
 } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
-import { IconBolt, IconCalendar, IconLock, IconUser } from '@tabler/icons-react'
+import {
+  IconAt,
+  IconBolt,
+  IconCalendar,
+  IconLock,
+  IconUser,
+} from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import { zodResolver } from 'mantine-form-zod-resolver'
-import { Link, useFetcher, useSearchParams } from 'react-router'
+import { Link, useFetcher, useLoaderData, useSearchParams } from 'react-router'
 import { SIGNUP_MESSAGES } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
 import {
@@ -26,18 +32,27 @@ import {
 import type { signupAction } from './actions'
 import styles from './page.module.css'
 
+type LoaderData = { email: string; name: string } | null
+
 export function SignupPanel() {
   const [searchParams] = useSearchParams()
+  const loaderData = useLoaderData<LoaderData>()
   const fetcher = useFetcher<typeof signupAction>()
 
-  const email = searchParams.get('email') ?? ''
-  const name = searchParams.get('name') ?? ''
-  const isOAuthCompletion = Boolean(email && name)
+  const oauthEmail = loaderData?.email ?? ''
+  const oauthName = loaderData?.name ?? ''
+  const email = searchParams.get('email') ?? oauthEmail
+  const name = searchParams.get('name') ?? oauthName
+  const isOAuthCompletion =
+    Boolean(oauthEmail && oauthName) &&
+    email === oauthEmail &&
+    name === oauthName
 
   const form = useForm<SignupValues>({
     mode: 'uncontrolled',
     initialValues: {
       email,
+      username: '',
       password: '',
       name,
       dateOfBirth: '',
@@ -45,7 +60,6 @@ export function SignupPanel() {
     validate: zodResolver(
       isOAuthCompletion ? signupSchema : signupWithPasswordSchema,
     ),
-    validateInputOnBlur: true,
   })
 
   const isLoading = fetcher.state !== 'idle'
@@ -90,18 +104,30 @@ export function SignupPanel() {
             <TextInput
               label="Email"
               placeholder="Your email address"
-              leftSection={<IconUser size={16} />}
+              leftSection={<IconAt size={16} />}
               leftSectionPointerEvents="none"
+              withAsterisk
               name="email"
               key={form.key('email')}
               {...form.getInputProps('email')}
               readOnly={!!email}
             />
             <TextInput
+              label="Username"
+              placeholder="Choose a username"
+              leftSection={<IconUser size={16} />}
+              leftSectionPointerEvents="none"
+              withAsterisk
+              name="username"
+              key={form.key('username')}
+              {...form.getInputProps('username')}
+            />
+            <TextInput
               label="Full name"
               placeholder="Enter your full name"
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
+              withAsterisk
               name="name"
               key={form.key('name')}
               {...form.getInputProps('name')}
@@ -113,6 +139,7 @@ export function SignupPanel() {
                 placeholder="Create your password"
                 leftSection={<IconLock size={16} />}
                 leftSectionPointerEvents="none"
+                withAsterisk
                 name="password"
                 key={form.key('password')}
                 {...form.getInputProps('password')}
@@ -125,9 +152,20 @@ export function SignupPanel() {
               leftSectionPointerEvents="none"
               name="dateOfBirth"
               key={form.key('dateOfBirth')}
-              {...form.getInputProps('dateOfBirth')}
-              valueFormat="L"
-              dateParser={(input) => dayjs(input, 'L', 'en-gb').toDate()}
+              {...form.getInputProps('dateOfBirth', { type: 'input' })}
+              value={
+                form.getValues().dateOfBirth
+                  ? dayjs(form.getValues().dateOfBirth).toDate()
+                  : null
+              }
+              onChange={(date) =>
+                form.setFieldValue(
+                  'dateOfBirth',
+                  date ? dayjs(date).format('YYYY-MM-DD') : '',
+                )
+              }
+              valueFormat="DD/MM/YYYY"
+              dateParser={(input) => dayjs(input, 'DD/MM/YYYY').toDate()}
               clearable
               maxDate={dayjs().toDate()}
             />

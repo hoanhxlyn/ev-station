@@ -1,7 +1,12 @@
 import { eq } from 'drizzle-orm'
+import { redirect } from 'react-router'
 import { success, fail } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
-import { redirectFail, redirectSuccess } from '~/lib/action-utils'
+import {
+  redirectFail,
+  redirectSuccess,
+  extractErrorMessage,
+} from '~/lib/action-utils'
 import { auth } from '~/lib/auth.server'
 import { db } from '~/lib/db'
 import { user } from '~/lib/db/schema'
@@ -15,7 +20,8 @@ export async function signupAction({ request }: Route.ActionArgs) {
 
   const values = {
     email: formData.get('email')?.toString() ?? '',
-    password: formData.get('password')?.toString() ?? '',
+    username: formData.get('username')?.toString() ?? '',
+    password: formData.get('password')?.toString() || undefined,
     name: formData.get('name')?.toString() ?? '',
     dateOfBirth: formData.get('dateOfBirth')?.toString() ?? '',
   }
@@ -26,6 +32,19 @@ export async function signupAction({ request }: Route.ActionArgs) {
       if (!result.success) {
         return {
           errors: result.error.flatten().fieldErrors,
+        }
+      }
+
+      const existingUser = await db.query.user.findFirst({
+        where: eq(user.email, result.data.email),
+      })
+
+      if (existingUser) {
+        if (existingUser.signupMethod === 'manual') {
+          return redirectFail(
+            ROUTES.SIGNUP,
+            'An account with this email already exists. Please sign in with your password.',
+          )
         }
       }
 
@@ -44,11 +63,13 @@ export async function signupAction({ request }: Route.ActionArgs) {
         .update(user)
         .set({
           dateOfBirth: result.data.dateOfBirth,
+          username: result.data.username,
+          signupMethod: 'oauth',
           isNew: false,
         })
         .where(eq(user.id, session.user.id))
 
-      return redirectSuccess(ROUTES.HOME, success('Account created'))
+      return redirectSuccess(ROUTES.APP, success('Account created'))
     }
 
     const result = signupWithPasswordSchema.safeParse(values)
@@ -58,11 +79,29 @@ export async function signupAction({ request }: Route.ActionArgs) {
       }
     }
 
+    const existingUser = await db.query.user.findFirst({
+      where: eq(user.email, result.data.email),
+    })
+
+    if (existingUser) {
+      if (existingUser.signupMethod === 'oauth') {
+        return redirectFail(
+          ROUTES.SIGNUP,
+          'An account with this email already exists via OAuth. Please sign in with GitHub.',
+        )
+      }
+      return redirectFail(
+        ROUTES.SIGNUP,
+        'An account with this email already exists.',
+      )
+    }
+
     const response = await auth.api.signUpEmail({
       body: {
         email: result.data.email,
         password: result.data.password,
         name: result.data.name,
+        username: result.data.username,
         callbackURL: ROUTES.LOGIN,
       },
       asResponse: true,
@@ -70,19 +109,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
     })
 
     if (!response.ok) {
-      let message: string = fail('Account creation')
-
-      try {
-        const payload = (await response.clone().json()) as {
-          message?: string
-          error?: {
-            message?: string
-          }
-        }
-        message = payload.error?.message ?? payload.message ?? message
-      } catch {
-        // Fallback to default signup error message when response body isn't JSON.
-      }
+      const message = await extractErrorMessage(
+        response,
+        fail('Account creation'),
+      )
 
       return redirectFail(ROUTES.SIGNUP, message)
     }
@@ -91,11 +121,13 @@ export async function signupAction({ request }: Route.ActionArgs) {
       .update(user)
       .set({
         dateOfBirth: result.data.dateOfBirth,
-        isNew: false,
+        signupMethod: 'manual',
       })
       .where(eq(user.email, result.data.email))
 
-    return redirectSuccess(ROUTES.LOGIN, success('Account created'))
+    return redirect(
+      `${ROUTES.SIGNUP_CHECK_EMAIL}?email=${encodeURIComponent(result.data.email)}`,
+    )
   } catch (error) {
     const message =
       error instanceof Error && error.message

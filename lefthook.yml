@@ -16,3 +16,8 @@ pre-commit:
     - name: cspell
       glob: '*.{js,jsx,ts,tsx,md,json}'
       run: pnpm cspell lint --no-progress {staged_files}
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm commitlint --edit {1}

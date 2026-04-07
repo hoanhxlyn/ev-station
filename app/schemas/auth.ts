@@ -4,10 +4,15 @@ import {
   VALIDATION_MESSAGES,
 } from '~/constants/validation'
 
+export const authErrorSchema = z.object({
+  message: z.string().optional(),
+  error: z.object({ message: z.string().optional() }).optional(),
+})
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const usernameRegex = /^[a-zA-Z0-9_]+$/
 
-const looksLikeEmail = (val: string) =>
+export const looksLikeEmail = (val: string) =>
   val.includes('@') && val.indexOf('@') === val.lastIndexOf('@')
 
 const accountNameSchema = z
@@ -51,11 +56,16 @@ export const loginSchema = z
     }
   })
 
+const DOB_DEFAULT = '1987-01-01'
+
 const dateOfBirthSchema = z
   .string()
-  .min(1, VALIDATION_MESSAGES.DOB_REQUIRED)
-  .refine((val) => !isNaN(Date.parse(val)), VALIDATION_MESSAGES.DOB_INVALID)
+  .refine(
+    (val) => val === '' || !isNaN(Date.parse(val)),
+    VALIDATION_MESSAGES.DOB_INVALID,
+  )
   .refine((val) => {
+    if (val === '') return true
     const dob = new Date(val)
     const today = new Date()
     const age =
@@ -67,6 +77,7 @@ const dateOfBirthSchema = z
         : 0)
     return age >= VALIDATION_CONSTRAINTS.MIN_AGE
   }, VALIDATION_MESSAGES.DOB_MIN_AGE)
+  .transform((val) => (val === '' ? DOB_DEFAULT : val))
 
 const signupPasswordSchema = z
   .string()
@@ -79,11 +90,24 @@ const signupPasswordSchema = z
     VALIDATION_MESSAGES.PASSWORD_MAX_LENGTH,
   )
 
+const usernameSchema = z
+  .string()
+  .min(
+    VALIDATION_CONSTRAINTS.USERNAME_MIN_LENGTH,
+    VALIDATION_MESSAGES.USERNAME_MIN_LENGTH,
+  )
+  .max(
+    VALIDATION_CONSTRAINTS.USERNAME_MAX_LENGTH,
+    VALIDATION_MESSAGES.USERNAME_MAX_LENGTH,
+  )
+  .regex(usernameRegex, VALIDATION_MESSAGES.USERNAME_INVALID_FORMAT)
+
 export const signupSchema = z.object({
   email: z
     .string()
     .min(1, VALIDATION_MESSAGES.EMAIL_REQUIRED)
     .email(VALIDATION_MESSAGES.EMAIL_INVALID),
+  username: usernameSchema,
   password: signupPasswordSchema.optional(),
   name: z
     .string()

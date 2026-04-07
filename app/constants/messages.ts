@@ -9,4 +9,8 @@ export const LOGIN_MESSAGES = {
 export const SIGNUP_MESSAGES = {
   REDIRECT_LOGIN: 'Redirecting to login...',
   COMPLETE_PROFILE: 'Complete your profile to continue',
+  CHECK_EMAIL_HEADING: 'Check your email',
+  CHECK_EMAIL_BODY:
+    'We sent a verification link to your email address. Click it to activate your account.',
+  CHECK_EMAIL_SPAM: "Don't see it? Check your spam folder.",
 } as const

@@ -1,6 +1,9 @@
-import { loginSchema } from '~/schemas/auth'
-import { LOGIN_MESSAGES, success } from '~/constants/messages'
-import { respondSuccess, respondFail } from '~/lib/action-utils'
+import { redirect } from 'react-router'
+import { loginSchema, looksLikeEmail } from '~/schemas/auth'
+import { LOGIN_MESSAGES, fail } from '~/constants/messages'
+import { extractErrorMessage, redirectFail } from '~/lib/action-utils'
+import { auth } from '~/lib/auth.server'
+import { ROUTES } from '~/constants/routes'
 import type { Route } from './+types/page'
 
 export async function loginAction({ request }: Route.ActionArgs) {
@@ -14,25 +17,48 @@ export async function loginAction({ request }: Route.ActionArgs) {
 
   const result = loginSchema.safeParse(values)
   if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
+    return { errors: result.error.flatten().fieldErrors }
+  }
+
+  const { accountName, password, remember } = result.data
+
+  try {
+    const response = await signIn(accountName, password, remember, request)
+
+    if (!response.ok) {
+      const message = await extractErrorMessage(
+        response,
+        LOGIN_MESSAGES.INVALID_CREDENTIALS,
+      )
+      return redirectFail(ROUTES.LOGIN, message)
     }
+
+    return redirect(ROUTES.APP, { headers: response.headers })
+  } catch (error) {
+    const message =
+      error instanceof Error && error.message ? error.message : fail('Login')
+
+    return redirectFail(ROUTES.LOGIN, message)
+  }
+}
+
+function signIn(
+  accountName: string,
+  password: string,
+  rememberMe: boolean | undefined,
+  request: Request,
+) {
+  const opts = { asResponse: true, headers: request.headers } as const
+
+  if (looksLikeEmail(accountName)) {
+    return auth.api.signInEmail({
+      body: { email: accountName, password, rememberMe },
+      ...opts,
+    })
   }
 
-  if (
-    result.data.accountName === 'admin' &&
-    result.data.password === '12081998'
-  ) {
-    return respondSuccess({ success: true }, success('Login'))
-  }
-
-  return respondFail(
-    {
-      errors: {
-        accountName: [LOGIN_MESSAGES.INVALID_CREDENTIALS],
-        password: [LOGIN_MESSAGES.CHECK_CREDENTIALS],
-      },
-    },
-    LOGIN_MESSAGES.INVALID_CREDENTIALS,
-  )
+  return auth.api.signInUsername({
+    body: { username: accountName, password, rememberMe },
+    ...opts,
+  })
 }

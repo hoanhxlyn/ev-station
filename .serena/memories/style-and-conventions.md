@@ -1,9 +1,0 @@
-- TypeScript uses `strict: true`, `noEmit: true`, `moduleResolution: bundler`, `jsx: react-jsx`, and path alias `~/*` for `app/*` imports.
-- React Router app code lives under `app/`; route modules commonly import generated types from `./+types/...`.
-- Existing code favors concise functional components, named exports for route helpers, and standard React Router patterns.
-- UI styles currently use Tailwind utility classes alongside `app/app.css`.
-- For Mantine components, prefer CSS Modules via `className`/`classNames` for static styling; use Mantine style props for simple layout/spacing; reserve inline `style` only for truly dynamic values.
-- Use Mantine `useForm` with `mode: 'uncontrolled'` (introduced in v7.8.0) to minimize re-renders and improve performance.
-- Centralize form validation schemas in `app/schemas/` using **Zod**.
-- Use `zodResolver` from `@mantine/form` to connect Zod schemas to Mantine forms.
-- Keep edits minimal and preserve the existing template structure unless the task asks for a redesign.

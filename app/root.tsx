@@ -18,7 +18,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import 'dayjs/locale/en-gb'
 import { notifications } from '@mantine/notifications'
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import {
   Link,
   Links,
@@ -26,6 +26,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  data,
   isRouteErrorResponse,
 } from 'react-router'
 import { getToast } from 'remix-toast'
@@ -39,21 +40,9 @@ dayjs.extend(customParseFormat)
 dayjs.extend(localizedFormat)
 dayjs.locale('en-gb')
 
-interface RootLoaderData {
-  toast:
-    | {
-        type: 'success' | 'error' | 'info' | 'warning'
-        message: string
-      }
-    | null
-    | undefined
-}
-
-export async function loader({
-  request,
-}: Route.LoaderArgs): Promise<RootLoaderData> {
-  const { toast } = await getToast(request)
-  return { toast }
+export async function loader({ request }: Route.LoaderArgs) {
+  const { toast, headers } = await getToast(request)
+  return data({ toast }, { headers })
 }
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -78,13 +67,15 @@ export function Layout({ children }: { children: ReactNode }) {
 export default function App({ loaderData }: Route.ComponentProps) {
   const { toast } = loaderData
 
-  if (toast) {
-    notifications.show({
-      title: toast.type === 'success' ? 'Success' : 'Error',
-      message: toast.message,
-      color: toast.type === 'success' ? 'green' : 'red',
-    })
-  }
+  useEffect(() => {
+    if (toast) {
+      notifications.show({
+        title: toast.type === 'success' ? 'Success' : 'Error',
+        message: toast.message,
+        color: toast.type === 'success' ? 'green' : 'red',
+      })
+    }
+  }, [toast])
 
   return <Outlet />
 }

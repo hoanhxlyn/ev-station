@@ -1,4 +1,0 @@
-- Mantine config is split across app/theme/mantine-theme.ts and app/providers/mantine-provider.tsx.
-- app/root.tsx should stay focused on document shell concerns: mantineHtmlProps, ColorSchemeScript, and mounting MantineAppProvider.
-- Theme defaults currently live in mantineTheme with teal primary color, lg radius, and Inter typography.
-- Verified after the refactor with pnpm run build and pnpm run typecheck.

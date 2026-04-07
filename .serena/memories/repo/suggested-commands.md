@@ -1,7 +1,0 @@
-- pnpm install
-- pnpm run dev
-- pnpm run build
-- pnpm run start
-- pnpm run typecheck
-- pnpm exec tsc --noEmit
-- pnpm exec react-router typegen
