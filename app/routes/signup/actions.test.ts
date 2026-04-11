@@ -191,6 +191,82 @@ describe('signupAction', () => {
       expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
       expect(result.headers.get('X-Error')).toBe('Email already exists')
     })
+
+    it('calls signUpEmail with correct params for valid registration (role defaults to user)', async () => {
+      mockSignUpEmail.mockResolvedValue({
+        ok: true,
+        clone: () => ({ json: () => Promise.resolve({}) }),
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'newuser@example.com',
+        username: 'newuser',
+        password: 'secure123',
+        name: 'New User',
+        dateOfBirth: '1995-05-10',
+      })
+
+      await signupAction({ request } as never)
+
+      expect(mockSignUpEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            email: 'newuser@example.com',
+            password: 'secure123',
+            name: 'New User',
+            username: 'newuser',
+          }),
+        }),
+      )
+      expect(mockSignUpEmail).toHaveBeenCalledTimes(1)
+    })
+
+    it('includes callbackURL pointing to login in signUpEmail call', async () => {
+      mockSignUpEmail.mockResolvedValue({
+        ok: true,
+        clone: () => ({ json: () => Promise.resolve({}) }),
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'newuser2@example.com',
+        username: 'newuser2',
+        password: 'secure123',
+        name: 'New User 2',
+        dateOfBirth: '1990-01-01',
+      })
+
+      await signupAction({ request } as never)
+
+      expect(mockSignUpEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            callbackURL: ROUTES.LOGIN,
+          }),
+        }),
+      )
+    })
+
+    it('redirects to signup with generic message for duplicate email (manual signup)', async () => {
+      mockDb.query.user.findFirst.mockResolvedValue({
+        email: 'existing@example.com',
+        signupMethod: 'manual',
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'existing@example.com',
+        username: 'newuser3',
+        password: 'secure123',
+        name: 'New User 3',
+        dateOfBirth: '1990-01-01',
+      })
+
+      const result = (await signupAction({ request } as never)) as Response
+      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
+      expect(result.headers.get('X-Error')).toContain('already exists')
+    })
   })
 
   describe('oauth mode', () => {

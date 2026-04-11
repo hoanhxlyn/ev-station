@@ -1,4 +1,8 @@
 import { Box, Container, Group, Paper } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+import { useEffect } from 'react'
+import { useSearchParams } from 'react-router'
+import { LOGIN_MESSAGES } from '~/constants/messages'
 import styles from './page.module.css'
 import { LoginLeftPanel } from './left-panel'
 import { LoginRightPanel } from './right-panel'
@@ -17,6 +21,18 @@ export function meta() {
 }
 
 export default function Login() {
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    if (searchParams.get('reason') === 'session_expired') {
+      notifications.show({
+        title: 'Session Expired',
+        message: LOGIN_MESSAGES.SESSION_EXPIRED,
+        color: 'red',
+      })
+    }
+  }, [searchParams])
+
   return (
     <Box mih="100vh" pos="relative" className={styles.pageShell}>
       <Box aria-hidden className={styles.bgBlobTopLeft} />

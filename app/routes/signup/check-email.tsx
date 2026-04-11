@@ -9,10 +9,12 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconMail } from '@tabler/icons-react'
 import { Link, useSearchParams } from 'react-router'
 import { SIGNUP_MESSAGES } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
+import { authClient } from '~/lib/auth-client'
 import styles from './page.module.css'
 
 export function meta() {
@@ -28,6 +30,29 @@ export function meta() {
 export default function SignupCheckEmail() {
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email') ?? ''
+
+  const handleResend = async () => {
+    if (!email) return
+
+    try {
+      await authClient.sendVerificationEmail({
+        email,
+        callbackURL: ROUTES.LOGIN,
+      })
+
+      notifications.show({
+        title: 'Email Sent',
+        message: SIGNUP_MESSAGES.RESEND_SUCCESS,
+        color: 'green',
+      })
+    } catch {
+      notifications.show({
+        title: 'Error',
+        message: SIGNUP_MESSAGES.RESEND_FAIL,
+        color: 'red',
+      })
+    }
+  }
 
   return (
     <Box mih="100vh" pos="relative" className={styles.pageShell}>
@@ -68,6 +93,12 @@ export default function SignupCheckEmail() {
                   {SIGNUP_MESSAGES.CHECK_EMAIL_SPAM}
                 </Text>
               </Stack>
+
+              {email && (
+                <Button variant="outline" color="teal" onClick={handleResend}>
+                  Resend verification email
+                </Button>
+              )}
 
               <Text size="sm" c="dimmed">
                 Already verified?{' '}

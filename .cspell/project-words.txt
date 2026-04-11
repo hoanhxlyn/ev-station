@@ -56,3 +56,8 @@ topup
 revalidator
 Revalidator
 wrongpwd
+newuser
+morphism
+topups
+chartjs
+bookmarkable
