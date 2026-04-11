@@ -52,3 +52,7 @@ Westside
 Yuki
 Tanaka
 Kowalski
+topup
+revalidator
+Revalidator
+wrongpwd

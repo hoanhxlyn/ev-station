@@ -10,6 +10,11 @@ export const DASHBOARD_MESSAGES = {
   UNAUTHENTICATED: 'Please log in to view your dashboard',
 } as const
 
+export const CREDIT_UNIT = {
+  LABEL: 'credits',
+  DIVISOR: 100,
+} as const
+
 export const MOCK_CHARGING_DATA = [
   { day: 'Mon', sessions: 2 },
   { day: 'Tue', sessions: 5 },

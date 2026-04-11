@@ -33,6 +33,23 @@ export async function loginAction({ request }: Route.ActionArgs) {
       return redirectFail(ROUTES.LOGIN, message)
     }
 
+    const session = await auth.api.getSession({
+      headers: response.headers,
+    })
+
+    if (session?.user) {
+      if (!session.user.emailVerified) {
+        return redirect(ROUTES.SIGNUP_CHECK_EMAIL, {
+          headers: response.headers,
+        })
+      }
+
+      const userRole = (session.user as Record<string, unknown>).role
+      if (userRole === 'admin') {
+        return redirect(ROUTES.ADMIN, { headers: response.headers })
+      }
+    }
+
     return redirect(ROUTES.APP, { headers: response.headers })
   } catch (error) {
     const message =
