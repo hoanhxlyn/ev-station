@@ -9,6 +9,7 @@ import {
 } from '~/lib/action-utils'
 import { auth } from '~/lib/auth.server'
 import { db } from '~/lib/db'
+import { logger } from '~/lib/logger.server'
 import { user } from '~/lib/db/schema'
 import { signupSchema, signupWithPasswordSchema } from '~/schemas/auth'
 import type { Route } from './+types/page'
@@ -69,6 +70,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
         })
         .where(eq(user.id, session.user.id))
 
+      logger.info('[AUTH] OAuth signup completed', {
+        userId: session.user.id,
+        email: result.data.email,
+      })
       return redirectSuccess(ROUTES.APP, success('Account created'))
     }
 
@@ -125,6 +130,9 @@ export async function signupAction({ request }: Route.ActionArgs) {
       })
       .where(eq(user.email, result.data.email))
 
+    logger.info('[AUTH] Password signup initiated', {
+      email: result.data.email,
+    })
     return redirect(
       `${ROUTES.SIGNUP_CHECK_EMAIL}?email=${encodeURIComponent(result.data.email)}`,
     )
@@ -133,6 +141,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
       error instanceof Error && error.message
         ? error.message
         : fail('Account creation')
+    logger.error('[AUTH] Signup error', { error: message })
 
     return redirectFail(ROUTES.SIGNUP, message)
   }

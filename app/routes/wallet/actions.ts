@@ -3,6 +3,7 @@ import { WALLET_MESSAGES } from '~/constants/messages'
 import { redirectSuccess, redirectFail } from '~/lib/action-utils'
 import { requireVerified } from '~/lib/auth-guards'
 import { db } from '~/lib/db'
+import { logger } from '~/lib/logger.server'
 import { user, transaction } from '~/lib/db/schema'
 import { createPaymentIntent, confirmPaymentIntent } from '~/lib/stripe.server'
 import { topUpIntent, repayIntent } from '~/schemas/transaction'
@@ -24,12 +25,14 @@ export async function walletAction({ request }: Route.ActionArgs) {
       return await handleRepay(formData, userId)
     }
 
+    logger.warn('[WALLET] Invalid action intent', { userId, intent })
     return redirectFail(ROUTES.WALLET, 'Invalid action')
   } catch (error) {
     const message =
       error instanceof Error && error.message
         ? error.message
         : WALLET_MESSAGES.TOP_UP_FAIL
+    logger.error('[WALLET] Action failed', { userId, intent, error: message })
     return redirectFail(ROUTES.WALLET, message)
   }
 }
@@ -43,6 +46,10 @@ async function handleTopUp(formData: FormData, userId: string) {
   })
 
   if (!result.success) {
+    logger.warn('[WALLET] Top-up validation failed', {
+      userId,
+      errors: result.error.flatten().fieldErrors,
+    })
     return { errors: result.error.flatten().fieldErrors }
   }
 
@@ -52,6 +59,10 @@ async function handleTopUp(formData: FormData, userId: string) {
 
   const confirmed = await confirmPaymentIntent(paymentIntent.id)
   if (confirmed.status !== 'succeeded') {
+    logger.error('[WALLET] Stripe payment confirmation failed', {
+      userId,
+      paymentIntentId: paymentIntent.id,
+    })
     throw new Error(WALLET_MESSAGES.TOP_UP_FAIL)
   }
 
@@ -61,6 +72,7 @@ async function handleTopUp(formData: FormData, userId: string) {
   })
 
   if (!userData) {
+    logger.error('[WALLET] User not found during top-up', { userId })
     throw new Error('User not found')
   }
 
@@ -77,6 +89,11 @@ async function handleTopUp(formData: FormData, userId: string) {
     description: `Top-up via Stripe (${paymentIntent.id})`,
   })
 
+  logger.info('[WALLET] Top-up successful', {
+    userId,
+    amount: amountInCents,
+    paymentIntentId: paymentIntent.id,
+  })
   return redirectSuccess(ROUTES.WALLET, WALLET_MESSAGES.TOP_UP_SUCCESS)
 }
 
@@ -89,6 +106,10 @@ async function handleRepay(formData: FormData, userId: string) {
   })
 
   if (!result.success) {
+    logger.warn('[WALLET] Repayment validation failed', {
+      userId,
+      errors: result.error.flatten().fieldErrors,
+    })
     return { errors: result.error.flatten().fieldErrors }
   }
 
@@ -98,15 +119,25 @@ async function handleRepay(formData: FormData, userId: string) {
   })
 
   if (!userData) {
+    logger.error('[WALLET] User not found during repayment', { userId })
     throw new Error('User not found')
   }
 
   if (userData.creditBalance >= 0) {
+    logger.warn('[WALLET] Repayment attempted on non-debt account', {
+      userId,
+      balance: userData.creditBalance,
+    })
     throw new Error(WALLET_MESSAGES.REPAY_FAIL)
   }
 
   const debtAmount = Math.abs(userData.creditBalance)
   if (result.data.amount > debtAmount) {
+    logger.warn('[WALLET] Repayment amount exceeds debt', {
+      userId,
+      requested: result.data.amount,
+      debt: debtAmount,
+    })
     throw new Error('Repayment amount exceeds current debt')
   }
 
@@ -123,5 +154,9 @@ async function handleRepay(formData: FormData, userId: string) {
     description: 'Debt repayment',
   })
 
+  logger.info('[WALLET] Debt repayment successful', {
+    userId,
+    amount: result.data.amount,
+  })
   return redirectSuccess(ROUTES.WALLET, WALLET_MESSAGES.REPAY_SUCCESS)
 }

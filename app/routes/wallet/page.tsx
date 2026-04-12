@@ -21,7 +21,7 @@ import {
   VALIDATION_CONSTRAINTS,
   VALIDATION_MESSAGES,
 } from '~/constants/validation'
-import { formatCurrency } from '~/lib/format-utils'
+import { formatCurrency, formatDate } from '~/lib/format-utils'
 import styles from './page.module.css'
 import type { Route } from './+types/page'
 
@@ -36,16 +36,6 @@ export function meta() {
       content: 'Manage your EV Station credits and transactions.',
     },
   ]
-}
-
-function formatDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
 }
 
 function getTransactionBadge(type: string) {

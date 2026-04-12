@@ -3,7 +3,7 @@ import { requireVerified } from '~/lib/auth-guards'
 import { db } from '~/lib/db'
 import { user, transaction } from '~/lib/db/schema'
 import { getStripePublicKey } from '~/lib/stripe.server'
-import { CREDIT_UNIT } from '~/constants/dashboard'
+import { CREDIT_UNIT, PAGINATION } from '~/constants/dashboard'
 import type { Route } from './+types/page'
 
 export async function walletLoader({ request }: Route.LoaderArgs) {
@@ -27,7 +27,7 @@ export async function walletLoader({ request }: Route.LoaderArgs) {
   const transactions = await db.query.transaction.findMany({
     where: eq(transaction.userId, userId),
     orderBy: [desc(transaction.createdAt)],
-    limit: 50,
+    limit: PAGINATION.WALLET_TRANSACTIONS_LIMIT,
   })
 
   const isInDebt = userData.creditBalance < 0

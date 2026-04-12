@@ -164,24 +164,24 @@ description: 'Task list for EV Station Management System feature implementation'
 
 ### Tests for User Story 4
 
-- [ ] T063 [P] [US4] Write test for profile loader in `app/routes/profile/loader.test.ts` — test that loader returns current user data for the profile form
-- [ ] T064 [P] [US4] Write test for profile update action in `app/routes/profile/actions.test.ts` — test valid name/phone update persists; test validation errors for invalid phone format
-- [ ] T065 [P] [US4] Write test for vehicle loader in `app/routes/vehicles/loader.test.ts` — test loader returns list of user's vehicles
-- [ ] T066 [P] [US4] Write test for vehicle actions in `app/routes/vehicles/actions.test.ts` — test add vehicle (valid data creates record), edit vehicle (updates existing), delete vehicle (removes record), delete vehicle with active session (fails with error)
+- [x] T063 [P] [US4] Write test for profile loader in `app/routes/profile/loader.test.ts` — test that loader returns current user data for the profile form
+- [x] T064 [P] [US4] Write test for profile update action in `app/routes/profile/actions.test.ts` — test valid name/phone update persists; test validation errors for invalid phone format
+- [x] T065 [P] [US4] Write test for vehicle loader in `app/routes/vehicles/loader.test.ts` — test loader returns list of user's vehicles
+- [x] T066 [P] [US4] Write test for vehicle actions in `app/routes/vehicles/actions.test.ts` — test add vehicle (valid data creates record), edit vehicle (updates existing), delete vehicle (removes record), delete vehicle with active session (fails with error)
 
 ### Implementation for User Story 4
 
-- [ ] T067 [US4] Create profile schema validation in `app/schemas/profile.ts` — Zod schemas for updateProfileIntent (name, phone, image URL) using constants from validation.ts; update barrel export in `app/schemas/index.ts`
-- [ ] T068 [US4] Implement profile loader in `app/routes/profile/loader.ts` — fetch current user data (name, phone, email, image); return for profile form prefill
-- [ ] T069 [US4] Implement profile update action in `app/routes/profile/actions.ts` — validate with profile schema; update user name, phone (image/avatar URL update for v1: text input for URL); return structured errors on failure; redirect with success message using constants
-- [ ] T070 [US4] Implement profile page in `app/routes/profile/page.tsx` — Mantine form with TextInput for name, phone; email (read-only display); avatar URL input (TextInput for v1); use Mantine useForm with zodResolver; use Mantine style props for layout
-- [ ] T071 [US4] Implement vehicle loader in `app/routes/vehicles/loader.ts` — fetch all vehicles for current user; return vehicles list
-- [ ] T072 [US4] Implement add vehicle action in `app/routes/vehicles/actions.ts` — validate with addVehicleIntent schema; create Vehicle record linked to current user; redirect with success message
-- [ ] T073 [US4] Implement edit vehicle action in `app/routes/vehicles/actions.ts` — validate with editVehicleIntent schema; verify vehicleId belongs to current user; update Vehicle record; redirect with success
-- [ ] T074 [US4] Implement delete vehicle action in `app/routes/vehicles/actions.ts` — validate vehicleId belongs to user; check no active charging sessions for vehicle; delete Vehicle record; redirect with success or error using `VEHICLE_MESSAGES` constants
-- [ ] T075 [US4] Implement vehicles page in `app/routes/vehicles/page.tsx` — list user's vehicles in Mantine Table; add vehicle form (Mantine TextInput/NumberInput); edit/delete buttons per row; Modal for add/edit forms; use Mantine style props for layout
-- [ ] T076 [US4] Add profile CSS module in `app/routes/profile/page.module.css`
-- [ ] T077 [US4] Add vehicles CSS module in `app/routes/vehicles/page.module.css`
+- [x] T067 [US4] Create profile schema validation in `app/schemas/profile.ts` — Zod schemas for updateProfileIntent (name, phone, image URL) using constants from validation.ts; update barrel export in `app/schemas/index.ts`
+- [x] T068 [US4] Implement profile loader in `app/routes/profile/loader.ts` — fetch current user data (name, phone, email, image); return for profile form prefill
+- [x] T069 [US4] Implement profile update action in `app/routes/profile/actions.ts` — validate with profile schema; update user name, phone (image/avatar URL update for v1: text input for URL); return structured errors on failure; redirect with success message using constants
+- [x] T070 [US4] Implement profile page in `app/routes/profile/page.tsx` — Mantine form with TextInput for name, phone; email (read-only display); avatar URL input (TextInput for v1); use Mantine useForm with zodResolver; use Mantine style props for layout
+- [x] T071 [US4] Implement vehicle loader in `app/routes/vehicles/loader.ts` — fetch all vehicles for current user; return vehicles list
+- [x] T072 [US4] Implement add vehicle action in `app/routes/vehicles/actions.ts` — validate with addVehicleIntent schema; create Vehicle record linked to current user; redirect with success message
+- [x] T073 [US4] Implement edit vehicle action in `app/routes/vehicles/actions.ts` — validate with editVehicleIntent schema; verify vehicleId belongs to current user; update Vehicle record; redirect with success
+- [x] T074 [US4] Implement delete vehicle action in `app/routes/vehicles/actions.ts` — validate vehicleId belongs to user; check no active charging sessions for vehicle; delete Vehicle record; redirect with success or error using `VEHICLE_MESSAGES` constants
+- [x] T075 [US4] Implement vehicles page in `app/routes/vehicles/page.tsx` — list user's vehicles in Mantine Table; add vehicle form (Mantine TextInput/NumberInput); edit/delete buttons per row; Modal for add/edit forms; use Mantine style props for layout
+- [x] T076 [US4] Add profile CSS module in `app/routes/profile/page.module.css`
+- [x] T077 [US4] Add vehicles CSS module in `app/routes/vehicles/page.module.css`
 
 **Checkpoint**: User Stories 1-4 should all work independently — users can manage profiles and vehicles
 
@@ -195,23 +195,23 @@ description: 'Task list for EV Station Management System feature implementation'
 
 ### Tests for User Story 5
 
-- [ ] T078 [P] [US5] Write test for admin dashboard loader in `app/routes/admin/loader.test.ts` — test that loader returns totalUsers, totalStations, dailyTransactions, cashFlowData for admin role only; test non-admin is forbidden
-- [ ] T079 [P] [US5] Write test for admin users loader in `app/routes/admin/users/loader.test.ts` — test paginated user list with search and status filters; test non-admin is forbidden
-- [ ] T080 [P] [US5] Write test for admin user detail loader in `app/routes/admin/users.$userId/loader.test.ts` — test returns user profile, vehicles, transactions, charging sessions, balance; test non-admin is forbidden; test non-existent user returns 404
-- [ ] T081 [P] [US5] Write test for admin toggle-lock action in `app/routes/admin/users.$userId/actions.test.ts` — test locking active user sets status='locked'; test unlocking locked user sets status='active'; test cannot lock admin user; test cancelling active charging sessions on lock
+- [x] T078 [P] [US5] Write test for admin dashboard loader in `app/routes/admin/loader.test.ts` — test that loader returns totalUsers, totalStations, dailyTransactions, cashFlowData for admin role only; test non-admin is forbidden
+- [x] T079 [P] [US5] Write test for admin users loader in `app/routes/admin/users/loader.test.ts` — test paginated user list with search and status filters; test non-admin is forbidden
+- [x] T080 [P] [US5] Write test for admin user detail loader in `app/routes/admin/users.$userId/loader.test.ts` — test returns user profile, vehicles, transactions, charging sessions, balance; test non-admin is forbidden; test non-existent user returns 404
+- [x] T081 [P] [US5] Write test for admin toggle-lock action in `app/routes/admin/users.$userId/actions.test.ts` — test locking active user sets status='locked'; test unlocking locked user sets status='active'; test cannot lock admin user; test cancelling active charging sessions on lock
 
 ### Implementation for User Story 5
 
-- [ ] T082 [US5] Implement admin dashboard loader in `app/routes/admin/loader.ts` — use `requireAdmin()` guard; query totalUsers count, totalStations count, dailyTransactions count; query cashFlowData (daily aggregates of top-ups and payments for the selected period); return all data
-- [ ] T083 [US5] Implement admin dashboard page in `app/routes/admin/page.tsx` — Mantine Card components for KPI metrics (totalUsers, totalStations, dailyTransactions); `@mantine/charts` AreaChart for cash flow; Mantine Grid for layout; style with Mantine props
-- [ ] T084 [US5] Implement admin users list loader in `app/routes/admin/users/loader.ts` — use `requireAdmin()` guard; paginated query with search and status filters; return users with vehicleCount and totalDebt
-- [ ] T085 [US5] Implement admin users list page in `app/routes/admin/users/page.tsx` — Mantine Table with user list (name, email, role, balance, status); Mantine Pagination; search TextInput; status filter Select; link to user detail; use Mantine style props
-- [ ] T086 [US5] Implement admin user detail loader in `app/routes/admin/users.$userId/loader.ts` — use `requireAdmin()` guard; fetch user profile, vehicles, recent transactions, recent charging sessions, balance; return all data
-- [ ] T087 [US5] Implement admin user detail page in `app/routes/admin/users.$userId/page.tsx` — display user profile info (name, email, role, status, balance); vehicles section; charging history section; lock/unlock button with confirmation Modal; use Mantine style props
-- [ ] T088 [US5] Implement toggle-lock action in `app/routes/admin/users.$userId/actions.ts` — validate with toggleLockIntent schema; enforce cannot lock admin users; toggle user status between 'active' and 'locked'; if locking, cancel any active charging sessions; log action via Consola; redirect with success message using `ADMIN_MESSAGES` constants
-- [ ] T089 [US5] Add admin dashboard CSS module in `app/routes/admin/page.module.css`
-- [ ] T090 [US5] Add admin users CSS module in `app/routes/admin/users/page.module.css`
-- [ ] T091 [US5] Add admin user detail CSS module in `app/routes/admin/users.$userId/page.module.css`
+- [x] T082 [US5] Implement admin dashboard loader in `app/routes/admin/loader.ts` — use `requireAdmin()` guard; query totalUsers count, totalStations count, dailyTransactions count; query cashFlowData (daily aggregates of top-ups and payments for the selected period); return all data
+- [x] T083 [US5] Implement admin dashboard page in `app/routes/admin/page.tsx` — Mantine Card components for KPI metrics (totalUsers, totalStations, dailyTransactions); `@mantine/charts` AreaChart for cash flow; Mantine Grid for layout; style with Mantine props
+- [x] T084 [US5] Implement admin users list loader in `app/routes/admin/users/loader.ts` — use `requireAdmin()` guard; paginated query with search and status filters; return users with vehicleCount and totalDebt
+- [x] T085 [US5] Implement admin users list page in `app/routes/admin/users/page.tsx` — Mantine Table with user list (name, email, role, balance, status); Mantine Pagination; search TextInput; status filter Select; link to user detail; use Mantine style props
+- [x] T086 [US5] Implement admin user detail loader in `app/routes/admin/users.$userId/loader.ts` — use `requireAdmin()` guard; fetch user profile, vehicles, recent transactions, recent charging sessions, balance; return all data
+- [x] T087 [US5] Implement admin user detail page in `app/routes/admin/users.$userId/page.tsx` — display user profile info (name, email, role, status, balance); vehicles section; charging history section; lock/unlock button with confirmation Modal; use Mantine style props
+- [x] T088 [US5] Implement toggle-lock action in `app/routes/admin/users.$userId/actions.ts` — validate with toggleLockIntent schema; enforce cannot lock admin users; toggle user status between 'active' and 'locked'; if locking, cancel any active charging sessions; log action via Consola; redirect with success message using `ADMIN_MESSAGES` constants
+- [x] T089 [US5] Add admin dashboard CSS module in `app/routes/admin/page.module.css`
+- [x] T090 [US5] Add admin users CSS module in `app/routes/admin/users/page.module.css`
+- [x] T091 [US5] Add admin user detail CSS module in `app/routes/admin/users.$userId/page.module.css`
 
 **Checkpoint**: All 5 user stories should now be independently functional
 
@@ -221,15 +221,15 @@ description: 'Task list for EV Station Management System feature implementation'
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T092 [P] Add Mantine theme configuration in `app/theme/mantine-theme.ts` — ensure default size and radius are set globally so they don't need per-component props; add any component-specific theme overrides
-- [ ] T093 [P] Add error boundary handling in route loaders — ensure all loaders return structured errors `{ errors: { field: [...] } }` per Constitution Principle VII; add ErrorBoundary in `root.tsx` if not present
-- [ ] T094 [P] Add logging to all server actions via Consola logger in `app/lib/logger.server.ts` — log action name, userId, and outcome (success/failure) for audit trail
-- [ ] T095 [P] Verify all barrel imports — ensure `app/lib/db/schema/index.ts`, `app/schemas/index.ts`, `app/constants/index.ts` (if created) export all new modules; no direct file imports in route code
-- [ ] T096 [P] Verify no inline styles — grep all new route files for `style={{` and convert to Mantine props or CSS Modules
-- [ ] T097 [P] Verify no magic numbers — ensure all values reference constants from `app/constants/`; check for hardcoded strings in route files
-- [ ] T098 Run full quality gate: `pnpm lint:fix && pnpm lint && pnpm typecheck && pnpm format && pnpm test`
-- [ ] T099 Update `app/routes.ts` — verify all new routes are registered and route constants match
-- [ ] T100 Update `AGENTS.md` — ensure Stripe.js is listed in active technologies; verify project structure reflects all new directories
+- [x] T092 [P] Add Mantine theme configuration in `app/theme/mantine-theme.ts` — ensure default size and radius are set globally so they don't need per-component props; add any component-specific theme overrides
+- [x] T093 [P] Add error boundary handling in route loaders — ensure all loaders return structured errors `{ errors: { field: [...] } }` per Constitution Principle VII; add ErrorBoundary in `root.tsx` if not present
+- [x] T094 [P] Add logging to all server actions via Consola logger in `app/lib/logger.server.ts` — log action name, userId, and outcome (success/failure) for audit trail
+- [x] T095 [P] Verify all barrel imports — ensure `app/lib/db/schema/index.ts`, `app/schemas/index.ts`, `app/constants/index.ts` (if created) export all new modules; no direct file imports in route code
+- [x] T096 [P] Verify no inline styles — grep all new route files for `style={{` and convert to Mantine props or CSS Modules
+- [x] T097 [P] Verify no magic numbers — ensure all values reference constants from `app/constants/`; check for hardcoded strings in route files
+- [x] T098 Run full quality gate: `pnpm lint:fix && pnpm lint && pnpm typecheck && pnpm format && pnpm test`
+- [x] T099 Update `app/routes.ts` — verify all new routes are registered and route constants match
+- [x] T100 Update `AGENTS.md` — ensure Stripe.js is listed in active technologies; verify project structure reflects all new directories
 
 ---
 

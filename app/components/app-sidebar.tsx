@@ -85,7 +85,7 @@ export function AppSidebar({ isAdmin = false }: AppSidebarProps) {
 
         <Divider my="xs" />
 
-        <Box style={{ flex: 1 }}>
+        <Box flex={1}>
           <Stack gap={4}>
             {NAV_ITEMS.map((item) => (
               <NavLink

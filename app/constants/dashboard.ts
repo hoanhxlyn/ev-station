@@ -15,6 +15,15 @@ export const CREDIT_UNIT = {
   DIVISOR: 100,
 } as const
 
+export const PAGINATION = {
+  DASHBOARD_SESSIONS_LIMIT: 10,
+  CHARGING_SESSIONS_LIMIT: 10,
+  WALLET_TRANSACTIONS_LIMIT: 50,
+  ADMIN_USER_TRANSACTIONS_LIMIT: 20,
+  ADMIN_USER_SESSIONS_LIMIT: 20,
+  ADMIN_USERS_PAGE_SIZE: 20,
+} as const
+
 export const MOCK_CHARGING_DATA = [
   { day: 'Mon', sessions: 2 },
   { day: 'Tue', sessions: 5 },

@@ -2,6 +2,7 @@ import { and, desc, eq } from 'drizzle-orm'
 import { requireVerified } from '~/lib/auth-guards'
 import { db } from '~/lib/db'
 import { chargingSession, station, vehicle } from '~/lib/db/schema'
+import { PAGINATION } from '~/constants/dashboard'
 import type { Route } from './+types/page'
 
 export async function chargingLoader({ request }: Route.LoaderArgs) {
@@ -22,7 +23,7 @@ export async function chargingLoader({ request }: Route.LoaderArgs) {
   const recentSessions = await db.query.chargingSession.findMany({
     where: eq(chargingSession.userId, userId),
     orderBy: [desc(chargingSession.createdAt)],
-    limit: 10,
+    limit: PAGINATION.CHARGING_SESSIONS_LIMIT,
     with: {
       station: true,
       vehicle: true,

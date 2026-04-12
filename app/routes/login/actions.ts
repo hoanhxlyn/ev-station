@@ -3,6 +3,7 @@ import { loginSchema, looksLikeEmail } from '~/schemas/auth'
 import { LOGIN_MESSAGES, fail } from '~/constants/messages'
 import { extractErrorMessage, redirectFail } from '~/lib/action-utils'
 import { auth } from '~/lib/auth.server'
+import { logger } from '~/lib/logger.server'
 import { ROUTES } from '~/constants/routes'
 import type { Route } from './+types/page'
 
@@ -17,6 +18,9 @@ export async function loginAction({ request }: Route.ActionArgs) {
 
   const result = loginSchema.safeParse(values)
   if (!result.success) {
+    logger.warn('[AUTH] Login validation failed', {
+      errors: result.error.flatten().fieldErrors,
+    })
     return { errors: result.error.flatten().fieldErrors }
   }
 
@@ -30,6 +34,10 @@ export async function loginAction({ request }: Route.ActionArgs) {
         response,
         LOGIN_MESSAGES.INVALID_CREDENTIALS,
       )
+      logger.warn('[AUTH] Login failed', {
+        accountName,
+        reason: 'invalid_credentials',
+      })
       return redirectFail(ROUTES.LOGIN, message)
     }
 
@@ -38,6 +46,10 @@ export async function loginAction({ request }: Route.ActionArgs) {
     })
 
     if (session?.user) {
+      logger.info('[AUTH] Login successful', {
+        userId: session.user.id,
+        emailVerified: session.user.emailVerified,
+      })
       if (!session.user.emailVerified) {
         return redirect(ROUTES.SIGNUP_CHECK_EMAIL, {
           headers: response.headers,
@@ -54,6 +66,7 @@ export async function loginAction({ request }: Route.ActionArgs) {
   } catch (error) {
     const message =
       error instanceof Error && error.message ? error.message : fail('Login')
+    logger.error('[AUTH] Login error', { accountName, error: message })
 
     return redirectFail(ROUTES.LOGIN, message)
   }

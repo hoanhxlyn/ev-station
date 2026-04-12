@@ -8,7 +8,7 @@ import {
   station,
   vehicle,
 } from '~/lib/db/schema'
-import { CREDIT_UNIT } from '~/constants/dashboard'
+import { CREDIT_UNIT, PAGINATION } from '~/constants/dashboard'
 import type { Route } from './+types/page'
 
 type Period = 'day' | 'week' | 'month' | 'year'
@@ -68,7 +68,7 @@ export async function dashboardLoader({ request }: Route.LoaderArgs) {
   const recentSessions = await db.query.chargingSession.findMany({
     where: eq(chargingSession.userId, userId),
     orderBy: [desc(chargingSession.createdAt)],
-    limit: 10,
+    limit: PAGINATION.DASHBOARD_SESSIONS_LIMIT,
     with: {
       station: true,
       vehicle: true,
