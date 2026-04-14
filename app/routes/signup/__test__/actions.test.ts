@@ -146,7 +146,7 @@ describe('signupAction', () => {
       expect(setArg).toHaveProperty('signupMethod', 'manual')
     })
 
-    it('redirects to signup with error when email already exists via OAuth', async () => {
+    it('returns field-level error when email already exists via OAuth', async () => {
       mockDb.query.user.findFirst.mockResolvedValue({
         email: 'oauth@example.com',
         signupMethod: 'oauth',
@@ -161,11 +161,11 @@ describe('signupAction', () => {
         dateOfBirth: '2000-01-15',
       })
 
-      const result = (await signupAction({ request } as never)) as Response
-      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
-      expect(result.headers.get('X-Error')).toContain(
-        'account with this email already exists via OAuth',
-      )
+      const result = (await signupAction({ request } as never)) as {
+        errors: { email: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.email).toContain('This email is already registered')
     })
 
     it('redirects to signup with error on failed signUpEmail', async () => {
@@ -248,7 +248,7 @@ describe('signupAction', () => {
       )
     })
 
-    it('redirects to signup with generic message for duplicate email (manual signup)', async () => {
+    it('returns field-level error for duplicate email (manual signup)', async () => {
       mockDb.query.user.findFirst.mockResolvedValue({
         email: 'existing@example.com',
         signupMethod: 'manual',
@@ -263,9 +263,41 @@ describe('signupAction', () => {
         dateOfBirth: '1990-01-01',
       })
 
-      const result = (await signupAction({ request } as never)) as Response
-      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
-      expect(result.headers.get('X-Error')).toContain('already exists')
+      const result = (await signupAction({ request } as never)) as {
+        errors: { email: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.email).toContain('This email is already registered')
+    })
+
+    it('returns field-level error for duplicate username', async () => {
+      let checkEmail = true
+      mockDb.query.user.findFirst.mockImplementation(async () => {
+        if (checkEmail) {
+          checkEmail = false
+          return null
+        }
+        return {
+          email: 'other@example.com',
+          username: 'existinguser',
+          signupMethod: 'manual',
+        }
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'newuser@example.com',
+        username: 'existinguser',
+        password: 'secure123',
+        name: 'New User',
+        dateOfBirth: '1990-01-01',
+      })
+
+      const result = (await signupAction({ request } as never)) as {
+        errors: { username: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.username).toContain('This username is already taken')
     })
   })
 
@@ -310,7 +342,7 @@ describe('signupAction', () => {
       expect(result.headers.get('Location')).toBe(ROUTES.LOGIN)
     })
 
-    it('redirects to signup with error when email exists via manual signup', async () => {
+    it('returns field-level error when email exists via manual signup in OAuth mode', async () => {
       mockDb.query.user.findFirst.mockResolvedValue({
         email: 'manual@example.com',
         signupMethod: 'manual',
@@ -325,12 +357,11 @@ describe('signupAction', () => {
         dateOfBirth: '1995-06-20',
       })
 
-      const result = (await signupAction({ request } as never)) as Response
-      expect(result).toBeInstanceOf(Response)
-      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
-      expect(result.headers.get('X-Error')).toContain(
-        'account with this email already exists',
-      )
+      const result = (await signupAction({ request } as never)) as {
+        errors: { email: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.email).toContain('This email is already registered')
     })
   })
 })

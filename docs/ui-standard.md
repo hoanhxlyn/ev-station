@@ -33,15 +33,47 @@ createTheme({
 
 Do **not** pass `color="teal"` or `radius="lg"` repeatedly — those are already the theme defaults. Only override when deviating from the theme.
 
+### 1.2 Component defaultProps
+
+The `defaultProps` constant in `mantine-theme.ts` sets shared defaults (`size: 'sm'`, `radius: 'lg'`) for registered components. Components configured with `defaultProps` **MUST** consume these defaults — never repeat them as individual props.
+
+```ts
+// app/theme/mantine-theme.ts (lines 3-6)
+const defaultProps = {
+  size: 'sm',
+  radius: 'lg',
+}
+
+// Applied to: Button, TextInput, NumberInput, DateInput, PasswordInput, Select
+```
+
+```tsx
+// ❌ Prohibited — repeating defaults already set in theme defaultProps
+<TextInput size="sm" radius="lg" label="Email" />
+
+// ✅ Correct — rely on theme defaults
+<TextInput label="Email" />
+```
+
 ---
 
 ## 2. Styling Layer Order
 
-When styling a UI element, apply techniques in this priority order:
+When styling a UI element, apply techniques in this **strict** priority order — you **MUST NOT** skip a layer and use a lower-priority one when a higher-priority one can express the style:
 
-1. **Mantine style props** — `p`, `m`, `gap`, `fw`, `c`, `bg`, `pos`, `mih`, `w`, etc.
-2. **CSS Modules** — for complex or repetitive styles that props cannot express (e.g., gradient backgrounds, glass effects, blob decorations, responsive overrides).
-3. **Never** use inline `style={{ ... }}`.
+1. **Mantine style props** — `p`, `m`, `gap`, `fw`, `c`, `bg`, `pos`, `mih`, `w`, etc. Always try these first.
+2. **CSS Modules** — only for styles that Mantine props cannot express (e.g., gradient backgrounds, glass effects, blob decorations, responsive overrides).
+3. **Never** use inline `style={{ ... }}` — under no circumstances.
+
+```tsx
+// ❌ Prohibited — skipping Mantine props and going straight to CSS Module or inline styles
+<Text className={styles.title}>Title</Text>
+<Text style={{ fontWeight: 700 }}>Title</Text>
+
+// ✅ Correct — Mantine props first, CSS Module only when needed
+<Text fw={700}>Title</Text>
+<Text fw={700} className={styles.gradientTitle}>Title</Text>
+```
 
 ### 2.1 When to Use CSS Modules
 
@@ -130,6 +162,15 @@ Rules:
 - Always use `zodResolver` with schemas from `~/schemas/`
 - Never define Zod schemas inline — centralize in `app/schemas/`
 - Never hardcode validation messages — use constants from `~/constants/validation`
+- Always use `key={form.key('fieldName')}` on every form field in uncontrolled mode — it sets the HTML `name` attribute and provides type safety. Never set `name` manually when using `useForm`; `form.key()` replaces it:
+
+```tsx
+// ❌ Prohibited — manual name prop when using useForm
+<TextInput label="Email" name="email" {...form.getInputProps('email')} />
+
+// ✅ Correct — form.key() sets name and is type-safe
+<TextInput label="Email" key={form.key('email')} {...form.getInputProps('email')} />
+```
 
 ### 3.4 Data Display Pattern
 

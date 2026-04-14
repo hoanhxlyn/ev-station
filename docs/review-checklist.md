@@ -2,8 +2,8 @@
 
 ## 🧪 1. Testing Coverage
 
-- [ ] **Missing Tests:** Are all new or modified UI components adequately covered by unit or integration tests?
-- [ ] **Test Quality:** Do the tests accurately verify the component's expected behavior and edge cases?
+- [ ] **Missing Tests:** Are all new or modified files (components, hooks, utils, loaders, actions) adequately covered by unit or integration tests?
+- [ ] **Test Quality:** Do the tests accurately verify the expected behavior and edge cases?
 
 ## 📏 2. Code Conventions
 
@@ -17,6 +17,11 @@
 
 ## 🎨 4. UI Component Standards
 
-- [ ] **Structural Patterns:** Do the UI components follow the correct architectural conventions (e.g., consistent prop naming, proper composition)?
+See [ui-standard.md](./ui-standard.md) for full details.
+
+- [ ] **Mantine-First:** Are all UI elements built with Mantine v9 components (no raw `<div>`, `<span>`, etc. where a Mantine equivalent exists)?
+- [ ] **Theme Defaults:** Are `size="sm"`, `radius="lg"`, and `color="teal"` omitted when they match theme defaults? Are `defaultProps`-registered components not repeating those props?
+- [ ] **Style Priority:** Is every styling property applied using Mantine style props (`p`, `m`, `gap`, `fw`, `c`, `bg`, etc.) first? Are CSS Modules used only for styles Mantine props cannot express? Is inline `style={{ }}` absent?
+- [ ] **Form Fields:** Is `name` omitted on form fields that use `useForm`? Is `key={form.key('fieldName')}` and `{...form.getInputProps('fieldName')}` used correctly?
+- [ ] **Constants-First:** Are there zero hardcoded strings or magic numbers in UI code?
 - [ ] **Separation of Concerns:** Is the presentation layout cleanly separated from complex business logic?
-- [ ] **Reusability:** Are the components built in a reusable manner without unnecessary tight coupling to specific contexts?

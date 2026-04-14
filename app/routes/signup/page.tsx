@@ -3,6 +3,7 @@ import styles from './page.module.css'
 import { SignupPanel } from './signup-panel'
 
 export { signupAction as action } from './actions'
+export { signupLoader as loader } from './loader'
 
 export function meta() {
   return [
@@ -17,7 +18,7 @@ export function meta() {
 
 export default function Signup() {
   return (
-    <Box mih="100vh" pos="relative" className={styles.pageShell}>
+    <Box mih="100dvh" pos="relative" className={styles.pageShell}>
       <Box aria-hidden className={styles.bgBlobTopLeft} />
       <Box aria-hidden className={styles.bgBlobTopRight} />
 

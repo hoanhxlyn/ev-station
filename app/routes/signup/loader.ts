@@ -1,17 +1,28 @@
+import { eq } from 'drizzle-orm'
 import { auth } from '~/lib/auth.server'
+import { db } from '~/lib/db'
+import { user } from '~/lib/db/schema'
 import type { Route } from './+types/page'
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function signupLoader({ request }: Route.LoaderArgs) {
   const session = await auth.api.getSession({
     headers: request.headers,
   })
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
+    return null
+  }
+
+  const dbUser = await db.query.user.findFirst({
+    where: eq(user.id, session.user.id),
+  })
+
+  if (!dbUser) {
     return null
   }
 
   return {
-    email: session.user.email ?? '',
-    name: session.user.name ?? '',
+    email: dbUser.email ?? '',
+    name: dbUser.name ?? '',
   }
 }

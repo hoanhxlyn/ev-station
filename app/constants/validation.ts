@@ -29,6 +29,8 @@ export const VALIDATION_MESSAGES = {
   PASSWORD_MAX_LENGTH: `Password length exceeded ${VALIDATION_CONSTRAINTS.PASSWORD_MAX_LENGTH} characters`,
   EMAIL_REQUIRED: 'Email is required',
   EMAIL_INVALID: 'Enter a valid email address',
+  EMAIL_ALREADY_EXISTS: 'This email is already registered',
+  USERNAME_ALREADY_EXISTS: 'This username is already taken',
   USERNAME_REQUIRED: 'Username is required',
   USERNAME_MIN_LENGTH: `Username must be at least ${VALIDATION_CONSTRAINTS.USERNAME_MIN_LENGTH} characters`,
   USERNAME_MAX_LENGTH: `Username length exceeded ${VALIDATION_CONSTRAINTS.USERNAME_MAX_LENGTH} characters`,
