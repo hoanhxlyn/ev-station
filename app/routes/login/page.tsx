@@ -34,7 +34,7 @@ export default function Login() {
   }, [searchParams])
 
   return (
-    <Box mih="100vh" pos="relative" className={styles.pageShell}>
+    <Box mih="100dvh" pos="relative" className={styles.pageShell}>
       <Box aria-hidden className={styles.bgBlobTopLeft} />
       <Box aria-hidden className={styles.bgBlobTopRight} />
 

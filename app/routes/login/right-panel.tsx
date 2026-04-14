@@ -89,7 +89,6 @@ export function LoginRightPanel() {
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
               withAsterisk
-              name="accountName"
               key={form.key('accountName')}
               {...form.getInputProps('accountName')}
             />
@@ -99,14 +98,12 @@ export function LoginRightPanel() {
               leftSection={<IconLock size={16} />}
               leftSectionPointerEvents="none"
               withAsterisk
-              name="password"
               key={form.key('password')}
               {...form.getInputProps('password')}
             />
             <Group justify="space-between" align="center">
               <Checkbox
                 label="Remember me"
-                name="remember"
                 key={form.key('remember')}
                 {...form.getInputProps('remember', { type: 'checkbox' })}
               />

@@ -18,7 +18,7 @@ function buildRequest(): Request {
 }
 
 const { requireAuth, requireVerified, requireAdmin } =
-  await import('./auth-guards')
+  await import('../auth-guards')
 
 describe('requireAuth', () => {
   beforeEach(() => {

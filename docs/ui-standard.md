@@ -33,15 +33,47 @@ createTheme({
 
 Do **not** pass `color="teal"` or `radius="lg"` repeatedly — those are already the theme defaults. Only override when deviating from the theme.
 
+### 1.2 Component defaultProps
+
+The `defaultProps` constant in `mantine-theme.ts` sets shared defaults (`size: 'sm'`, `radius: 'lg'`) for registered components. Components configured with `defaultProps` **MUST** consume these defaults — never repeat them as individual props.
+
+```ts
+// app/theme/mantine-theme.ts (lines 3-6)
+const defaultProps = {
+  size: 'sm',
+  radius: 'lg',
+}
+
+// Applied to: Button, TextInput, NumberInput, DateInput, PasswordInput, Select
+```
+
+```tsx
+// ❌ Prohibited — repeating defaults already set in theme defaultProps
+<TextInput size="sm" radius="lg" label="Email" />
+
+// ✅ Correct — rely on theme defaults
+<TextInput label="Email" />
+```
+
 ---
 
 ## 2. Styling Layer Order
 
-When styling a UI element, apply techniques in this priority order:
+When styling a UI element, apply techniques in this **strict** priority order — you **MUST NOT** skip a layer and use a lower-priority one when a higher-priority one can express the style:
 
-1. **Mantine style props** — `p`, `m`, `gap`, `fw`, `c`, `bg`, `pos`, `mih`, `w`, etc.
-2. **CSS Modules** — for complex or repetitive styles that props cannot express (e.g., gradient backgrounds, glass effects, blob decorations, responsive overrides).
-3. **Never** use inline `style={{ ... }}`.
+1. **Mantine style props** — `p`, `m`, `gap`, `fw`, `c`, `bg`, `pos`, `mih`, `w`, etc. Always try these first.
+2. **CSS Modules** — only for styles that Mantine props cannot express (e.g., gradient backgrounds, glass effects, blob decorations, responsive overrides).
+3. **Never** use inline `style={{ ... }}` — under no circumstances.
+
+```tsx
+// ❌ Prohibited — skipping Mantine props and going straight to CSS Module or inline styles
+<Text className={styles.title}>Title</Text>
+<Text style={{ fontWeight: 700 }}>Title</Text>
+
+// ✅ Correct — Mantine props first, CSS Module only when needed
+<Text fw={700}>Title</Text>
+<Text fw={700} className={styles.gradientTitle}>Title</Text>
+```
 
 ### 2.1 When to Use CSS Modules
 
@@ -130,6 +162,15 @@ Rules:
 - Always use `zodResolver` with schemas from `~/schemas/`
 - Never define Zod schemas inline — centralize in `app/schemas/`
 - Never hardcode validation messages — use constants from `~/constants/validation`
+- Always use `key={form.key('fieldName')}` on every form field in uncontrolled mode — it sets the HTML `name` attribute and provides type safety. Never set `name` manually when using `useForm`; `form.key()` replaces it:
+
+```tsx
+// ❌ Prohibited — manual name prop when using useForm
+<TextInput label="Email" name="email" {...form.getInputProps('email')} />
+
+// ✅ Correct — form.key() sets name and is type-safe
+<TextInput label="Email" key={form.key('email')} {...form.getInputProps('email')} />
+```
 
 ### 3.4 Data Display Pattern
 
@@ -306,7 +347,141 @@ Decorative elements follow a consistent pattern:
 
 ---
 
-## 11. Quality Checklist
+## 11. React Performance
+
+### 11.1 Re-render Optimization
+
+| Rule | Description |
+| ---- | ----------- |
+| `rerender-memo` | Extract expensive work into memoized components |
+| `rerender-defer-reads` | Don't subscribe to state only used in callbacks |
+| `rerender-derived-state` | Subscribe to derived booleans, not raw values |
+| `rerender-functional-setstate` | Use functional setState for stable callbacks |
+| `rerender-lazy-state-init` | Pass function to useState for expensive values |
+| `rerender-split-combined-hooks` | Split hooks with independent dependencies |
+| `rerender-transitions` | Use startTransition for non-urgent updates |
+
+**Calculate Derived State During Rendering:**
+
+```tsx
+// ❌ Prohibited — redundant state and effect
+function Form() {
+  const [firstName, setFirstName] = useState('First')
+  const [lastName, setLastName] = useState('Last')
+  const [fullName, setFullName] = useState('')
+
+  useEffect(() => {
+    setFullName(firstName + ' ' + lastName)
+  }, [firstName, lastName])
+
+  return <p>{fullName}</p>
+}
+
+// ✅ Correct — derive during render
+function Form() {
+  const [firstName, setFirstName] = useState('First')
+  const [lastName, setLastName] = useState('Last')
+  const fullName = firstName + ' ' + lastName
+
+  return <p>{fullName}</p>
+}
+```
+
+**Don't Define Components Inside Components:**
+
+```tsx
+// ❌ Prohibited — creates new component type on every render
+function UserProfile({ user, theme }) {
+  const Avatar = () => (
+    <img src={user.avatarUrl} className={theme === 'dark' ? 'dark' : 'light'} />
+  )
+  return <Avatar />
+}
+
+// ✅ Correct — define at module level or pass props
+function Avatar({ src, theme }: { src: string; theme: string }) {
+  return <img src={src} className={theme === 'dark' ? 'dark' : 'light'} />
+}
+```
+
+**Use Lazy State Initialization:**
+
+```tsx
+// ❌ Prohibited — runs on every render
+const [searchIndex, setSearchIndex] = useState(buildSearchIndex(items))
+
+// ✅ Correct — runs only on initial render
+const [searchIndex, setSearchIndex] = useState(() => buildSearchIndex(items))
+```
+
+### 11.2 Rendering Performance
+
+| Rule | Description |
+| ---- | ----------- |
+| `rendering-hoist-jsx` | Extract static JSX outside components |
+| `rendering-content-visibility` | Use content-visibility for long lists |
+| `rendering-conditional-render` | Use ternary, not && for conditionals |
+| `rendering-usetransition-loading` | Prefer useTransition for loading state |
+
+**Hoist Static JSX:**
+
+```tsx
+// ❌ Prohibited — recreates element every render
+function LoadingSkeleton() {
+  return <div className="animate-pulse h-20 bg-gray-200" />
+}
+
+// ✅ Correct — reuses same element
+const loadingSkeleton = (
+  <div className="animate-pulse h-20 bg-gray-200" />
+)
+```
+
+**Use Explicit Conditional Rendering:**
+
+```tsx
+// ❌ Prohibited — renders "0" when count is 0
+{count && <Badge>{count}</Badge>}
+
+// ✅ Correct — renders nothing when count is 0
+{count > 0 ? <Badge>{count}</Badge> : null}
+```
+
+### 11.3 JavaScript Performance
+
+| Rule | Description |
+| ---- | ----------- |
+| `js-early-exit` | Return early from functions |
+| `js-hoist-regexp` | Hoist RegExp creation outside loops |
+| `js-set-map-lookups` | Use Set/Map for O(1) lookups |
+| `js-cache-function-results` | Cache function results in module-level Map |
+| `js-combine-iterations` | Combine multiple filter/map into one loop |
+
+**Build Index Maps for Repeated Lookups:**
+
+```tsx
+// ❌ Prohibited — O(n) per lookup
+const user = users.find(u => u.id === order.userId)
+
+// ✅ Correct — O(1) per lookup
+const userById = new Map(users.map(u => [u.id, u]))
+const user = userById.get(order.userId)
+```
+
+**Use Set/Map for O(1) Lookups:**
+
+```tsx
+// ❌ Prohibited — O(n) per check
+items.filter(item => allowedIds.includes(item.id))
+
+// ✅ Correct — O(1) per check
+const allowedSet = new Set(allowedIds)
+items.filter(item => allowedSet.has(item.id))
+```
+
+---
+
+## 12. Quality Checklist
 
 Before submitting any UI code, verify:
 
@@ -319,4 +494,7 @@ Before submitting any UI code, verify:
 - [ ] Shared `size`, `radius`, `color` values are configured in theme, not repeated per-component
 - [ ] CSS Modules only for styles that Mantine props cannot express
 - [ ] TypeScript types are inferred from auto-generated Route types
+- [ ] No inline component definitions (define at module level instead)
+- [ ] Derived state calculated during render, not in useEffect
+- [ ] Explicit ternary used for conditionals that may render falsy values
 - [ ] `pnpm lint && pnpm typecheck && pnpm format && pnpm test` all pass

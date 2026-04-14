@@ -1,5 +1,10 @@
 import { createTheme, type MantineThemeOverride } from '@mantine/core'
 
+const defaultProps = {
+  size: 'sm',
+  radius: 'lg',
+}
+
 export const mantineTheme: MantineThemeOverride = createTheme({
   primaryColor: 'teal',
   defaultRadius: 'lg',
@@ -14,28 +19,22 @@ export const mantineTheme: MantineThemeOverride = createTheme({
   },
   components: {
     Button: {
-      defaultProps: {
-        size: 'md',
-        radius: 'lg',
-      },
+      defaultProps: defaultProps,
     },
     TextInput: {
-      defaultProps: {
-        size: 'md',
-        radius: 'lg',
-      },
+      defaultProps: defaultProps,
     },
     NumberInput: {
-      defaultProps: {
-        size: 'md',
-        radius: 'lg',
-      },
+      defaultProps: defaultProps,
+    },
+    DateInput: {
+      defaultProps: defaultProps,
+    },
+    PasswordInput: {
+      defaultProps: defaultProps,
     },
     Select: {
-      defaultProps: {
-        size: 'md',
-        radius: 'lg',
-      },
+      defaultProps: defaultProps,
     },
     Table: {
       defaultProps: {
@@ -46,27 +45,23 @@ export const mantineTheme: MantineThemeOverride = createTheme({
     },
     Card: {
       defaultProps: {
-        radius: 'lg',
         shadow: 'sm',
         withBorder: true,
       },
     },
     Paper: {
       defaultProps: {
-        radius: 'lg',
         shadow: 'sm',
       },
     },
     Modal: {
       defaultProps: {
-        radius: 'lg',
         centered: true,
       },
     },
     ActionIcon: {
       defaultProps: {
         size: 'md',
-        radius: 'lg',
         variant: 'subtle',
       },
     },
