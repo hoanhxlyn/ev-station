@@ -30,23 +30,19 @@ import {
   type SignupValues,
 } from '~/schemas/auth'
 import type { signupAction } from './actions'
+import type { signupLoader } from './loader'
 import styles from './page.module.css'
-
-type LoaderData = { email: string; name: string } | null
 
 export function SignupPanel() {
   const [searchParams] = useSearchParams()
-  const loaderData = useLoaderData<LoaderData>()
   const fetcher = useFetcher<typeof signupAction>()
+  const loaderData = useLoaderData<typeof signupLoader>()
 
   const oauthEmail = loaderData?.email ?? ''
   const oauthName = loaderData?.name ?? ''
   const email = searchParams.get('email') ?? oauthEmail
   const name = searchParams.get('name') ?? oauthName
-  const isOAuthCompletion =
-    Boolean(oauthEmail && oauthName) &&
-    email === oauthEmail &&
-    name === oauthName
+  const isOAuthCompletion = Boolean(oauthEmail)
 
   const form = useForm<SignupValues>({
     mode: 'uncontrolled',
@@ -107,9 +103,9 @@ export function SignupPanel() {
               leftSection={<IconAt size={16} />}
               leftSectionPointerEvents="none"
               withAsterisk
-              name="email"
               key={form.key('email')}
               {...form.getInputProps('email')}
+              error={fetcher.data?.errors?.email?.[0]}
               readOnly={!!email}
             />
             <TextInput
@@ -118,9 +114,9 @@ export function SignupPanel() {
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
               withAsterisk
-              name="username"
               key={form.key('username')}
               {...form.getInputProps('username')}
+              error={fetcher.data?.errors?.username?.[0]}
             />
             <TextInput
               label="Full name"
@@ -128,7 +124,6 @@ export function SignupPanel() {
               leftSection={<IconUser size={16} />}
               leftSectionPointerEvents="none"
               withAsterisk
-              name="name"
               key={form.key('name')}
               {...form.getInputProps('name')}
               readOnly={!!name}
@@ -140,7 +135,6 @@ export function SignupPanel() {
                 leftSection={<IconLock size={16} />}
                 leftSectionPointerEvents="none"
                 withAsterisk
-                name="password"
                 key={form.key('password')}
                 {...form.getInputProps('password')}
               />
@@ -150,7 +144,6 @@ export function SignupPanel() {
               placeholder="Select your date of birth"
               leftSection={<IconCalendar size={16} />}
               leftSectionPointerEvents="none"
-              name="dateOfBirth"
               key={form.key('dateOfBirth')}
               {...form.getInputProps('dateOfBirth', { type: 'input' })}
               value={

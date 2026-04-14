@@ -16,6 +16,14 @@ export const user = sqliteTable('user', {
   signupMethod: text('signup_method', { enum: ['oauth', 'manual'] })
     .default('manual')
     .notNull(),
+  role: text('role', { enum: ['user', 'admin'] })
+    .default('user')
+    .notNull(),
+  phone: text('phone'),
+  creditBalance: integer('credit_balance').default(0).notNull(),
+  status: text('status', { enum: ['active', 'locked'] })
+    .default('active')
+    .notNull(),
   createdAt: integer('created_at', { mode: 'timestamp_ms' })
     .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
     .notNull(),

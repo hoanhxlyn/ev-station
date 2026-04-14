@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { z } from 'zod'
 import { ROUTES } from '~/constants/routes'
 
 // --- Mocks ---
@@ -35,7 +36,6 @@ vi.mock('~/lib/auth.server', () => ({
 }))
 
 vi.mock('~/lib/action-utils', () => {
-  const { z } = require('zod')
   const schema = z.object({
     message: z.string().optional(),
     error: z.object({ message: z.string().optional() }).optional(),
@@ -77,7 +77,7 @@ function buildRequest(entries: Record<string, string>): Request {
 }
 
 // Dynamic import so mocks are in place
-const { signupAction } = await import('./actions')
+const { signupAction } = await import('../actions')
 
 describe('signupAction', () => {
   beforeEach(() => {
@@ -146,7 +146,7 @@ describe('signupAction', () => {
       expect(setArg).toHaveProperty('signupMethod', 'manual')
     })
 
-    it('redirects to signup with error when email already exists via OAuth', async () => {
+    it('returns field-level error when email already exists via OAuth', async () => {
       mockDb.query.user.findFirst.mockResolvedValue({
         email: 'oauth@example.com',
         signupMethod: 'oauth',
@@ -161,11 +161,11 @@ describe('signupAction', () => {
         dateOfBirth: '2000-01-15',
       })
 
-      const result = (await signupAction({ request } as never)) as Response
-      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
-      expect(result.headers.get('X-Error')).toContain(
-        'account with this email already exists via OAuth',
-      )
+      const result = (await signupAction({ request } as never)) as {
+        errors: { email: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.email).toContain('This email is already registered')
     })
 
     it('redirects to signup with error on failed signUpEmail', async () => {
@@ -190,6 +190,109 @@ describe('signupAction', () => {
       expect(result).toBeInstanceOf(Response)
       expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
       expect(result.headers.get('X-Error')).toBe('Email already exists')
+    })
+
+    it('calls signUpEmail with correct params for valid registration (role defaults to user)', async () => {
+      mockSignUpEmail.mockResolvedValue({
+        ok: true,
+        clone: () => ({ json: () => Promise.resolve({}) }),
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'newuser@example.com',
+        username: 'newuser',
+        password: 'secure123',
+        name: 'New User',
+        dateOfBirth: '1995-05-10',
+      })
+
+      await signupAction({ request } as never)
+
+      expect(mockSignUpEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            email: 'newuser@example.com',
+            password: 'secure123',
+            name: 'New User',
+            username: 'newuser',
+          }),
+        }),
+      )
+      expect(mockSignUpEmail).toHaveBeenCalledTimes(1)
+    })
+
+    it('includes callbackURL pointing to login in signUpEmail call', async () => {
+      mockSignUpEmail.mockResolvedValue({
+        ok: true,
+        clone: () => ({ json: () => Promise.resolve({}) }),
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'newuser2@example.com',
+        username: 'newuser2',
+        password: 'secure123',
+        name: 'New User 2',
+        dateOfBirth: '1990-01-01',
+      })
+
+      await signupAction({ request } as never)
+
+      expect(mockSignUpEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            callbackURL: ROUTES.LOGIN,
+          }),
+        }),
+      )
+    })
+
+    it('returns field-level error for duplicate email (manual signup)', async () => {
+      mockDb.query.user.findFirst.mockResolvedValue({
+        email: 'existing@example.com',
+        signupMethod: 'manual',
+      })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'existing@example.com',
+        username: 'newuser3',
+        password: 'secure123',
+        name: 'New User 3',
+        dateOfBirth: '1990-01-01',
+      })
+
+      const result = (await signupAction({ request } as never)) as {
+        errors: { email: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.email).toContain('This email is already registered')
+    })
+
+    it('returns field-level error for duplicate username', async () => {
+      mockDb.query.user.findFirst
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({
+          email: 'other@example.com',
+          username: 'existinguser',
+          signupMethod: 'manual',
+        })
+
+      const request = buildRequest({
+        signupMode: 'password',
+        email: 'newuser@example.com',
+        username: 'existinguser',
+        password: 'secure123',
+        name: 'New User',
+        dateOfBirth: '1990-01-01',
+      })
+
+      const result = (await signupAction({ request } as never)) as {
+        errors: { username: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.username).toContain('This username is already taken')
     })
   })
 
@@ -234,7 +337,7 @@ describe('signupAction', () => {
       expect(result.headers.get('Location')).toBe(ROUTES.LOGIN)
     })
 
-    it('redirects to signup with error when email exists via manual signup', async () => {
+    it('returns field-level error when email exists via manual signup in OAuth mode', async () => {
       mockDb.query.user.findFirst.mockResolvedValue({
         email: 'manual@example.com',
         signupMethod: 'manual',
@@ -249,12 +352,11 @@ describe('signupAction', () => {
         dateOfBirth: '1995-06-20',
       })
 
-      const result = (await signupAction({ request } as never)) as Response
-      expect(result).toBeInstanceOf(Response)
-      expect(result.headers.get('Location')).toBe(ROUTES.SIGNUP)
-      expect(result.headers.get('X-Error')).toContain(
-        'account with this email already exists',
-      )
+      const result = (await signupAction({ request } as never)) as {
+        errors: { email: string[] }
+      }
+      expect(result).toHaveProperty('errors')
+      expect(result.errors.email).toContain('This email is already registered')
     })
   })
 })

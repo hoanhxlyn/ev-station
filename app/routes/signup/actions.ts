@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm'
 import { redirect } from 'react-router'
 import { success, fail } from '~/constants/messages'
 import { ROUTES } from '~/constants/routes'
+import { VALIDATION_MESSAGES } from '~/constants/validation'
 import {
   redirectFail,
   redirectSuccess,
@@ -9,6 +10,7 @@ import {
 } from '~/lib/action-utils'
 import { auth } from '~/lib/auth.server'
 import { db } from '~/lib/db'
+import { logger } from '~/lib/logger.server'
 import { user } from '~/lib/db/schema'
 import { signupSchema, signupWithPasswordSchema } from '~/schemas/auth'
 import type { Route } from './+types/page'
@@ -41,10 +43,23 @@ export async function signupAction({ request }: Route.ActionArgs) {
 
       if (existingUser) {
         if (existingUser.signupMethod === 'manual') {
-          return redirectFail(
-            ROUTES.SIGNUP,
-            'An account with this email already exists. Please sign in with your password.',
-          )
+          return {
+            errors: {
+              email: [VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS],
+            },
+          }
+        }
+      }
+
+      const existingUsername = await db.query.user.findFirst({
+        where: eq(user.username, result.data.username),
+      })
+
+      if (existingUsername) {
+        return {
+          errors: {
+            username: [VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS],
+          },
         }
       }
 
@@ -69,6 +84,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
         })
         .where(eq(user.id, session.user.id))
 
+      logger.info('[AUTH] OAuth signup completed', {
+        userId: session.user.id,
+        email: result.data.email,
+      })
       return redirectSuccess(ROUTES.APP, success('Account created'))
     }
 
@@ -79,21 +98,28 @@ export async function signupAction({ request }: Route.ActionArgs) {
       }
     }
 
-    const existingUser = await db.query.user.findFirst({
+    const existingEmail = await db.query.user.findFirst({
       where: eq(user.email, result.data.email),
     })
 
-    if (existingUser) {
-      if (existingUser.signupMethod === 'oauth') {
-        return redirectFail(
-          ROUTES.SIGNUP,
-          'An account with this email already exists via OAuth. Please sign in with GitHub.',
-        )
+    if (existingEmail) {
+      return {
+        errors: {
+          email: [VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS],
+        },
       }
-      return redirectFail(
-        ROUTES.SIGNUP,
-        'An account with this email already exists.',
-      )
+    }
+
+    const existingUsername = await db.query.user.findFirst({
+      where: eq(user.username, result.data.username),
+    })
+
+    if (existingUsername) {
+      return {
+        errors: {
+          username: [VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS],
+        },
+      }
     }
 
     const response = await auth.api.signUpEmail({
@@ -125,6 +151,9 @@ export async function signupAction({ request }: Route.ActionArgs) {
       })
       .where(eq(user.email, result.data.email))
 
+    logger.info('[AUTH] Password signup initiated', {
+      email: result.data.email,
+    })
     return redirect(
       `${ROUTES.SIGNUP_CHECK_EMAIL}?email=${encodeURIComponent(result.data.email)}`,
     )
@@ -133,6 +162,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
       error instanceof Error && error.message
         ? error.message
         : fail('Account creation')
+    logger.error('[AUTH] Signup error', { error: message })
 
     return redirectFail(ROUTES.SIGNUP, message)
   }

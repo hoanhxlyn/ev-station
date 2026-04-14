@@ -1,0 +1,6 @@
+.pageShell {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: $page-gradient-light;
+}

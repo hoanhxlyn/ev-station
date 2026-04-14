@@ -44,4 +44,28 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        defaultValue: 'user',
+        input: false,
+      },
+      phone: {
+        type: 'string',
+        required: false,
+        input: true,
+      },
+      creditBalance: {
+        type: 'number',
+        defaultValue: 0,
+        input: false,
+      },
+      status: {
+        type: 'string',
+        defaultValue: 'active',
+        input: false,
+      },
+    },
+  },
 })

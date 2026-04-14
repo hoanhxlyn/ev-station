@@ -1,87 +1,75 @@
-# Welcome to React Router!
+# EV Station Management System
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A full-stack EV charging station management application with user authentication, payment processing, and admin dashboards.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
+## Quickstart
 
 ```bash
-npm install
+# Install dependencies
+pnpm install
+
+# Copy environment variables
+cp .env.example .env
+
+# Initialize database schema
+pnpm db:push
+
+# Seed admin account and station data
+pnpm db:seed
+
+# Start development server
+pnpm dev
 ```
 
-### Development
+## Environment Variables
 
-Start the development server with HMR:
+| Variable               | Required | Description                                       |
+| ---------------------- | -------- | ------------------------------------------------- |
+| `BETTER_AUTH_URL`      | Yes      | Base URL for auth (e.g., `http://localhost:5173`) |
+| `GITHUB_CLIENT_ID`     | Yes      | GitHub OAuth app client ID                        |
+| `GITHUB_CLIENT_SECRET` | Yes      | GitHub OAuth app client secret                    |
+| `STRIPE_PUBLIC_KEY`    | Yes      | Stripe publishable key (test mode)                |
+| `STRIPE_SECRET_KEY`    | Yes      | Stripe secret key (test mode)                     |
+| `DATABASE_URL`         | No       | SQLite path (defaults to `./data/db.sqlite`)      |
 
-```bash
-npm run dev
-```
+## Commands
 
-Your application will be available at `http://localhost:5173`.
+| Command           | Description                    |
+| ----------------- | ------------------------------ |
+| `pnpm dev`        | Start dev server              |
+| `pnpm build`      | Production build              |
+| `pnpm test`       | Run tests                     |
+| `pnpm lint`       | Lint code                     |
+| `pnpm typecheck`  | Type check                    |
+| `pnpm format`     | Format code                   |
+| `pnpm db:push`    | Push database schema          |
+| `pnpm db:seed`    | Seed database with test data  |
+| `pnpm db:studio`  | Open Drizzle Studio           |
 
-## Building for Production
+## Key Routes
 
-Create a production build:
+| Path                   | Description                                        |
+| ---------------------- | -------------------------------------------------- |
+| `/`                    | Home page                                          |
+| `/login`               | Login (email/password + GitHub OAuth)              |
+| `/signup`              | Registration                                       |
+| `/dashboard`           | User dashboard (balance, charging history)        |
+| `/wallet`              | Top-up credits                                     |
+| `/charging`            | Start/end charging sessions                        |
+| `/vehicles`            | Vehicle management                                 |
+| `/admin`               | Admin dashboard (KPIs, cash flow)                  |
+| `/admin/users`         | Admin user management                              |
 
-```bash
-npm run build
-```
+## Tech Stack
 
-## Deployment
+- **Framework**: React Router 7 (SSR) + TypeScript
+- **UI**: Mantine v9
+- **Auth**: Better Auth (email + GitHub OAuth)
+- **Database**: Drizzle ORM + SQLite (better-sqlite3)
+- **Validation**: Zod
+- **Charts**: Recharts
+- **Testing**: Vitest
 
-### Docker Deployment
+## Learn More
 
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+See [specs/002-ev-station-management/quickstart.md](specs/002-ev-station-management/quickstart.md) for full setup details.

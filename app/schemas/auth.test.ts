@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { loginSchema, signupSchema } from '../schemas/auth'
+import { loginSchema, signupSchema } from '~/schemas/auth'
 
 describe('loginSchema', () => {
   describe('accountName validation', () => {
