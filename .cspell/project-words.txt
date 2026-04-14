@@ -62,3 +62,8 @@ topups
 chartjs
 bookmarkable
 existinguser
+setstate
+usetransition
+bobmatnyc
+mantinedev
+wshobson

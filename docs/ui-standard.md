@@ -347,7 +347,141 @@ Decorative elements follow a consistent pattern:
 
 ---
 
-## 11. Quality Checklist
+## 11. React Performance
+
+### 11.1 Re-render Optimization
+
+| Rule | Description |
+| ---- | ----------- |
+| `rerender-memo` | Extract expensive work into memoized components |
+| `rerender-defer-reads` | Don't subscribe to state only used in callbacks |
+| `rerender-derived-state` | Subscribe to derived booleans, not raw values |
+| `rerender-functional-setstate` | Use functional setState for stable callbacks |
+| `rerender-lazy-state-init` | Pass function to useState for expensive values |
+| `rerender-split-combined-hooks` | Split hooks with independent dependencies |
+| `rerender-transitions` | Use startTransition for non-urgent updates |
+
+**Calculate Derived State During Rendering:**
+
+```tsx
+// ❌ Prohibited — redundant state and effect
+function Form() {
+  const [firstName, setFirstName] = useState('First')
+  const [lastName, setLastName] = useState('Last')
+  const [fullName, setFullName] = useState('')
+
+  useEffect(() => {
+    setFullName(firstName + ' ' + lastName)
+  }, [firstName, lastName])
+
+  return <p>{fullName}</p>
+}
+
+// ✅ Correct — derive during render
+function Form() {
+  const [firstName, setFirstName] = useState('First')
+  const [lastName, setLastName] = useState('Last')
+  const fullName = firstName + ' ' + lastName
+
+  return <p>{fullName}</p>
+}
+```
+
+**Don't Define Components Inside Components:**
+
+```tsx
+// ❌ Prohibited — creates new component type on every render
+function UserProfile({ user, theme }) {
+  const Avatar = () => (
+    <img src={user.avatarUrl} className={theme === 'dark' ? 'dark' : 'light'} />
+  )
+  return <Avatar />
+}
+
+// ✅ Correct — define at module level or pass props
+function Avatar({ src, theme }: { src: string; theme: string }) {
+  return <img src={src} className={theme === 'dark' ? 'dark' : 'light'} />
+}
+```
+
+**Use Lazy State Initialization:**
+
+```tsx
+// ❌ Prohibited — runs on every render
+const [searchIndex, setSearchIndex] = useState(buildSearchIndex(items))
+
+// ✅ Correct — runs only on initial render
+const [searchIndex, setSearchIndex] = useState(() => buildSearchIndex(items))
+```
+
+### 11.2 Rendering Performance
+
+| Rule | Description |
+| ---- | ----------- |
+| `rendering-hoist-jsx` | Extract static JSX outside components |
+| `rendering-content-visibility` | Use content-visibility for long lists |
+| `rendering-conditional-render` | Use ternary, not && for conditionals |
+| `rendering-usetransition-loading` | Prefer useTransition for loading state |
+
+**Hoist Static JSX:**
+
+```tsx
+// ❌ Prohibited — recreates element every render
+function LoadingSkeleton() {
+  return <div className="animate-pulse h-20 bg-gray-200" />
+}
+
+// ✅ Correct — reuses same element
+const loadingSkeleton = (
+  <div className="animate-pulse h-20 bg-gray-200" />
+)
+```
+
+**Use Explicit Conditional Rendering:**
+
+```tsx
+// ❌ Prohibited — renders "0" when count is 0
+{count && <Badge>{count}</Badge>}
+
+// ✅ Correct — renders nothing when count is 0
+{count > 0 ? <Badge>{count}</Badge> : null}
+```
+
+### 11.3 JavaScript Performance
+
+| Rule | Description |
+| ---- | ----------- |
+| `js-early-exit` | Return early from functions |
+| `js-hoist-regexp` | Hoist RegExp creation outside loops |
+| `js-set-map-lookups` | Use Set/Map for O(1) lookups |
+| `js-cache-function-results` | Cache function results in module-level Map |
+| `js-combine-iterations` | Combine multiple filter/map into one loop |
+
+**Build Index Maps for Repeated Lookups:**
+
+```tsx
+// ❌ Prohibited — O(n) per lookup
+const user = users.find(u => u.id === order.userId)
+
+// ✅ Correct — O(1) per lookup
+const userById = new Map(users.map(u => [u.id, u]))
+const user = userById.get(order.userId)
+```
+
+**Use Set/Map for O(1) Lookups:**
+
+```tsx
+// ❌ Prohibited — O(n) per check
+items.filter(item => allowedIds.includes(item.id))
+
+// ✅ Correct — O(1) per check
+const allowedSet = new Set(allowedIds)
+items.filter(item => allowedSet.has(item.id))
+```
+
+---
+
+## 12. Quality Checklist
 
 Before submitting any UI code, verify:
 
@@ -360,4 +494,7 @@ Before submitting any UI code, verify:
 - [ ] Shared `size`, `radius`, `color` values are configured in theme, not repeated per-component
 - [ ] CSS Modules only for styles that Mantine props cannot express
 - [ ] TypeScript types are inferred from auto-generated Route types
+- [ ] No inline component definitions (define at module level instead)
+- [ ] Derived state calculated during render, not in useEffect
+- [ ] Explicit ternary used for conditionals that may render falsy values
 - [ ] `pnpm lint && pnpm typecheck && pnpm format && pnpm test` all pass

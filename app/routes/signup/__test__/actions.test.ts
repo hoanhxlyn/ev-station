@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { z } from 'zod'
 import { ROUTES } from '~/constants/routes'
 
 // --- Mocks ---
@@ -35,7 +36,6 @@ vi.mock('~/lib/auth.server', () => ({
 }))
 
 vi.mock('~/lib/action-utils', () => {
-  const { z } = require('zod')
   const schema = z.object({
     message: z.string().optional(),
     error: z.object({ message: z.string().optional() }).optional(),
@@ -77,7 +77,7 @@ function buildRequest(entries: Record<string, string>): Request {
 }
 
 // Dynamic import so mocks are in place
-const { signupAction } = await import('./actions')
+const { signupAction } = await import('../actions')
 
 describe('signupAction', () => {
   beforeEach(() => {
@@ -271,18 +271,13 @@ describe('signupAction', () => {
     })
 
     it('returns field-level error for duplicate username', async () => {
-      let checkEmail = true
-      mockDb.query.user.findFirst.mockImplementation(async () => {
-        if (checkEmail) {
-          checkEmail = false
-          return null
-        }
-        return {
+      mockDb.query.user.findFirst
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({
           email: 'other@example.com',
           username: 'existinguser',
           signupMethod: 'manual',
-        }
-      })
+        })
 
       const request = buildRequest({
         signupMode: 'password',

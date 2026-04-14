@@ -26,7 +26,7 @@ vi.mock('~/lib/auth.server', () => ({
   },
 }))
 
-const { signupLoader } = await import('./loader')
+const { signupLoader } = await import('../loader')
 
 function buildRequest(headers?: Record<string, string>): Request {
   return new Request('http://localhost/signup', { headers })

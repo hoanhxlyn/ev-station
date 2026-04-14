@@ -2,6 +2,15 @@ import '@testing-library/jest-dom/vitest'
 
 import { vi } from 'vitest'
 
+vi.mock('~/lib/logger.server', () => ({
+  logger: {
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+  },
+}))
+
 window.HTMLElement.prototype.scrollIntoView = () => {}
 
 Object.defineProperty(window, 'matchMedia', {

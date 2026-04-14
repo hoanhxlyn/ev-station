@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import { MantineProvider } from '@mantine/core'
-import SignupCheckEmail, { meta } from './check-email'
+import SignupCheckEmail, { meta } from '../check-email'
 import { SIGNUP_MESSAGES } from '~/constants/messages'
 
 vi.mock('./page.module.css', () => ({

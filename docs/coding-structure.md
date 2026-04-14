@@ -482,3 +482,113 @@ return respondFail({ error: 'value' }, 'Operation failed')
 - **Better Auth**: Authentication (configured in `app/lib/auth.server.ts`)
 - **Remix Toast**: Toast notifications (via `remix-toast`)
 - **Recharts**: Charts (used via Mantine Charts wrapper)
+
+## Performance Best Practices
+
+### Server-Side Performance
+
+| Rule | Description |
+| ---- | ----------- |
+| `server-auth-actions` | Authenticate server actions like API routes |
+| `server-parallel-fetching` | Restructure components to parallelize fetches |
+| `server-parallel-nested-fetching` | Chain nested fetches per item in Promise.all |
+| `server-serialization` | Minimize data passed to client components |
+| `server-hoist-static-io` | Hoist static I/O (fonts, logos) to module level |
+| `server-no-shared-module-state` | Avoid module-level mutable request state |
+
+**Parallel Fetches with Promise.all:**
+
+```typescript
+// ❌ Prohibited — sequential execution, 3 round trips
+const user = await fetchUser()
+const posts = await fetchPosts()
+const comments = await fetchComments()
+
+// ✅ Correct — parallel execution, 1 round trip
+const [user, posts, comments] = await Promise.all([
+  fetchUser(),
+  fetchPosts(),
+  fetchComments()
+])
+```
+
+**Hoist Static I/O to Module Level:**
+
+```typescript
+// ❌ Prohibited — reads config on every call
+export async function processRequest(data: Data) {
+  const config = JSON.parse(await fs.readFile('./config.json', 'utf-8'))
+  return render(data, config)
+}
+
+// ✅ Correct — hoists to module level
+const configPromise = fs.readFile('./config.json', 'utf-8').then(JSON.parse)
+
+export async function processRequest(data: Data) {
+  const config = await configPromise
+  return render(data, config)
+}
+```
+
+**Minimize Serialization at RSC Boundaries:**
+
+```typescript
+// ❌ Prohibited — serializes all 50 fields
+const user = await fetchUser()  // 50 fields
+return <Profile user={user} />
+
+// ✅ Correct — serializes only needed field
+const user = await fetchUser()
+return <Profile name={user.name} />
+```
+
+### Authentication in Loaders/Actions
+
+Always authenticate inside loaders and actions — do not rely solely on route guards:
+
+```typescript
+export async function myLoader({ request }: Route.LoaderArgs) {
+  // ✅ Always check auth inside the loader
+  const session = await requireVerified(request)
+  
+  const data = await db.query.someTable.findMany({
+    where: eq(someTable.userId, session.user.id),
+  })
+  return { data }
+}
+```
+
+### Bundle Size Optimization
+
+| Rule | Description |
+| ---- | ----------- |
+| `bundle-barrel-imports` | Import directly when possible, avoid deep barrel imports |
+| `bundle-dynamic-imports` | Use dynamic imports for heavy components |
+| `bundle-conditional` | Load modules only when feature is activated |
+
+**Dynamic Imports for Heavy Components:**
+
+```typescript
+// For heavy components like Monaco Editor
+const MonacoEditor = dynamic(
+  () => import('./monaco-editor').then(m => m.MonacoEditor),
+  { ssr: false }
+)
+```
+
+**Preload on User Intent:**
+
+```typescript
+function EditorButton({ onClick }: { onClick: () => void }) {
+  const preload = () => {
+    if (typeof window !== 'undefined') {
+      void import('./monaco-editor')
+    }
+  }
+  return (
+    <Button onMouseEnter={preload} onFocus={preload} onClick={onClick}>
+      Open Editor
+    </Button>
+  )
+}
+```
