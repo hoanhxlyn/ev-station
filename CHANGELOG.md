@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/hoanhxlyn/ev-station/compare/v1.0.0...v1.1.0) (2026-04-14)
+
+
+### Bug Fixes
+
+* resolve bugs, deduplicate utilities, and add missing tests ([469bb79](https://github.com/hoanhxlyn/ev-station/commit/469bb791ebcf2946e5bce722ae53242e8314c770))
+* **signup:** return field-level errors for duplicate email/username ([f1b4423](https://github.com/hoanhxlyn/ev-station/commit/f1b44232c0afba62d64a1eb40a64ca885d8f828b))
+
+
+### Features
+
+* add EV station management system with admin, vehicles, wallet, and charging modules ([4880b23](https://github.com/hoanhxlyn/ev-station/commit/4880b23dd889052b9bfd9d671d7ccd54202fa745))
+* complete Phase 8 polish - theme, logging, constants, station release fix ([0ae8930](https://github.com/hoanhxlyn/ev-station/commit/0ae8930e71b36b9b8e8c80a8114b9d9aa1dd4f18))
+
 # 1.0.0 (2026-04-07)
 
 
