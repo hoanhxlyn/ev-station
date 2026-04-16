@@ -12,7 +12,8 @@ pnpm install
 cp .env.example .env
 
 # Initialize database schema
-pnpm db:push
+pnpm db:generate
+pnpm db:migrate
 
 # Seed admin account and station data
 pnpm db:seed
@@ -42,9 +43,11 @@ pnpm dev
 | `pnpm lint`       | Lint code                     |
 | `pnpm typecheck`  | Type check                    |
 | `pnpm format`     | Format code                   |
-| `pnpm db:push`    | Push database schema          |
-| `pnpm db:seed`    | Seed database with test data  |
-| `pnpm db:studio`  | Open Drizzle Studio           |
+| `pnpm db:generate` | Generate database migration files |
+| `pnpm db:migrate`  | Run database migrations           |
+| `pnpm db:push`    | Push database schema (dev only)   |
+| `pnpm db:seed`    | Seed database with test data     |
+| `pnpm db:studio`  | Open Drizzle Studio              |
 
 ## Key Routes
 

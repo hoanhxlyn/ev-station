@@ -20,7 +20,8 @@ cp .env.example .env
 # Edit .env with your values (see Environment Variables below)
 
 # Initialize database schema
-pnpm db:push
+pnpm db:generate
+pnpm db:migrate
 
 # Seed admin account and station data
 pnpm db:seed
