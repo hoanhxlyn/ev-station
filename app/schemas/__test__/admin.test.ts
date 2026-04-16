@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { toggleLockIntent } from '~/schemas/admin'
+import { VALIDATION_MESSAGES } from '~/constants/validation'
 
 describe('toggleLockIntent', () => {
   describe('intent', () => {
@@ -67,7 +68,9 @@ describe('toggleLockIntent', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('User ID is required')
+        expect(result.error.issues[0].message).toBe(
+          VALIDATION_MESSAGES.USER_ID_REQUIRED,
+        )
       }
     })
   })

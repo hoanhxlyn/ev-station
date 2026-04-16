@@ -22,9 +22,9 @@ describe('feature name', () => {
 
 ```ts
 // Equality
-expect(value).toBe(42)                    // Strict (===)
-expect(obj).toEqual({ a: 1 })             // Deep equality
-expect(obj).toStrictEqual({ a: 1 })       // Strict deep (checks types)
+expect(value).toBe(42) // Strict (===)
+expect(obj).toEqual({ a: 1 }) // Deep equality
+expect(obj).toStrictEqual({ a: 1 }) // Strict deep (checks types)
 
 // Truthiness
 expect(value).toBeTruthy()
@@ -86,7 +86,7 @@ expect(mockFn).toHaveBeenCalledTimes(2)
 ```ts
 vi.mock('./module', () => ({
   namedExport: vi.fn(() => 'mocked'),
-  default: vi.fn()
+  default: vi.fn(),
 }))
 ```
 
@@ -138,16 +138,16 @@ it('matches inline snapshot', () => {
 
 ## Test Methods
 
-| Method | Purpose |
-|--------|---------|
-| `it()` / `test()` | Define test |
-| `describe()` | Group tests |
-| `beforeEach()` / `afterEach()` | Per-test hooks |
-| `beforeAll()` / `afterAll()` | Per-suite hooks |
-| `.skip` | Skip test/suite |
-| `.only` | Run only this |
-| `.todo` | Placeholder |
-| `.concurrent` | Parallel execution |
+| Method                         | Purpose            |
+| ------------------------------ | ------------------ |
+| `it()` / `test()`              | Define test        |
+| `describe()`                   | Group tests        |
+| `beforeEach()` / `afterEach()` | Per-test hooks     |
+| `beforeAll()` / `afterAll()`   | Per-suite hooks    |
+| `.skip`                        | Skip test/suite    |
+| `.only`                        | Run only this      |
+| `.todo`                        | Placeholder        |
+| `.concurrent`                  | Parallel execution |
 
 ## Best Practices
 
@@ -157,3 +157,21 @@ it('matches inline snapshot', () => {
 - Use `beforeEach` for state isolation
 - Place `vi.mock` at top level (before imports)
 - Don't share state between tests
+- **Must ALWAYS use constants for hardcoded messages** - Never write string literals directly in assertions.
+
+### Using Constants in Tests
+
+```ts
+// ❌ WRONG - Hardcoded string
+expect(result.errors.fieldErrors?.email).toContain('This email is already registered')
+
+// ✅ CORRECT - Import and use constants
+import { VALIDATION_MESSAGES } from '~/constants/validation'
+expect(result.errors.fieldErrors?.email).toContain(VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS)
+```
+
+Common constant locations:
+- `~/constants/validation` - Validation error messages (EMAIL_ALREADY_EXISTS, USERNAME_ALREADY_EXISTS, etc.)
+- `~/constants/messages` - Action result messages (SIGNUP_MESSAGES, LOGIN_MESSAGES, etc.)
+- `~/constants/routes` - Route paths (ROUTES.LOGIN, ROUTES.SIGNUP, etc.)
+

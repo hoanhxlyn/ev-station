@@ -1,6 +1,6 @@
 import { Box, Container, Paper } from '@mantine/core'
 import styles from './page.module.css'
-import { SignupPanel } from './signup-panel'
+import { SignupPanel } from './components/signup-panel'
 
 export { signupAction as action } from './actions'
 export { signupLoader as loader } from './loader'

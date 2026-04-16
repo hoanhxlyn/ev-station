@@ -260,7 +260,7 @@ describe('addVehicleIntent', () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error.issues[0].message).toBe(
-          'Battery capacity must be a whole number',
+          VALIDATION_MESSAGES.BATTERY_CAPACITY_WHOLE_NUMBER,
         )
       }
     })

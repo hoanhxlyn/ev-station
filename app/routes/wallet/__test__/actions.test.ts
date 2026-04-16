@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ROUTES } from '~/constants/routes'
+import { WALLET_MESSAGES } from '~/constants/messages'
 
 // --- Mocks ---
 
@@ -66,7 +67,7 @@ function buildRequest(entries: Record<string, string>): Request {
   return new Request('http://localhost/wallet', { method: 'POST', body: fd })
 }
 
-const { walletAction } = await import('./actions')
+const { walletAction } = await import('../actions')
 
 describe('walletAction', () => {
   beforeEach(() => {
@@ -165,7 +166,7 @@ describe('walletAction', () => {
       const request = buildRequest({ intent: 'unknown' })
       const result = (await walletAction({ request } as never)) as Response
       expect(result.headers.get('Location')).toBe(ROUTES.WALLET)
-      expect(result.headers.get('X-Error')).toBe('Invalid action')
+      expect(result.headers.get('X-Error')).toBe(WALLET_MESSAGES.INVALID_ACTION)
     })
   })
 })

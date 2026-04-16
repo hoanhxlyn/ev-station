@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { z } from 'zod'
 import { ROUTES } from '~/constants/routes'
+import { VALIDATION_MESSAGES } from '~/constants/validation'
 
 // --- Mocks ---
 
@@ -162,10 +163,12 @@ describe('signupAction', () => {
       })
 
       const result = (await signupAction({ request } as never)) as {
-        errors: { email: string[] }
+        errors: { fieldErrors: { email?: string[] } }
       }
       expect(result).toHaveProperty('errors')
-      expect(result.errors.email).toContain('This email is already registered')
+      expect(result.errors.fieldErrors?.email).toContain(
+        VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS,
+      )
     })
 
     it('redirects to signup with error on failed signUpEmail', async () => {
@@ -264,10 +267,12 @@ describe('signupAction', () => {
       })
 
       const result = (await signupAction({ request } as never)) as {
-        errors: { email: string[] }
+        errors: { fieldErrors: { email?: string[] } }
       }
       expect(result).toHaveProperty('errors')
-      expect(result.errors.email).toContain('This email is already registered')
+      expect(result.errors.fieldErrors?.email).toContain(
+        VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS,
+      )
     })
 
     it('returns field-level error for duplicate username', async () => {
@@ -289,10 +294,12 @@ describe('signupAction', () => {
       })
 
       const result = (await signupAction({ request } as never)) as {
-        errors: { username: string[] }
+        errors: { fieldErrors: { username?: string[] } }
       }
       expect(result).toHaveProperty('errors')
-      expect(result.errors.username).toContain('This username is already taken')
+      expect(result.errors.fieldErrors?.username).toContain(
+        VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS,
+      )
     })
   })
 
@@ -353,10 +360,12 @@ describe('signupAction', () => {
       })
 
       const result = (await signupAction({ request } as never)) as {
-        errors: { email: string[] }
+        errors: { fieldErrors: { email?: string[] } }
       }
       expect(result).toHaveProperty('errors')
-      expect(result.errors.email).toContain('This email is already registered')
+      expect(result.errors.fieldErrors?.email).toContain(
+        VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS,
+      )
     })
   })
 })

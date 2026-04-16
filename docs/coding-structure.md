@@ -356,20 +356,28 @@ Tests use Vitest with jsdom environment. Setup is in `app/test/setup.ts`.
 
 ### Test Location
 
-**New convention**: Tests go in `__test__` folder within the route folder:
+**New convention**: Tests go in `__test__` folder within the module folder:
 
 ```
 app/routes/my-route/__test__/
 ├── loader.test.ts
 ├── actions.test.ts
 └── page.test.tsx
+
+app/schemas/__test__/
+├── auth.test.ts
+├── vehicle.test.ts
+└── transaction.test.ts
 ```
 
-**Legacy convention**: Tests at route root (still exist, needs refactor):
+**Legacy convention**: Tests at folder root (still exist, needs refactor):
 
 ```
 app/routes/my-route/
 ├── actions.test.ts  # Legacy - should be moved to __test__/
+
+app/schemas/
+├── auth.test.ts  # Legacy - should be moved to __test__/
 ```
 
 ### Writing Tests

@@ -31,9 +31,7 @@ export const addVehicleIntent = z.object({
       `Model must be at most ${VALIDATION_CONSTRAINTS.VEHICLE_MODEL_MAX_LENGTH} characters`,
     ),
   batteryCapacity: z
-    .number({
-      required_error: VALIDATION_MESSAGES.VEHICLE_BATTERY_CAPACITY_REQUIRED,
-    })
+    .number()
     .int('Battery capacity must be a whole number')
     .min(
       VALIDATION_CONSTRAINTS.VEHICLE_BATTERY_CAPACITY_MIN,
@@ -73,9 +71,7 @@ export const editVehicleIntent = z.object({
       `Model must be at most ${VALIDATION_CONSTRAINTS.VEHICLE_MODEL_MAX_LENGTH} characters`,
     ),
   batteryCapacity: z
-    .number({
-      required_error: VALIDATION_MESSAGES.VEHICLE_BATTERY_CAPACITY_REQUIRED,
-    })
+    .number()
     .int('Battery capacity must be a whole number')
     .min(
       VALIDATION_CONSTRAINTS.VEHICLE_BATTERY_CAPACITY_MIN,

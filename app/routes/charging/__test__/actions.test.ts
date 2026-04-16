@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ROUTES } from '~/constants/routes'
+import { CHARGING_MESSAGES } from '~/constants/messages'
 
 // --- Mocks ---
 
@@ -84,7 +85,7 @@ function buildRequest(entries: Record<string, string>): Request {
   })
 }
 
-const { chargingAction } = await import('./actions')
+const { chargingAction } = await import('../actions')
 
 describe('chargingAction', () => {
   beforeEach(() => {
@@ -266,7 +267,9 @@ describe('chargingAction', () => {
       const request = buildRequest({ intent: 'unknown' })
       const result = (await chargingAction({ request } as never)) as Response
       expect(result.headers.get('Location')).toBe(ROUTES.CHARGING)
-      expect(result.headers.get('X-Error')).toBe('Invalid action')
+      expect(result.headers.get('X-Error')).toBe(
+        CHARGING_MESSAGES.INVALID_ACTION,
+      )
     })
   })
 })

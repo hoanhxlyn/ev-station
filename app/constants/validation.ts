@@ -59,4 +59,7 @@ export const VALIDATION_MESSAGES = {
   SESSION_INSUFFICIENT_CREDITS: 'Insufficient credits. Please top up first.',
   USER_LOCKED: 'Your account has been locked',
   CANNOT_LOCK_ADMIN: 'Cannot lock admin accounts',
+  USER_ID_REQUIRED: 'User ID is required',
+  BATTERY_CAPACITY_WHOLE_NUMBER: 'Battery capacity must be a whole number',
+  TRANSACTION_AMOUNT_WHOLE_NUMBER: 'Amount must be a whole number',
 } as const

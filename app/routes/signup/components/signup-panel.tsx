@@ -29,8 +29,8 @@ import {
   signupWithPasswordSchema,
   type SignupValues,
 } from '~/schemas/auth'
-import type { signupAction } from './actions'
-import type { signupLoader } from './loader'
+import type { signupAction } from '../actions'
+import type { signupLoader } from '../loader'
 import styles from './page.module.css'
 
 export function SignupPanel() {
@@ -105,7 +105,7 @@ export function SignupPanel() {
               withAsterisk
               key={form.key('email')}
               {...form.getInputProps('email')}
-              error={fetcher.data?.errors?.email?.[0]}
+              error={fetcher.data?.errors?.fieldErrors?.email?.[0]}
               readOnly={!!email}
             />
             <TextInput
@@ -116,7 +116,7 @@ export function SignupPanel() {
               withAsterisk
               key={form.key('username')}
               {...form.getInputProps('username')}
-              error={fetcher.data?.errors?.username?.[0]}
+              error={fetcher.data?.errors?.fieldErrors?.username?.[0]}
             />
             <TextInput
               label="Full name"

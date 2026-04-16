@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { loginSchema, signupSchema } from '~/schemas/auth'
+import { VALIDATION_MESSAGES } from '~/constants/validation'
 
 describe('loginSchema', () => {
   describe('accountName validation', () => {
@@ -36,7 +37,7 @@ describe('loginSchema', () => {
         expect(result.success).toBe(false)
         if (!result.success) {
           expect(result.error.issues[0].message).toBe(
-            'Enter a valid email or username (letters, numbers, underscores only)',
+            VALIDATION_MESSAGES.ACCOUNT_NAME_INVALID_FORMAT,
           )
         }
       })

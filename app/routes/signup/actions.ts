@@ -14,6 +14,7 @@ import { logger } from '~/lib/logger.server'
 import { user } from '~/lib/db/schema'
 import { signupSchema, signupWithPasswordSchema } from '~/schemas/auth'
 import type { Route } from './+types/page'
+import { z } from 'zod'
 
 export async function signupAction({ request }: Route.ActionArgs) {
   const formData = await request.formData()
@@ -33,7 +34,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
       const result = signupSchema.safeParse(values)
       if (!result.success) {
         return {
-          errors: result.error.flatten().fieldErrors,
+          errors: z.flattenError(result.error),
         }
       }
 
@@ -45,7 +46,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
         if (existingUser.signupMethod === 'manual') {
           return {
             errors: {
-              email: [VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS],
+              formErrors: [],
+              fieldErrors: {
+                email: [VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS],
+              },
             },
           }
         }
@@ -58,7 +62,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
       if (existingUsername) {
         return {
           errors: {
-            username: [VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS],
+            formErrors: [],
+            fieldErrors: {
+              username: [VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS],
+            },
           },
         }
       }
@@ -94,7 +101,7 @@ export async function signupAction({ request }: Route.ActionArgs) {
     const result = signupWithPasswordSchema.safeParse(values)
     if (!result.success) {
       return {
-        errors: result.error.flatten().fieldErrors,
+        errors: z.flattenError(result.error),
       }
     }
 
@@ -105,7 +112,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
     if (existingEmail) {
       return {
         errors: {
-          email: [VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS],
+          formErrors: [],
+          fieldErrors: {
+            email: [VALIDATION_MESSAGES.EMAIL_ALREADY_EXISTS],
+          },
         },
       }
     }
@@ -117,7 +127,10 @@ export async function signupAction({ request }: Route.ActionArgs) {
     if (existingUsername) {
       return {
         errors: {
-          username: [VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS],
+          formErrors: [],
+          fieldErrors: {
+            username: [VALIDATION_MESSAGES.USERNAME_ALREADY_EXISTS],
+          },
         },
       }
     }

@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router'
 import { LOGIN_MESSAGES } from '~/constants/messages'
 import styles from './page.module.css'
-import { LoginLeftPanel } from './left-panel'
-import { LoginRightPanel } from './right-panel'
+import { LoginLeftPanel } from './component/left-panel'
+import { LoginRightPanel } from './component/right-panel'
 
 export { loginAction as action } from './actions'
 

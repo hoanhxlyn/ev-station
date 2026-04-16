@@ -25,6 +25,7 @@ export const WALLET_MESSAGES = {
   REPAY_FAIL: 'Debt repayment failed',
   IN_DEBT: 'Your account is in debt',
   BALANCE_LABEL: 'Credit balance',
+  INVALID_ACTION: 'Invalid action',
 } as const
 
 export const VEHICLE_MESSAGES = {
@@ -48,6 +49,7 @@ export const CHARGING_MESSAGES = {
   STATION_NOT_AVAILABLE: 'Station is not available',
   INSUFFICIENT_CREDITS: 'Insufficient credits. Please top up first.',
   VEHICLE_REQUIRED: 'Please add a vehicle first',
+  INVALID_ACTION: 'Invalid action',
 } as const
 
 export const ADMIN_MESSAGES = {

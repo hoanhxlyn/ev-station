@@ -7,7 +7,7 @@ import {
 export const topUpIntent = z.object({
   intent: z.literal('topup'),
   amount: z
-    .number({ required_error: 'Amount is required' })
+    .number()
     .int('Amount must be a whole number')
     .min(
       VALIDATION_CONSTRAINTS.TRANSACTION_MIN_TOP_UP,
@@ -18,7 +18,7 @@ export const topUpIntent = z.object({
 export const repayIntent = z.object({
   intent: z.literal('repay'),
   amount: z
-    .number({ required_error: 'Amount is required' })
+    .number()
     .int('Amount must be a whole number')
     .positive(VALIDATION_MESSAGES.TRANSACTION_AMOUNT_POSITIVE),
 })

@@ -43,7 +43,7 @@ function buildRequest(entries: Record<string, string>): Request {
   return new Request('http://localhost/login', { method: 'POST', body: fd })
 }
 
-const { loginAction } = await import('./actions')
+const { loginAction } = await import('../actions')
 
 describe('loginAction', () => {
   beforeEach(() => {

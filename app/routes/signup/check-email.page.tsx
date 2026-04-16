@@ -27,7 +27,7 @@ export function meta() {
   ]
 }
 
-export default function SignupCheckEmail() {
+export default function SignupCheckEmailPage() {
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email') ?? ''
 
