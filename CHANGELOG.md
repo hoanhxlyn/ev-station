@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/hoanhxlyn/ev-station/compare/v1.1.0...v1.2.0) (2026-04-16)
+
+
+### Bug Fixes
+
+* update drizzle workflow to use migrate instead of push ([73a538f](https://github.com/hoanhxlyn/ev-station/commit/73a538fbb354c7b34f6da727a57dede5e6d5bd45))
+
 # [1.1.0](https://github.com/hoanhxlyn/ev-station/compare/v1.0.0...v1.1.0) (2026-04-14)
 
 
