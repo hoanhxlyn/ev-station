@@ -12,7 +12,8 @@ pnpm install
 cp .env.example .env
 
 # Initialize database schema
-pnpm db:push
+pnpm db:generate
+pnpm db:migrate
 
 # Seed admin account and station data
 pnpm db:seed
@@ -42,9 +43,32 @@ pnpm dev
 | `pnpm lint`       | Lint code                     |
 | `pnpm typecheck`  | Type check                    |
 | `pnpm format`     | Format code                   |
-| `pnpm db:push`    | Push database schema          |
-| `pnpm db:seed`    | Seed database with test data  |
-| `pnpm db:studio`  | Open Drizzle Studio           |
+| `pnpm db:generate` | Generate database migration files |
+| `pnpm db:migrate`  | Run database migrations           |
+| `pnpm db:push`    | Push database schema (dev only)   |
+| `pnpm db:seed`    | Seed database with test data     |
+| `pnpm db:studio`  | Open Drizzle Studio              |
+| `pnpm release`    | Run semantic-release (auto versioning) |
+
+## Release
+
+This project uses semantic-release for automated versioning. Commits must follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+| Type | Release Type |
+| ---- | ------------- |
+| `feat:` | Minor bump |
+| `chore:` | Minor bump |
+| `refactor:` | Minor bump |
+| `fix:` | Patch bump |
+| `perf:` | Patch bump |
+| `BREAKING CHANGE:` | Major bump |
+| `docs:`, `test:`, `style:` | No version change |
+
+Run locally:
+```bash
+pnpm release --dry-run  # Preview next version
+pnpm release            # Create release
+```
 
 ## Key Routes
 
