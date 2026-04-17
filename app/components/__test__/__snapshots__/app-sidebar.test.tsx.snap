@@ -1,0 +1,848 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppSidebar > matches snapshot for admin user 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    
+
+
+
+
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <style
+    data-mantine-styles="inline"
+  >
+    :root{--app-shell-padding:0px;}
+  </style>
+  <div
+    class="m_89ab340 mantine-AppShell-root"
+    data-mode="fixed"
+    data-resizing="true"
+    style="--app-shell-transition-duration: 200ms; --app-shell-transition-timing-function: ease;"
+  >
+    <nav
+      class="m_45252eee mantine-AppShell-navbar"
+      data-with-border="true"
+      style="--app-shell-navbar-z-index: calc(100 + 1); padding: var(--mantine-spacing-md);"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-xs); --stack-align: stretch; --stack-justify: flex-start; height: 100%;"
+      >
+        <div
+          class="m_4081bf90 mantine-Group-root"
+          style="--group-gap: var(--mantine-spacing-sm); --group-align: center; --group-justify: flex-start; --group-wrap: wrap; padding: var(--mantine-spacing-sm);"
+        >
+          <svg
+            class="tabler-icon tabler-icon-bolt "
+            fill="none"
+            height="28"
+            stroke="var(--mantine-color-teal-6)"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"
+            />
+          </svg>
+          <p
+            class="mantine-focus-auto m_b6d8b162 mantine-Text-root"
+            data-size="lg"
+            style="--text-fz: var(--mantine-font-size-lg); --text-lh: var(--mantine-line-height-lg); font-weight: 800;"
+          >
+            EV Station
+          </p>
+        </div>
+        <div
+          class="m_3eebeb36 mantine-Divider-root"
+          data-orientation="horizontal"
+          role="separator"
+          style="margin-block: var(--mantine-spacing-xs);"
+        />
+        <div
+          class=""
+          style="flex: 1 1 0%;"
+        >
+          <div
+            class="m_6d731127 mantine-Stack-root"
+            style="--stack-gap: calc(0.25rem * var(--mantine-scale)); --stack-align: stretch; --stack-justify: flex-start;"
+          >
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/app"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-dashboard "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 13a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                  />
+                  <path
+                    d="M13.45 11.55l2.05 -2.05"
+                  />
+                  <path
+                    d="M6.4 20a9 9 0 1 1 11.2 0l-11.2 0"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Dashboard
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/wallet"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-credit-card "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -8"
+                  />
+                  <path
+                    d="M3 10l18 0"
+                  />
+                  <path
+                    d="M7 15l.01 0"
+                  />
+                  <path
+                    d="M11 15l2 0"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Wallet
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/charging"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-charging-pile "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 7l-1 1"
+                  />
+                  <path
+                    d="M14 11h1a2 2 0 0 1 2 2v3a1.5 1.5 0 0 0 3 0v-7l-3 -3"
+                  />
+                  <path
+                    d="M4 20v-14a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v14"
+                  />
+                  <path
+                    d="M9 11.5l-1.5 2.5h3l-1.5 2.5"
+                  />
+                  <path
+                    d="M3 20l12 0"
+                  />
+                  <path
+                    d="M4 8l10 0"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Charging
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/vehicles"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-car "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                  />
+                  <path
+                    d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                  />
+                  <path
+                    d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Vehicles
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/profile"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-user "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
+                  />
+                  <path
+                    d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Profile
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <div
+              class="m_3eebeb36 mantine-Divider-root"
+              data-orientation="horizontal"
+              data-with-label="true"
+              role="separator"
+              style="margin-block: var(--mantine-spacing-xs);"
+            >
+              <span
+                class="m_9e365f20 mantine-Divider-label"
+                data-position="center"
+              >
+                Admin
+              </span>
+            </div>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              color="red"
+              data-discover="true"
+              href="/admin"
+              style="--nl-bg: var(--mantine-color-red-light); --nl-hover: var(--mantine-color-red-light-hover); --nl-color: var(--mantine-color-red-light-color);"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-bolt "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Admin Dashboard
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              color="red"
+              data-discover="true"
+              href="/admin/users"
+              style="--nl-bg: var(--mantine-color-red-light); --nl-hover: var(--mantine-color-red-light-hover); --nl-color: var(--mantine-color-red-light-color);"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-users "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"
+                  />
+                  <path
+                    d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+                  />
+                  <path
+                    d="M16 3.13a4 4 0 0 1 0 7.75"
+                  />
+                  <path
+                    d="M21 21v-2a4 4 0 0 0 -3 -3.85"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  User Management
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+          </div>
+        </div>
+        <div
+          class="m_3eebeb36 mantine-Divider-root"
+          data-orientation="horizontal"
+          role="separator"
+          style="margin-block: var(--mantine-spacing-xs);"
+        />
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-block="true"
+          data-variant="subtle"
+          data-with-left-section="true"
+          style="--button-bg: transparent; --button-hover: var(--mantine-color-red-light-hover); --button-color: var(--mantine-color-red-light-color); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_a74036a mantine-Button-section"
+              data-position="left"
+            >
+              <svg
+                class="tabler-icon tabler-icon-logout "
+                fill="none"
+                height="18"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="18"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+                />
+                <path
+                  d="M9 12h12l-3 -3"
+                />
+                <path
+                  d="M18 15l3 -3"
+                />
+              </svg>
+            </span>
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              Sign out
+            </span>
+          </span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`AppSidebar > matches snapshot for regular user 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    
+
+
+
+
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <style
+    data-mantine-styles="inline"
+  >
+    :root{--app-shell-padding:0px;}
+  </style>
+  <div
+    class="m_89ab340 mantine-AppShell-root"
+    data-mode="fixed"
+    data-resizing="true"
+    style="--app-shell-transition-duration: 200ms; --app-shell-transition-timing-function: ease;"
+  >
+    <nav
+      class="m_45252eee mantine-AppShell-navbar"
+      data-with-border="true"
+      style="--app-shell-navbar-z-index: calc(100 + 1); padding: var(--mantine-spacing-md);"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-xs); --stack-align: stretch; --stack-justify: flex-start; height: 100%;"
+      >
+        <div
+          class="m_4081bf90 mantine-Group-root"
+          style="--group-gap: var(--mantine-spacing-sm); --group-align: center; --group-justify: flex-start; --group-wrap: wrap; padding: var(--mantine-spacing-sm);"
+        >
+          <svg
+            class="tabler-icon tabler-icon-bolt "
+            fill="none"
+            height="28"
+            stroke="var(--mantine-color-teal-6)"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"
+            />
+          </svg>
+          <p
+            class="mantine-focus-auto m_b6d8b162 mantine-Text-root"
+            data-size="lg"
+            style="--text-fz: var(--mantine-font-size-lg); --text-lh: var(--mantine-line-height-lg); font-weight: 800;"
+          >
+            EV Station
+          </p>
+        </div>
+        <div
+          class="m_3eebeb36 mantine-Divider-root"
+          data-orientation="horizontal"
+          role="separator"
+          style="margin-block: var(--mantine-spacing-xs);"
+        />
+        <div
+          class=""
+          style="flex: 1 1 0%;"
+        >
+          <div
+            class="m_6d731127 mantine-Stack-root"
+            style="--stack-gap: calc(0.25rem * var(--mantine-scale)); --stack-align: stretch; --stack-justify: flex-start;"
+          >
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/app"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-dashboard "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 13a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                  />
+                  <path
+                    d="M13.45 11.55l2.05 -2.05"
+                  />
+                  <path
+                    d="M6.4 20a9 9 0 1 1 11.2 0l-11.2 0"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Dashboard
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/wallet"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-credit-card "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -8"
+                  />
+                  <path
+                    d="M3 10l18 0"
+                  />
+                  <path
+                    d="M7 15l.01 0"
+                  />
+                  <path
+                    d="M11 15l2 0"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Wallet
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/charging"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-charging-pile "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 7l-1 1"
+                  />
+                  <path
+                    d="M14 11h1a2 2 0 0 1 2 2v3a1.5 1.5 0 0 0 3 0v-7l-3 -3"
+                  />
+                  <path
+                    d="M4 20v-14a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v14"
+                  />
+                  <path
+                    d="M9 11.5l-1.5 2.5h3l-1.5 2.5"
+                  />
+                  <path
+                    d="M3 20l12 0"
+                  />
+                  <path
+                    d="M4 8l10 0"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Charging
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/vehicles"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-car "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                  />
+                  <path
+                    d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                  />
+                  <path
+                    d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Vehicles
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+            <a
+              class="mantine-focus-auto m_f0824112 mantine-NavLink-root m_87cf2631 mantine-UnstyledButton-root"
+              data-discover="true"
+              href="/profile"
+            >
+              <span
+                class="m_690090b5 mantine-NavLink-section"
+                data-position="left"
+              >
+                <svg
+                  class="tabler-icon tabler-icon-user "
+                  fill="none"
+                  height="20"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
+                  />
+                  <path
+                    d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+                  />
+                </svg>
+              </span>
+              <div
+                class="m_f07af9d2 mantine-NavLink-body"
+              >
+                <span
+                  class="m_1f6ac4c4 mantine-NavLink-label"
+                >
+                  Profile
+                </span>
+                <span
+                  class="m_57492dcc mantine-NavLink-description"
+                />
+              </div>
+            </a>
+          </div>
+        </div>
+        <div
+          class="m_3eebeb36 mantine-Divider-root"
+          data-orientation="horizontal"
+          role="separator"
+          style="margin-block: var(--mantine-spacing-xs);"
+        />
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-block="true"
+          data-variant="subtle"
+          data-with-left-section="true"
+          style="--button-bg: transparent; --button-hover: var(--mantine-color-red-light-hover); --button-color: var(--mantine-color-red-light-color); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_a74036a mantine-Button-section"
+              data-position="left"
+            >
+              <svg
+                class="tabler-icon tabler-icon-logout "
+                fill="none"
+                height="18"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="18"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+                />
+                <path
+                  d="M9 12h12l-3 -3"
+                />
+                <path
+                  d="M18 15l3 -3"
+                />
+              </svg>
+            </span>
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              Sign out
+            </span>
+          </span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</div>
+`;

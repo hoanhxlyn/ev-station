@@ -34,3 +34,19 @@ class ResizeObserver {
 }
 
 window.ResizeObserver = ResizeObserver
+
+class IntersectionObserver {
+  readonly root = null
+  readonly rootMargin = ''
+  readonly thresholds = []
+  constructor() {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return []
+  }
+}
+
+window.IntersectionObserver =
+  IntersectionObserver as unknown as typeof window.IntersectionObserver
