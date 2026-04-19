@@ -6,6 +6,7 @@ import { auth } from '~/lib/auth.server'
 import { logger } from '~/lib/logger.server'
 import { ROUTES } from '~/constants/routes'
 import type { Route } from './+types/page'
+import z from 'zod'
 
 export async function loginAction({ request }: Route.ActionArgs) {
   const formData = await request.formData()
@@ -18,10 +19,9 @@ export async function loginAction({ request }: Route.ActionArgs) {
 
   const result = loginSchema.safeParse(values)
   if (!result.success) {
-    logger.warn('[AUTH] Login validation failed', {
-      errors: result.error.flatten().fieldErrors,
-    })
-    return { errors: result.error.flatten().fieldErrors }
+    const errors = z.flattenError(result.error)
+    logger.warn('[AUTH] Login validation failed', errors)
+    return { errors }
   }
 
   const { accountName, password, remember } = result.data
