@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/hoanhxlyn/ev-station/compare/v1.2.0...v1.3.0) (2026-04-19)
+
+
+### Bug Fixes
+
+* add .turbo/ to gitignore and correct CSS module import paths ([9622830](https://github.com/hoanhxlyn/ev-station/commit/9622830754ff00474a69a1be867b005cd41d86d2))
+* **auth:** use Mantine form.onSubmit for proper form data submission ([ac8b3c4](https://github.com/hoanhxlyn/ev-station/commit/ac8b3c4d3e6a70df66aa1c1e72aad624099490b4))
+
 # [1.2.0](https://github.com/hoanhxlyn/ev-station/compare/v1.1.0...v1.2.0) (2026-04-16)
 
 
