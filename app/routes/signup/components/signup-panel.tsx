@@ -31,7 +31,7 @@ import {
 } from '~/schemas/auth'
 import type { signupAction } from '../actions'
 import type { signupLoader } from '../loader'
-import styles from './page.module.css'
+import styles from '../page.module.css'
 
 export function SignupPanel() {
   const [searchParams] = useSearchParams()
@@ -83,12 +83,21 @@ export function SignupPanel() {
         <fetcher.Form
           method="post"
           autoComplete="off"
-          onSubmit={(event) => {
-            event.preventDefault()
-            const validation = form.validate()
-            if (validation.hasErrors) return
-            fetcher.submit(event.currentTarget)
-          }}
+          onSubmit={form.onSubmit((values) => {
+            const formData = new FormData()
+            formData.append('email', values.email ?? '')
+            formData.append('username', values.username ?? '')
+            formData.append('name', values.name ?? '')
+            formData.append('dateOfBirth', values.dateOfBirth ?? '')
+            if (!isOAuthCompletion) {
+              formData.append('password', values.password ?? '')
+            }
+            formData.append(
+              'signupMode',
+              isOAuthCompletion ? 'oauth' : 'password',
+            )
+            fetcher.submit(formData, { method: 'post' })
+          })}
         >
           <input
             type="hidden"

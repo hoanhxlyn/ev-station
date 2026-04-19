@@ -3,10 +3,9 @@ import { notifications } from '@mantine/notifications'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router'
 import { LOGIN_MESSAGES } from '~/constants/messages'
-import styles from './page.module.css'
 import { LoginLeftPanel } from './component/left-panel'
 import { LoginRightPanel } from './component/right-panel'
-
+import styles from './page.module.css'
 export { loginAction as action } from './actions'
 
 export function meta() {

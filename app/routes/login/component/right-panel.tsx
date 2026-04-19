@@ -25,7 +25,7 @@ import { ROUTES } from '~/constants/routes'
 import { authClient } from '~/lib/auth-client'
 import { loginSchema, type LoginValues } from '~/schemas/auth'
 import type { loginAction } from '../actions'
-import styles from './page.module.css'
+import styles from '../page.module.css'
 
 export function LoginRightPanel() {
   const fetcher = useFetcher<typeof loginAction>()
@@ -75,12 +75,13 @@ export function LoginRightPanel() {
         <fetcher.Form
           method="post"
           autoComplete="off"
-          onSubmit={(event) => {
-            event.preventDefault()
-            const validation = form.validate()
-            if (validation.hasErrors) return
-            fetcher.submit(event.currentTarget)
-          }}
+          onSubmit={form.onSubmit((values) => {
+            const formData = new FormData()
+            formData.append('accountName', values.accountName)
+            formData.append('password', values.password)
+            formData.append('remember', values.remember ? 'on' : '')
+            fetcher.submit(formData, { method: 'post' })
+          })}
         >
           <Stack gap="md">
             <TextInput
@@ -91,6 +92,7 @@ export function LoginRightPanel() {
               withAsterisk
               key={form.key('accountName')}
               {...form.getInputProps('accountName')}
+              error={fetcher.data?.errors?.fieldErrors?.accountName}
             />
             <PasswordInput
               label="Password"
@@ -100,6 +102,7 @@ export function LoginRightPanel() {
               withAsterisk
               key={form.key('password')}
               {...form.getInputProps('password')}
+              error={fetcher.data?.errors?.fieldErrors?.password}
             />
             <Group justify="space-between" align="center">
               <Checkbox

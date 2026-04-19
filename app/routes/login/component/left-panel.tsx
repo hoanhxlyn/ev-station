@@ -3,7 +3,7 @@ import { Box, Group, Image, Stack, Text, ThemeIcon, Title } from '@mantine/core'
 import { IconBolt } from '@tabler/icons-react'
 import Autoplay from 'embla-carousel-autoplay'
 import { useRef } from 'react'
-import styles from './page.module.css'
+import styles from '../page.module.css'
 
 const LEFT_PANEL_IMAGES = [
   'https://images.unsplash.com/photo-1704475336842-0ab3798abf0e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',

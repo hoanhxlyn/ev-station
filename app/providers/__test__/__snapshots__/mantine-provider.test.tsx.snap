@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MantineAppProvider > matches snapshot with children 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    :root, :host{--mantine-font-family: "Roboto Variable", sans-serif;--mantine-font-family-headings: "Roboto Variable", sans-serif;--mantine-radius-default: calc(1rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-teal-filled);--mantine-primary-color-filled-hover: var(--mantine-color-teal-filled-hover);--mantine-primary-color-light: var(--mantine-color-teal-light);--mantine-primary-color-light-hover: var(--mantine-color-teal-light-hover);--mantine-primary-color-light-color: var(--mantine-color-teal-light-color);--mantine-spacing-2xl: 2.5rem;--mantine-spacing-3xl: 2rem;--mantine-spacing-4xl: 3rem;--mantine-primary-color-0: var(--mantine-color-teal-0);--mantine-primary-color-1: var(--mantine-color-teal-1);--mantine-primary-color-2: var(--mantine-color-teal-2);--mantine-primary-color-3: var(--mantine-color-teal-3);--mantine-primary-color-4: var(--mantine-color-teal-4);--mantine-primary-color-5: var(--mantine-color-teal-5);--mantine-primary-color-6: var(--mantine-color-teal-6);--mantine-primary-color-7: var(--mantine-color-teal-7);--mantine-primary-color-8: var(--mantine-color-teal-8);--mantine-primary-color-9: var(--mantine-color-teal-9);}
+
+:root[data-mantine-color-scheme="dark"], :host([data-mantine-color-scheme="dark"]){--mantine-color-anchor: var(--mantine-color-teal-4);}
+
+:root[data-mantine-color-scheme="light"], :host([data-mantine-color-scheme="light"]){--mantine-color-anchor: var(--mantine-color-teal-6);}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    data-testid="child"
+  >
+    Hello
+  </div>
+</div>
+`;
