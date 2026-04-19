@@ -31,7 +31,7 @@ import {
 } from '~/schemas/auth'
 import type { signupAction } from '../actions'
 import type { signupLoader } from '../loader'
-import styles from './page.module.css'
+import styles from '../page.module.css'
 
 export function SignupPanel() {
   const [searchParams] = useSearchParams()

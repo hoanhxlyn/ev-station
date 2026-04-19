@@ -25,7 +25,7 @@ import { ROUTES } from '~/constants/routes'
 import { authClient } from '~/lib/auth-client'
 import { loginSchema, type LoginValues } from '~/schemas/auth'
 import type { loginAction } from '../actions'
-import styles from './page.module.css'
+import styles from '../page.module.css'
 
 export function LoginRightPanel() {
   const fetcher = useFetcher<typeof loginAction>()
